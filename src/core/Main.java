@@ -3,8 +3,6 @@ package core;
 /*
  * TODO: Need to find a way to stop people from hitting track multiple times.
  *  more than one thread is being created and the times are being added.
- *  
- *  TODO: Add test cases
  * 
  */
 

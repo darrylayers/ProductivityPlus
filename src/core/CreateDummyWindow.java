@@ -11,17 +11,17 @@ import javax.swing.JFrame;
  * @version 9/12/18
  */
 
-public class TestWindow {
+public class CreateDummyWindow {
 
     public static final int FRAME_SIZE = 300;
     public JFrame frame;
-    public static TestWindow gui;
+    public static CreateDummyWindow gui;
     public Random rand = new Random();
 
     /**
      * Constructor that builds the frame.
      */
-    public TestWindow(String windowName) {
+    public CreateDummyWindow(String windowName) {
         frame = new JFrame();
         frame.setLocation(100 + rand.nextInt(15), 100);
         frame.setSize(FRAME_SIZE, FRAME_SIZE - 120);

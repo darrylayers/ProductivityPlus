@@ -54,7 +54,7 @@ public class ProgramTimer implements Runnable {
             }
 
             progLast = prog;
-            // Pause for 1/40 second before next check
+            // Pause before next check to eliminate wasted checks / resources
             try {
                 Thread.sleep(5);
             }
@@ -91,6 +91,7 @@ public class ProgramTimer implements Runnable {
         else {
             appMap.put(progLast, newTime);
         }
+        FileHandling.writeToFile(appMap);
     }
 
     /*

@@ -35,7 +35,7 @@ public class TestProgramTimer {
 
         // Create dummy window 1
         String window_name = "Window1 " + time / 1000 + " seconds";
-        TestWindow window = new TestWindow(window_name);
+        CreateDummyWindow window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -47,7 +47,7 @@ public class TestProgramTimer {
         // Dummy window 2
         time = rand.nextInt(10000) + 1000;
         window_name = "Window2 " + time / 1000 + " seconds";
-        window = new TestWindow(window_name);
+        window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -59,7 +59,7 @@ public class TestProgramTimer {
         // Dummy window 3
         time = rand.nextInt(10000) + 1000;
         window_name = "Window3 " + time / 1000 + " seconds";
-        window = new TestWindow(window_name);
+        window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -71,7 +71,7 @@ public class TestProgramTimer {
         // Dummy window 4
         time = rand.nextInt(10000) + 1000;
         window_name = "Window4 " + time / 1000 + " seconds";
-        window = new TestWindow(window_name);
+        window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -100,7 +100,7 @@ public class TestProgramTimer {
 
         // Create dummy window 1
         String window_name = "Window1_0sec " + time / 1000 + " seconds";
-        TestWindow window = new TestWindow(window_name);
+        CreateDummyWindow window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -111,7 +111,7 @@ public class TestProgramTimer {
         // Dummy window 2
 
         window_name = "Window2_0sec " + time / 1000 + " seconds";
-        window = new TestWindow(window_name);
+        window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -122,7 +122,7 @@ public class TestProgramTimer {
         // Dummy window 3
 
         window_name = "Window3_0sec " + time / 1000 + " seconds";
-        window = new TestWindow(window_name);
+        window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -133,7 +133,7 @@ public class TestProgramTimer {
         // Dummy window 4
 
         window_name = "Window4_0sec " + time / 1000 + " seconds";
-        window = new TestWindow(window_name);
+        window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -162,7 +162,7 @@ public class TestProgramTimer {
 
         // Create dummy window 1
         String window_name = "Window1_1sec " + time / 1000 + " seconds";
-        TestWindow window = new TestWindow(window_name);
+        CreateDummyWindow window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -173,7 +173,7 @@ public class TestProgramTimer {
         // Dummy window 2
 
         window_name = "Window2_1sec " + time / 1000 + " seconds";
-        window = new TestWindow(window_name);
+        window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -184,7 +184,7 @@ public class TestProgramTimer {
         // Dummy window 3
 
         window_name = "Window3_1sec " + time / 1000 + " seconds";
-        window = new TestWindow(window_name);
+        window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
@@ -195,7 +195,7 @@ public class TestProgramTimer {
         // Dummy window 4
 
         window_name = "Window4_1sec " + time / 1000 + " seconds";
-        window = new TestWindow(window_name);
+        window = new CreateDummyWindow(window_name);
         Thread.sleep(time);
         window.frame.dispose();
         Thread.sleep(100);
