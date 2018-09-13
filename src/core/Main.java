@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  * Main class, currently holding all the GUI code.
@@ -29,9 +28,6 @@ public class Main {
 
     public static final int FRAME_SIZE = 300;
     public JFrame frame;
-    public JLabel resultLabel;
-    public static JLabel resultLabel2;
-    public static JTextField leftOperand;
     public static Main gui;
     public static JLabel isTracking;
 

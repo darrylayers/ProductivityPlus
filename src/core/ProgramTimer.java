@@ -15,7 +15,7 @@ import com.sun.jna.platform.win32.WinDef.HWND;
 
 public class ProgramTimer implements Runnable {
 
-    private static HashMap<String, Long> appMap = new HashMap<>();
+    protected static HashMap<String, Long> appMap = new HashMap<>();
     private static char[] buffer = new char[4096];
     private static HWND hwnd;
     private static String prog = "";
@@ -54,9 +54,9 @@ public class ProgramTimer implements Runnable {
             }
 
             progLast = prog;
-            // Pause for 1/10 second before next check
+            // Pause for 1/40 second before next check
             try {
-                Thread.sleep(100);
+                Thread.sleep(5);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
