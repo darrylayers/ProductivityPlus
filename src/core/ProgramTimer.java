@@ -1,5 +1,6 @@
 package core;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import com.sun.jna.Native;
@@ -49,7 +50,12 @@ public class ProgramTimer implements Runnable {
             if (!progLast.equals(prog) && !progLast.equals("")) {
                 leftApp = true;
                 endTime();
-                mapTime();
+                try {
+                    mapTime();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
                 startTime();
             }
 
@@ -65,7 +71,12 @@ public class ProgramTimer implements Runnable {
         }
         if (!leftApp) {
             endTime();
-            mapTime();
+            try {
+                mapTime();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         printMap();
     }
@@ -80,7 +91,7 @@ public class ProgramTimer implements Runnable {
     /*
      *  Method to add the new program time count to the Hashmap.
      */
-    public static void mapTime() {
+    public static void mapTime() throws IOException {
         // If the program has time existing, we need to add the new to the old
         if (appMap.containsKey(progLast)) {
             oldTime = appMap.get(progLast);
@@ -91,7 +102,7 @@ public class ProgramTimer implements Runnable {
         else {
             appMap.put(progLast, newTime);
         }
-        FileHandling.writeToFile(appMap);
+        ExcelWriter.write(appMap);
     }
 
     /*
