@@ -3,3 +3,5 @@
 *.xlsx
 .classpath
 Program_Log.txt
+*.jar
+*.zip
