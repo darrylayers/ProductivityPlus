@@ -18,6 +18,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import java.awt.ScrollPane;
+import javax.swing.JFormattedTextField;
 
 /**
  * Main class, currently holding all the GUI code.
@@ -31,7 +35,6 @@ public class Main {
     public static final int FRAME_SIZE = 300;
     public JFrame frame;
     public static Main gui;
-    private JTextField txtNotTracking;
 
     /**
      * Main method that builds the GUI.
@@ -86,56 +89,71 @@ public class Main {
         panel.setToolTipText("");
         tabbedPane.addTab("Program Timer", null, panel, null);
         panel.setLayout(
-            new MigLayout("", "[121.00,grow][][][][grow][][][][][][][][]",
-                "[25.00][25.00,grow][25.00][25.00][25.00][][][][]"));
-
-        JTextArea txtrTimerControls = new JTextArea();
-        txtrTimerControls.setFont(new Font("Verdana", Font.BOLD, 14));
-        txtrTimerControls.setBackground(Color.WHITE);
-        txtrTimerControls.setText("Timer Controls");
-        panel.add(txtrTimerControls, "cell 0 1,grow");
-
-        JButton btnNewButton = new JButton("Start Timer");
-        btnNewButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                ProgramTimer programTimer = new ProgramTimer();
-                Thread t = new Thread(programTimer);
-                t.start();
-                txtNotTracking.setText("Currently tracking...");
-            }
-        });
-        btnNewButton.setFont(new Font("Verdana", Font.BOLD, 11));
-        btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-            }
-        });
-
-        txtNotTracking = new JTextField();
-        txtNotTracking.setText("Currently not tracking.");
-        panel.add(txtNotTracking, "cell 4 1,growx");
-        txtNotTracking.setColumns(10);
-        panel.add(btnNewButton, "cell 0 2");
-
-        JButton btnNewButton_1 = new JButton("Stop Timer");
-        btnNewButton_1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                ProgramTimer.stop();
-                txtNotTracking.setText("Currently not tracking.");
-            }
-        });
-        btnNewButton_1.setFont(new Font("Verdana", Font.BOLD, 11));
-        panel.add(btnNewButton_1, "cell 0 3");
-
-        JButton btnNewButton_2 = new JButton("Open Output");
-        btnNewButton_2.setFont(new Font("Verdana", Font.BOLD, 11));
-        panel.add(btnNewButton_2, "cell 0 4");
-
-        JButton btnNewButton_3 = new JButton("Explore Data");
-        btnNewButton_3.setFont(new Font("Verdana", Font.BOLD, 11));
-        panel.add(btnNewButton_3, "cell 0 5");
+            new MigLayout("", "[121.00,grow][224.00,grow]", "[35.00][200.00,grow]"));
+        
+        JLabel lblTimerControls = new JLabel("Timer Controls");
+        lblTimerControls.setFont(new Font("Verdana", Font.BOLD, 12));
+        panel.add(lblTimerControls, "cell 0 0");
+        
+        JLabel lblCurrentlyNotTracking = new JLabel("Currently not tracking");
+        lblCurrentlyNotTracking.setFont(new Font("Verdana", Font.BOLD, 12));
+        panel.add(lblCurrentlyNotTracking, "cell 1 0");
+                                                
+                                                JPanel panel_3 = new JPanel();
+                                                panel_3.setBackground(Color.WHITE);
+                                                panel.add(panel_3, "cell 0 1,grow");
+                                                panel_3.setLayout(new MigLayout("", "[100]", "[25][][][]"));
+                                                
+                                                        JButton btnNewButton = new JButton("Start Timer");
+                                                        panel_3.add(btnNewButton, "cell 0 0");
+                                                        btnNewButton.addMouseListener(new MouseAdapter() {
+                                                            @Override
+                                                            public void mouseClicked(MouseEvent arg0) {
+                                                                ProgramTimer programTimer = new ProgramTimer();
+                                                                Thread t = new Thread(programTimer);
+                                                                t.start();
+                                                                lblCurrentlyNotTracking.setText("Currently tracking...");
+                                                            }
+                                                        });
+                                                        btnNewButton.setFont(new Font("Verdana", Font.PLAIN, 11));
+                                                        
+                                                                JButton btnNewButton_1 = new JButton("Stop Timer");
+                                                                panel_3.add(btnNewButton_1, "cell 0 1");
+                                                                btnNewButton_1.addMouseListener(new MouseAdapter() {
+                                                                    @Override
+                                                                    public void mouseClicked(MouseEvent arg0) {
+                                                                        ProgramTimer.stop();
+                                                                        lblCurrentlyNotTracking.setText("Currently not tracking.");
+                                                                    }
+                                                                });
+                                                                btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 11));
+                                                                
+                                                                        JButton btnNewButton_2 = new JButton("Open Output");
+                                                                        panel_3.add(btnNewButton_2, "cell 0 2");
+                                                                        btnNewButton_2.setFont(new Font("Verdana", Font.PLAIN, 11));
+                                                                        
+                                                                                JButton btnNewButton_3 = new JButton("Explore Data");
+                                                                                panel_3.add(btnNewButton_3, "cell 0 3");
+                                                                                btnNewButton_3.setFont(new Font("Verdana", Font.PLAIN, 11));
+                                                                                
+                                                                                JScrollPane scrollPane = new JScrollPane();
+                                                                                panel.add(scrollPane, "cell 1 1,grow");
+                                                                                
+                                                                                JPanel panel_4 = new JPanel();
+                                                                                panel_4.setBackground(Color.WHITE);
+                                                                                scrollPane.setViewportView(panel_4);
+                                                                                panel_4.setLayout(new MigLayout("", "[258.00px]", "[300.00px]"));
+                                                                                
+                                                                                JTextArea txtrSampleData = new JTextArea();
+                                                                                txtrSampleData.setEditable(false);
+                                                                                txtrSampleData.setRows(20);
+                                                                                txtrSampleData.setText("sample data");
+                                                                                panel_4.add(txtrSampleData, "cell 0 0,growx,aligny top");
+                        btnNewButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent arg0) {
+                            }
+                        });
 
         JPanel panel_1 = new JPanel();
         panel_1.setBackground(Color.PINK);
