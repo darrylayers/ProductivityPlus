@@ -119,8 +119,8 @@ public class ProgramTimer implements Runnable {
     public static void endTime() {
         end = System.nanoTime();
         newTime = (end - start) / 1000000000;
-        // System.out.println("Closing session and counted " + newTime + "
-        // seconds.");
+        System.out
+            .println("Closing session and counted " + newTime + " seconds.");
     }
 
     /*

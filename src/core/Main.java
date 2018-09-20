@@ -1,19 +1,15 @@
 package core;
 
-/*
- * TODO: Need to find a way to stop people from hitting track multiple times.
- *  more than one thread is being created and the times are being added.
- * 
- */
+import java.awt.Color;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Main class, currently holding all the GUI code.
@@ -27,7 +23,6 @@ public class Main {
     public static final int FRAME_SIZE = 300;
     public JFrame frame;
     public static Main gui;
-    public static JLabel isTracking;
 
     /**
      * Main method that builds the GUI.
@@ -42,81 +37,64 @@ public class Main {
     public Main() {
         frame = new JFrame();
         frame.setLocation(100, 100);
-        frame.setSize(FRAME_SIZE, FRAME_SIZE - 120);
+        frame.setSize(533, 381);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("ProductivityPlus");
         initializeComponents();
         frame.setResizable(false);
+
+        JMenuBar menuBar = new JMenuBar();
+        frame.setJMenuBar(menuBar);
+
+        JMenu mnFile = new JMenu("File");
+        menuBar.add(mnFile);
+
+        JMenuItem mntmItem = new JMenuItem("Item 1");
+        mnFile.add(mntmItem);
+
+        JMenuItem mntmItem_1 = new JMenuItem("Item 2");
+        mnFile.add(mntmItem_1);
+
+        JMenu mnEdit = new JMenu("Edit");
+        menuBar.add(mnEdit);
+
+        JMenuItem mntmItem_2 = new JMenuItem("Item 1");
+        mnEdit.add(mntmItem_2);
+
+        JMenu mnHelp = new JMenu("Help");
+        menuBar.add(mnHelp);
+
+        JMenuItem mntmItem_3 = new JMenuItem("Item 1");
+        mnHelp.add(mntmItem_3);
+        frame.getContentPane()
+            .setLayout(new MigLayout("", "[517px]", "[326.00px]"));
+
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        frame.getContentPane().add(tabbedPane, "cell 0 0,growx,aligny top");
+
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.GRAY);
+        panel.setToolTipText("");
+        tabbedPane.addTab("Program Timer", null, panel, null);
+        panel.setLayout(new MigLayout("", "[]", "[288.00]"));
+
+        JPanel panel_1 = new JPanel();
+        panel_1.setBackground(Color.PINK);
+        tabbedPane.addTab("Pomodoro Timer", null, panel_1, null);
+
+        JPanel panel_2 = new JPanel();
+        panel_2.setToolTipText("");
+        panel_2.setBackground(Color.GRAY);
+        tabbedPane.addTab("Break Stopper", null, panel_2, null);
+        panel_2.setLayout(new MigLayout("", "[]", "[]"));
         frame.setVisible(true);
+
     }
 
     /**
      * Method to initialize all the components onto the frame.
      */
     public void initializeComponents() {
-
-        // Create the buttons
-        JButton start = new JButton("Start");
-        start.setName("start");
-        start.addActionListener(new Start());
-        JButton stop = new JButton("Stop");
-        stop.setName("stop");
-        stop.addActionListener(new Stop());
-
-        // Create the button panel
-        JPanel positPanel = new JPanel();
-
-        // Add button to the panel
-        positPanel.add(start);
-        positPanel.add(stop);
-
-        // Add the panel to the bottom of the calculator window
-        frame.add(positPanel, BorderLayout.CENTER);
-        isTracking = new JLabel("Currently not tracking.");
-        JPanel labelPanel = new JPanel();
-        // Add the result label to the label panel, then frame.
-        labelPanel.add(isTracking);
-        frame.add(labelPanel, BorderLayout.PAGE_START);
-    }
-
-    /**
-     * Class that performs the start function.
-     */
-    public class Start implements ActionListener {
-
-        /**
-         * ActionEvent for addition.
-         * 
-         * @param e
-         *            takes the listener.
-         */
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            ProgramTimer programTimer = new ProgramTimer();
-            Thread t = new Thread(programTimer);
-            t.start();
-            isTracking.setText("Currently tracking...");
-
-        }
-    }
-
-    /**
-     * Class that performs the stop function.
-     */
-    public class Stop implements ActionListener {
-        /**
-         * ActionEvent for addition.
-         * 
-         * @param e
-         *            takes the listener.
-         */
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            ProgramTimer.stop();
-            isTracking.setText("Currently not tracking.");
-
-        }
     }
 
 }
