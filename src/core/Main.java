@@ -35,6 +35,7 @@ public class Main {
     public static final int FRAME_SIZE = 300;
     public JFrame frame;
     public static Main gui;
+    public static JLabel lblCurrentlyNotTracking = new JLabel("Currently not tracking");
 
     /**
      * Main method that builds the GUI.
@@ -95,7 +96,7 @@ public class Main {
         lblTimerControls.setFont(new Font("Verdana", Font.BOLD, 12));
         panel.add(lblTimerControls, "cell 0 0");
         
-        JLabel lblCurrentlyNotTracking = new JLabel("Currently not tracking");
+        //JLabel lblCurrentlyNotTracking = new JLabel("Currently not tracking");
         lblCurrentlyNotTracking.setFont(new Font("Verdana", Font.BOLD, 12));
         panel.add(lblCurrentlyNotTracking, "cell 1 0");
                                                 
@@ -123,7 +124,8 @@ public class Main {
                                                                     @Override
                                                                     public void mouseClicked(MouseEvent arg0) {
                                                                         ProgramTimer.stop();
-                                                                        lblCurrentlyNotTracking.setText("Currently not tracking.");
+                                                                        setStopLabel();
+                                                                        //lblCurrentlyNotTracking.setText("Currently not tracking.");
                                                                     }
                                                                 });
                                                                 btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 11));
@@ -172,6 +174,10 @@ public class Main {
      * Method to initialize all the components onto the frame.
      */
     public void initializeComponents() {
+    }
+    
+    public static void setStopLabel() {
+    	lblCurrentlyNotTracking.setText("Currently not tracking.");
     }
 
 }

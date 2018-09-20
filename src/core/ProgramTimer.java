@@ -27,6 +27,7 @@ public class ProgramTimer implements Runnable {
     private static long end;
     protected static boolean trackIfTrue;
     private static boolean leftApp = false;
+    private static CheckIdle idle;
 
     /**
      * Overridden run method to run the timer on a new thread. Tracks to see
@@ -40,6 +41,12 @@ public class ProgramTimer implements Runnable {
         leftApp = false;
 
         while (trackIfTrue) {
+        	
+        	// As soon as tracking begins, log the mouse location to determine idle time
+        	//idle.saveMouse();
+        	//System.out.println(idle.old_x);
+        	CheckIdle idle = new CheckIdle();
+        	
 
             // Grab the current in-focus window
             hwnd = User32.INSTANCE.GetForegroundWindow();
@@ -63,6 +70,9 @@ public class ProgramTimer implements Runnable {
             // Pause before next check to eliminate wasted checks / resources
             try {
                 Thread.sleep(5);
+/*                if (CheckIdle.checkMouse()) {
+                	stop();
+                }*/
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
