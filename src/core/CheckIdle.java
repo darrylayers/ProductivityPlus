@@ -11,15 +11,14 @@ import java.awt.Point;
  * @version 9/20/18
  *
  */
-public class CheckIdle implements Runnable {
+public class CheckIdle {
 
     // TODO: What determines a user is idle?
     // Lack of keystrokes and lack of mouse movement.
     // Sometimes the user will be "active" but not moving
     // their mouse or typing, so this option should be
     // optional and have a variable/customizable threshold for the time.
-    // TODO: Fix bug where user cannot click start immediately after timer times
-    // out from idle check.
+    // TODO: Stop user from editing preferences while program is running
 
     public static Point old_p;
     public static Point new_p;
@@ -32,9 +31,6 @@ public class CheckIdle implements Runnable {
 
     public CheckIdle() {
         this.saveMouse();
-        Thread t = new Thread(this);
-        t.start();
-
     }
 
     /*
@@ -67,23 +63,20 @@ public class CheckIdle implements Runnable {
         }
     }
 
-    @Override
     public void run() {
-        // while the program is tracking, check for mouse activity
-        while (ProgramTimer.trackIfTrue) {
 
-            try {
+        try {
 
-                Thread.sleep(PreferencesGui.getIdleTimer() * 600);
-                if (this.checkMouse()) {
-                    // System.out.println("checked for mouse movement");
-                    Main.simulateClick();
-                }
+            Thread.sleep(PreferencesGui.getIdleTimer() * 1000);
+
+            if (this.checkMouse()) {
+                Main.simulateClick();
+                new_p.x++;
+                new_p.y++;
             }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
     }

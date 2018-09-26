@@ -36,6 +36,7 @@ public class ProgramTimer implements Runnable {
      */
     @Override
     public void run() {
+        CheckIdle idle = new CheckIdle();
         startTime();
         trackIfTrue = true;
         leftApp = false;
@@ -44,7 +45,7 @@ public class ProgramTimer implements Runnable {
 
             // As soon as tracking begins, log the mouse location to determine
             if (PreferencesGui.getIdleChecked()) {
-                CheckIdle idle = new CheckIdle();
+                idle.run();
             }
 
             // Grab the current in-focus window
