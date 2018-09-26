@@ -100,8 +100,6 @@ public class Main {
         lblTimerControls.setFont(new Font("Verdana", Font.BOLD, 12));
         panel.add(lblTimerControls, "cell 0 0");
 
-        // JLabel lblCurrentlyNotTracking = new JLabel("Currently not
-        // tracking");
         lblCurrentlyNotTracking.setFont(new Font("Verdana", Font.BOLD, 12));
         panel.add(lblCurrentlyNotTracking, "cell 1 0");
 

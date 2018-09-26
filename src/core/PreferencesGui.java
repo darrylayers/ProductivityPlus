@@ -145,7 +145,7 @@ public class PreferencesGui extends JDialog {
     }
 
     public static Long getIdleTimer() {
-        return prefs.getLong(IDLE_TIMER, 1);
+        return prefs.getLong(IDLE_TIMER, 0);
     }
 
     public void setIdleChecked() {

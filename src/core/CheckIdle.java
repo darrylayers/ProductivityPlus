@@ -74,7 +74,7 @@ public class CheckIdle implements Runnable {
 
             try {
 
-                Thread.sleep(PreferencesGui.getIdleTimer() * 60000);
+                Thread.sleep(PreferencesGui.getIdleTimer() * 600);
                 if (this.checkMouse()) {
                     // System.out.println("checked for mouse movement");
                     Main.simulateClick();
