@@ -43,7 +43,6 @@ public class ProgramTimer implements Runnable {
 
         while (trackIfTrue) {
 
-            // As soon as tracking begins, log the mouse location to determine
             if (PreferencesGui.getIdleChecked()) {
                 idle.run();
             }
@@ -57,12 +56,15 @@ public class ProgramTimer implements Runnable {
             if (!progLast.equals(prog) && !progLast.equals("")) {
                 leftApp = true;
                 endTime();
+
                 try {
                     mapTime();
                 }
                 catch (IOException e) {
+                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+
                 startTime();
             }
 
@@ -70,36 +72,40 @@ public class ProgramTimer implements Runnable {
             // Pause before next check to eliminate wasted checks / resources
             try {
                 Thread.sleep(5);
-                /*
-                 * if (CheckIdle.checkMouse()) { stop(); }
-                 */
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
+
         if (!leftApp) {
             endTime();
             try {
                 mapTime();
+
             }
             catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
         printMap();
+        if (PreferencesGui.getIdleAutoChecked()) {
+            // startIdleCheck();
+        }
     }
 
-    /*
-     * Method to stop the infinite tracking while loop.
+    /**
+     * This method is used to change the tracking flag to exit the while loop
+     * created to check active programs.
      */
     public static void stop() {
         trackIfTrue = (false);
     }
 
-    /*
-     * Method to add the new program time count to the Hashmap.
+    /**
+     * Adds the last calculated program time to the appropriate location in the
+     * hashmap.
      */
     public static void mapTime() throws IOException {
         // If the program has time existing, we need to add the new to the old
@@ -115,14 +121,14 @@ public class ProgramTimer implements Runnable {
         ExcelWriter.write(appMap);
     }
 
-    /*
-     * Method to start tracking the time a new window is in focus.
+    /**
+     * Starts the program timer over when a new window is in focus.
      */
     public static void startTime() {
         start = System.nanoTime();
     }
 
-    /*
+    /**
      * Method to stop tracking when an old window is in focus. Must divide to
      * convert to seconds from nanoseconds.
      */
@@ -133,8 +139,8 @@ public class ProgramTimer implements Runnable {
             .println("Closing session and counted " + newTime + " seconds.");
     }
 
-    /*
-     * Method to print the entire hashmap of program names and times.
+    /**
+     * Print the hashmap.
      */
     public static void printMap() {
         System.out.println("\n=====================");
@@ -156,4 +162,20 @@ public class ProgramTimer implements Runnable {
         System.out.println("\n=====================\n");
     }
 
+    /**
+     * Start the mouse idle check when the program is exited.
+     */
+    public void startIdleCheck() {
+        CheckIdle idle = new CheckIdle();
+        while (!idle.checkWhileNotTracking()) {
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        Main.setStartLabel();
+        Main.startTimer();
+    }
 }

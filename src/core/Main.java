@@ -113,12 +113,8 @@ public class Main {
         btnNewButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                ProgramTimer programTimer = new ProgramTimer();
-                Thread t = new Thread(programTimer);
-                t.start();
+                startTimer();
                 lblCurrentlyNotTracking.setText("Currently tracking...");
-                /*                System.out.println("start pressed");
-                System.out.println(PreferencesGui.getIdleTimer());*/
             }
         });
         btnNewButton.setFont(new Font("Verdana", Font.PLAIN, 11));
@@ -174,13 +170,37 @@ public class Main {
 
     }
 
+    /**
+     * Set the status label to the 'not tracking' state.
+     */
     public static void setStopLabel() {
         lblCurrentlyNotTracking.setText("Currently not tracking.");
     }
 
+    /**
+     * Set the status label to the 'tracking' state.
+     */
+    public static void setStartLabel() {
+        lblCurrentlyNotTracking.setText("Currently tracking...");
+    }
+
+    /**
+     * This method stops the program and changes the status label to being
+     * stopped.
+     */
     public static void simulateClick() {
         ProgramTimer.stop();
         setStopLabel();
     }
 
+    /**
+     * Start the program timer. This method creates a new thread from a
+     * ProgramTimer object and starts tracking. We must use a new thread to not
+     * 'hang' the GUI.
+     */
+    public static void startTimer() {
+        ProgramTimer programTimer = new ProgramTimer();
+        Thread t = new Thread(programTimer);
+        t.start();
+    }
 }

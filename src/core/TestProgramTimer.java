@@ -18,10 +18,10 @@ public class TestProgramTimer {
 
     @SuppressWarnings("static-access")
     @Test
-    /*
-     * This method tests ProgramTimer.java by launching four dummy
-     * JFrame windows for a random amount of seconds then tests to see
-     * if the timer recorded the window being open for the proper amount of time.
+    /**
+     * This method tests ProgramTimer.java by launching four dummy JFrame
+     * windows for a random amount of seconds then tests to see if the timer
+     * recorded the window being open for the proper amount of time.
      */
     public void testFourApps() throws InterruptedException {
 

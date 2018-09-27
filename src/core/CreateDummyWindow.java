@@ -10,7 +10,6 @@ import javax.swing.JFrame;
  * @author Austin Ayers
  * @version 9/12/18
  */
-
 public class CreateDummyWindow {
 
     public static final int FRAME_SIZE = 300;
@@ -29,5 +28,4 @@ public class CreateDummyWindow {
         frame.setTitle(windowName);
         frame.setVisible(true);
     }
-
 }

@@ -29,11 +29,14 @@ public class CheckIdle {
     CheckIdle idle;
     PreferencesGui prefs;
 
+    /**
+     * CheckIdle constructor: Simply saves the mouse on object creation.
+     */
     public CheckIdle() {
         this.saveMouse();
     }
 
-    /*
+    /**
      * This method saves the (x,y) location of the mouse on the screen.
      */
     public void saveMouse() {
@@ -43,9 +46,11 @@ public class CheckIdle {
         old_y = old_p.y;
     }
 
-    /*
-     * This method checks for mouse movement for the given threshold by comparing
-     * new coord values to old ones.
+    /**
+     * This method checks for mouse movement for the given threshold by
+     * comparing new coord values to old ones.
+     * 
+     * @return returns boolean, true if mouse is in same location as last check.
      */
     public boolean checkMouse() {
         // Grab the current mouse point
@@ -63,22 +68,42 @@ public class CheckIdle {
         }
     }
 
+    /**
+     * Checks the mouse location to a previously saved one. This is used to
+     * determine when the user is idle.
+     */
     public void run() {
-
         try {
-
             Thread.sleep(PreferencesGui.getIdleTimer() * 1000);
-
             if (this.checkMouse()) {
                 Main.simulateClick();
-                new_p.x++;
-                new_p.y++;
             }
         }
         catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * This method is used to check if the mouse has moved while the program
+     * timer was turned off, this is used to resume tracking when the user
+     * returns to the computer and restarts their use.
+     * 
+     * @return boolean, true if mouse has moved
+     */
+    public boolean checkWhileNotTracking() {
+
+        try {
+            // Thread.sleep(30000);
+            Thread.sleep(1000);
+
+            if (this.checkMouse()) {
+                return false;
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 }

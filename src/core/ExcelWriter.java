@@ -21,24 +21,31 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * ExcelWriter.java writes a hashmap to an Excel spreadsheet using the Apache
+ * POI library.
+ * 
+ */
 public class ExcelWriter {
 
+    /**
+     * This method writes the values of the hashmap to the excel sheet.
+     */
     public static void write(HashMap<String, Long> appMap)
         throws IOException {
-        // Create a Workbook
+
+        // Create the Workbook
         Workbook workbook = new XSSFWorkbook();
 
-        // Create Sheet
+        // Create a sheet titled Program Times.
         org.apache.poi.ss.usermodel.Sheet sheet =
             workbook.createSheet("Program Times");
 
-        // Create a Font for styling header cells
+        // Font styling.
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);
-        headerFont.setFontHeightInPoints((short) 14);
-        headerFont.setColor(IndexedColors.RED.getIndex());
-
-        // Create a CellStyle with the font
+        headerFont.setFontHeightInPoints((short) 12);
+        headerFont.setColor(IndexedColors.ORANGE.getIndex());
         CellStyle headerCellStyle = workbook.createCellStyle();
         headerCellStyle.setFont(headerFont);
 
@@ -54,18 +61,11 @@ public class ExcelWriter {
         cell1.setCellValue("Time spent in seconds");
         cell1.setCellStyle(headerCellStyle);
 
-        // Create Other rows and cells with employees data
         int rowNum = 1;
         for (String name : appMap.keySet()) {
-
             Row row = sheet.createRow(rowNum++);
-
-            row.createCell(0)
-                .setCellValue(name);
-
-            row.createCell(1)
-                .setCellValue(appMap.get(name));
-
+            row.createCell(0).setCellValue(name);
+            row.createCell(1).setCellValue(appMap.get(name));
         }
 
         // Resize all columns to fit the content size
@@ -79,7 +79,7 @@ public class ExcelWriter {
         workbook.write(fileOut);
         fileOut.close();
 
-        // Closing the workbook
+        // Close the workbook
         workbook.close();
     }
 }
