@@ -30,7 +30,7 @@ import net.miginfocom.swing.MigLayout;
 public class Main {
 
     public static final int FRAME_SIZE = 300;
-    public JFrame frame;
+    public static JFrame frame;
     JButton btnNewButton_1;
     public static Main gui;
     public static JLabel lblCurrentlyNotTracking =
@@ -47,10 +47,11 @@ public class Main {
      * Constructor that builds the frame.
      */
     public Main() {
+
         frame = new JFrame();
         frame.setLocation(100, 100);
         frame.setSize(533, 381);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setTitle("ProductivityPlus");
         frame.setResizable(false);
 
@@ -177,6 +178,8 @@ public class Main {
         panel_2.setLayout(new MigLayout("", "[]", "[343.00]"));
         frame.setVisible(true);
 
+        CloseToSystemTray.startTray();
+
     }
 
     /**
@@ -211,5 +214,13 @@ public class Main {
         ProgramTimer programTimer = new ProgramTimer();
         Thread t = new Thread(programTimer);
         t.start();
+    }
+
+    /**
+     * Set the frame visible.
+     */
+    public static void setFrameVisible() {
+        frame.setVisible(true);
+        frame.toFront();
     }
 }
