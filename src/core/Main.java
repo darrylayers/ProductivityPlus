@@ -83,6 +83,15 @@ public class Main {
             }
         });
         mnHelp.add(mntmItem_3);
+
+        JMenuItem mntmAbout = new JMenuItem("About");
+        mntmAbout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                AboutGui.newWindow();
+            }
+        });
+        mnHelp.add(mntmAbout);
         frame.getContentPane()
             .setLayout(new MigLayout("", "[531.00px]", "[337.00px]"));
 
