@@ -10,6 +10,8 @@ import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import GUI.Main;
+
 /**
  * CloseToSystemTray.java creates the system tray icon and functionality used to
  * maximize the program inside the tray.
@@ -51,7 +53,8 @@ public class CloseToSystemTray {
 
         trayPopupMenu.add(close);
 
-        Image image = Toolkit.getDefaultToolkit().getImage("src/favicon.png");
+        Image image =
+            Toolkit.getDefaultToolkit().getImage("resources/favicon.png");
         TrayIcon trayIcon =
             new TrayIcon(image, "Productivity Plus", trayPopupMenu);
         trayIcon.setImageAutoSize(true);

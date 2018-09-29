@@ -1,10 +1,12 @@
-package core;
+package tests;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
 import org.junit.Test;
+
+import core.ProgramTimer;
 
 /**
  * TestProgramTimer.java is used to test the timer feature found in
