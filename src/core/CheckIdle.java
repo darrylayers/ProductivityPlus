@@ -3,6 +3,9 @@ package core;
 import java.awt.MouseInfo;
 import java.awt.Point;
 
+import GUI.Main;
+import GUI.PreferencesGui;
+
 /**
  * CheckIdle.java is used to determine if the user is idle and decides if the
  * data being recorded should be recorded and used in the output.

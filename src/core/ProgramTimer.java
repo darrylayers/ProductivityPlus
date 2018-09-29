@@ -7,6 +7,9 @@ import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
 
+import GUI.Main;
+import GUI.PreferencesGui;
+
 /**
  * ProgramTimer class that performs the timing feature and records all the data.
  * 
@@ -16,7 +19,7 @@ import com.sun.jna.platform.win32.WinDef.HWND;
 
 public class ProgramTimer implements Runnable {
 
-    protected static HashMap<String, Long> appMap = new HashMap<>();
+    public static HashMap<String, Long> appMap = new HashMap<>();
     private static char[] buffer = new char[4096];
     private static HWND hwnd;
     private static String prog = "";

@@ -1,4 +1,4 @@
-package core;
+package GUI;
 
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;

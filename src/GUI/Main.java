@@ -1,4 +1,4 @@
-package core;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,6 +18,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
+import core.CloseToSystemTray;
+import core.ProgramTimer;
+import core.SingletonTimer;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -134,6 +137,7 @@ public class Main {
         btnNewButton_1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
+                SingletonTimer.setBeenCalled();
                 ProgramTimer.stop();
                 setStopLabel();
             }
@@ -201,6 +205,7 @@ public class Main {
      * stopped.
      */
     public static void simulateClick() {
+        SingletonTimer.setBeenCalled();
         ProgramTimer.stop();
         setStopLabel();
     }
@@ -211,9 +216,11 @@ public class Main {
      * 'hang' the GUI.
      */
     public static void startTimer() {
-        ProgramTimer programTimer = new ProgramTimer();
+        /*        ProgramTimer programTimer = new ProgramTimer();
         Thread t = new Thread(programTimer);
-        t.start();
+        t.start();*/
+
+        SingletonTimer.getInstance().callTimer();
     }
 
     /**

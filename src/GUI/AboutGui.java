@@ -1,4 +1,4 @@
-package core;
+package GUI;
 
 import java.util.prefs.Preferences;
 
