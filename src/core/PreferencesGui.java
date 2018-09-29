@@ -123,6 +123,7 @@ public class PreferencesGui extends JDialog {
         // ************** Auto Restart Text ************** //
         JLabel lblAutorestartTimerOn =
             new JLabel("Auto-Restart Timer on movement");
+        lblAutorestartTimerOn.setToolTipText("This doesn't work.");
         lblAutorestartTimerOn.setEnabled(getIdleChecked());
         panel_1.add(lblAutorestartTimerOn,
             "cell 0 0,alignx left,aligny center");
