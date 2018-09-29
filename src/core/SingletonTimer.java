@@ -44,7 +44,6 @@ public class SingletonTimer {
             Thread t = new Thread(programTimer);
             t.start();
         }
-
     }
 
     /*
