@@ -1,7 +1,5 @@
 package GUI;
 
-import java.util.prefs.Preferences;
-
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,9 +18,11 @@ import net.miginfocom.swing.MigLayout;
  */
 public class AboutGui extends JDialog {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private final JPanel contentPanel = new JPanel();
-    private static Preferences prefs =
-        Preferences.userRoot().node("AboutGui");
 
     /**
      * Launch the About pop up window.

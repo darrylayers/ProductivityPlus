@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +20,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 import core.CloseToSystemTray;
+import core.DataHandling;
 import core.ProgramTimer;
 import core.SingletonTimer;
 import net.miginfocom.swing.MigLayout;
@@ -182,7 +184,20 @@ public class Main {
         panel_2.setLayout(new MigLayout("", "[]", "[343.00]"));
         frame.setVisible(true);
 
-        CloseToSystemTray.startTray();
+        CloseToSystemTray tray = new CloseToSystemTray();
+        try {
+            tray.startTray();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            DataHandling.loadMap();
+        }
+        catch (NumberFormatException | IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -203,6 +218,8 @@ public class Main {
     /**
      * This method stops the program and changes the status label to being
      * stopped.
+     * 
+     * @throws IOException
      */
     public static void simulateClick() {
         SingletonTimer.setBeenCalled();

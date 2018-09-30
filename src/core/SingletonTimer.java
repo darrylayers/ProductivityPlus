@@ -46,9 +46,9 @@ public class SingletonTimer {
         }
     }
 
-    /*
-     * This method allows the callTimer() method
-     * to be able to create a new program timer object.
+    /**
+     * This method allows the callTimer() method to be able to create a new
+     * program timer object.
      */
     public static void setBeenCalled() {
         beenCalled = false;

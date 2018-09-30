@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import GUI.Main;
 
@@ -23,8 +24,10 @@ public class CloseToSystemTray {
 
     /**
      * Creates the tray and all the functionality.
+     * 
+     * @throws IOException
      */
-    public static void startTray() {
+    public void startTray() throws IOException {
 
         if (!SystemTray.isSupported()) {
             return;
@@ -47,14 +50,31 @@ public class CloseToSystemTray {
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
+                    DataHandling.saveMap();
+                }
+                catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                try {
+                    Thread.sleep(1000);
+                }
+                catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
                 System.exit(0);
             }
         });
 
         trayPopupMenu.add(close);
 
+        // TODO: Tray icon does not load from executable .jar file.
+        this.getClass().getResource("resources/favicon.png");
+
         Image image =
-            Toolkit.getDefaultToolkit().getImage("resources/favicon.png");
+            Toolkit.getDefaultToolkit()
+                .getImage("resources/favicon.png");
+
         TrayIcon trayIcon =
             new TrayIcon(image, "Productivity Plus", trayPopupMenu);
         trayIcon.setImageAutoSize(true);
