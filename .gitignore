@@ -5,3 +5,5 @@
 Program_Log.txt
 *.jar
 *.zip
+.list
+.properties

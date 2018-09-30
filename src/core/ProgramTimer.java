@@ -150,7 +150,6 @@ public class ProgramTimer implements Runnable {
         System.out.println("\n=====================");
         for (String name : appMap.keySet()) {
             String key = name.toString();
-            // String value = appMap.get(name).toString();
             long value = appMap.get(name);
 
             if (value > 60) {
