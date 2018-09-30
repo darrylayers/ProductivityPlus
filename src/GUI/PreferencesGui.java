@@ -29,6 +29,10 @@ import net.miginfocom.swing.MigLayout;
  */
 public class PreferencesGui extends JDialog {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private final JPanel contentPanel = new JPanel();
     private static Preferences prefs =
         Preferences.userRoot().node("PreferencesGui");
@@ -56,6 +60,7 @@ public class PreferencesGui extends JDialog {
     /**
      * Create the dialog.
      */
+    @SuppressWarnings("deprecation")
     public PreferencesGui() {
         setTitle("Preferences");
         setBounds(100, 100, 450, 300);

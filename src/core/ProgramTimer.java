@@ -39,7 +39,7 @@ public class ProgramTimer implements Runnable {
      */
     @Override
     public void run() {
-        CheckIdle idle = new CheckIdle();
+        idle = new CheckIdle();
         startTime();
         trackIfTrue = true;
         leftApp = false;
@@ -121,6 +121,7 @@ public class ProgramTimer implements Runnable {
         else {
             appMap.put(progLast, newTime);
         }
+        DataHandling.saveMap();
         ExcelWriter.write(appMap);
     }
 
@@ -162,7 +163,7 @@ public class ProgramTimer implements Runnable {
                     "Time spent in " + key + " was " + value + " seconds.");
             }
         }
-        System.out.println("\n=====================\n");
+        System.out.println("=====================\n");
     }
 
     /**
