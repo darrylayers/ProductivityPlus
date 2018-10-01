@@ -187,9 +187,22 @@ public class DataHandling {
         throws IOException {
 
         HashMap<String, Long> combinedMaps = new HashMap<>();
-        for (int k = 0; k < maps.size(); k++) {
+        /*        for (int k = 0; k < maps.size(); k++) {
             combinedMaps.putAll(maps.get(k));
+        
+        }*/
+
+        for (HashMap<String, Long> map : maps) {
+            for (HashMap.Entry<String, Long> entry : map.entrySet()) {
+                String key = entry.getKey();
+                Long current = combinedMaps.get(key);
+                combinedMaps.put(key, current == null ? entry.getValue()
+                    : entry.getValue() + current);
+            }
         }
+
+        System.out.println(combinedMaps);
+
         ExcelWriter.write(combinedMaps,
             "date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
 

@@ -115,6 +115,7 @@ public class ExploreDataGui extends JDialog {
             @Override
             public void mouseClicked(MouseEvent arg0) {
 
+                btnOpenOutput.setEnabled(true);
                 LocalDate date = datePicker.getDate();
                 LocalDate date2 = datePicker2.getDate();
                 // Pass the date(s) to DateHandling.java
@@ -126,19 +127,29 @@ public class ExploreDataGui extends JDialog {
                 DateTimeFormatter formatter =
                     DateTimeFormatter.ofPattern("DDyy");
                 formattedString = date.format(formatter);
-                formattedString2 = date2.format(formatter);
-                btnOpenOutput.setEnabled(true);
-                ArrayList<String> dates =
-                    DataHandling.dateDiff(formattedString,
-                        formattedString2);
-                @SuppressWarnings("rawtypes")
-                ArrayList<HashMap> maps = DataHandling.loadMaps(dates);
+                if (!(date2 == null)) {
+                    formattedString2 = date2.format(formatter);
 
-                try {
-                    DataHandling.writeDates(maps, dates);
+                    ArrayList<String> dates =
+                        DataHandling.dateDiff(formattedString,
+                            formattedString2);
+                    @SuppressWarnings("rawtypes")
+                    ArrayList<HashMap> maps = DataHandling.loadMaps(dates);
+
+                    try {
+                        DataHandling.writeDates(maps, dates);
+                    }
+                    catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-                catch (IOException e1) {
-                    e1.printStackTrace();
+                else {
+                    try {
+                        DataHandling.acceptDate(formattedString);
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
