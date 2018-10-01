@@ -41,8 +41,12 @@ public class ExploreDataGui extends JDialog {
     private DatePicker datePicker = new DatePicker(datePickerSettings);
     private DatePickerSettings datePickerSettings2 = new DatePickerSettings();
     private DatePicker datePicker2 = new DatePicker(datePickerSettings2);
-    String formattedString;
-    String formattedString2;
+    private String formattedString;
+    private String formattedString2;
+    private JRadioButton rdbtntxtExport = new JRadioButton(".txt export");
+    private JRadioButton rdbtnExcelExport = new JRadioButton("Excel export");
+    private JRadioButton rdbtnodsopenOffice =
+        new JRadioButton(".ods (Open Office)");
 
     /**
      * Launch the About pop up window.
@@ -103,9 +107,15 @@ public class ExploreDataGui extends JDialog {
 
         JPanel panel_1 = new JPanel();
         contentPanel.add(panel_1, "cell 0 2,grow");
-        panel_1.setLayout(new MigLayout("", "[][]", "[][]"));
+        panel_1.setLayout(new MigLayout("", "[][][]", "[][]"));
+        rdbtnExcelExport.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                rdbtnodsopenOffice.setSelected(false);
+                rdbtntxtExport.setSelected(false);
+            }
+        });
 
-        JRadioButton rdbtnExcelExport = new JRadioButton("Excel export");
         rdbtnExcelExport.setSelected(true);
         panel_1.add(rdbtnExcelExport, "cell 0 0");
 
@@ -153,6 +163,24 @@ public class ExploreDataGui extends JDialog {
                 }
             }
         });
+
+        rdbtnodsopenOffice.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                rdbtntxtExport.setSelected(false);
+                rdbtnExcelExport.setSelected(false);
+            }
+        });
+        panel_1.add(rdbtnodsopenOffice, "cell 1 0");
+        rdbtntxtExport.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                rdbtnodsopenOffice.setSelected(false);
+                rdbtnExcelExport.setSelected(false);
+            }
+        });
+
+        panel_1.add(rdbtntxtExport, "cell 2 0");
 
         btnCreateExportFile.setToolTipText(
             "File is exported to Productivity Plus installation directory");
