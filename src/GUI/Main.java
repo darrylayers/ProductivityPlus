@@ -146,11 +146,17 @@ public class Main {
         });
         btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 11));
 
-        JButton btnNewButton_2 = new JButton("Open Output");
+        JButton btnNewButton_2 = new JButton("Graphical Output");
         panel_3.add(btnNewButton_2, "cell 0 2");
         btnNewButton_2.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         JButton btnNewButton_3 = new JButton("Explore Data");
+        btnNewButton_3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                ExploreDataGui.newWindow();
+            }
+        });
         panel_3.add(btnNewButton_3, "cell 0 3");
         btnNewButton_3.setFont(new Font("Verdana", Font.PLAIN, 11));
 

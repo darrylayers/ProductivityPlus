@@ -12,7 +12,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class stores, loads, and handles the saved data from the application.
+ * This class stores, loads, and handles the saved data from the application. As
+ * of now, the file storage system works like this: The program writes all of
+ * the program time values to a .list filed named <TODAY'S DATE>.list. Each time
+ * the program loads, it checks today's date through the system and then
+ * attempts to load the corresponding file. This means the program times are now
+ * sorted day by day, including month and year. This will allow for me to pull
+ * data from specific dates and also choose time intervals of information to
+ * display, like being able to search 9/15/18 to 9/17/18.
+ * 
+ * We can also find specific program times by simply accessing the hash map.
+ * 
  * 
  * @author Austin Ayers
  * @version 9/29/18
@@ -21,7 +31,6 @@ import java.util.Map;
 public class DataHandling {
 
     public static File savedMap = new File(getDate() + ".list");
-    public static HashMap<String, Long> map = new HashMap<String, Long>();
 
     /**
      * This method loads the appMap hash map in ProgramTimer.java
@@ -76,5 +85,33 @@ public class DataHandling {
         SimpleDateFormat dateFormatter =
             new SimpleDateFormat("MMDDyy");
         return dateFormatter.format(now);
+    }
+
+    /**
+     * This method accepts a single date from the beginning date calendar inside
+     * of ExploreDataGui.java. The date is then used to load the correct date
+     * program file and is passed to the ExcelWriter.java class.
+     * 
+     * @param date
+     * @throws IOException
+     */
+    @SuppressWarnings("unchecked")
+    public static void acceptDate(String date) throws IOException {
+
+        HashMap<String, Long> loadedAppMap = new HashMap<>();
+        try {
+            ObjectInputStream ois =
+                new ObjectInputStream(new FileInputStream(date + ".list"));
+            Object readMap = ois.readObject();
+            if (readMap != null && readMap instanceof HashMap) {
+                loadedAppMap
+                    .putAll((Map<? extends String, ? extends Long>) readMap);
+            }
+            ois.close();
+        }
+        catch (Exception e) {
+
+        }
+        ExcelWriter.write(loadedAppMap);
     }
 }

@@ -122,7 +122,6 @@ public class ProgramTimer implements Runnable {
             appMap.put(progLast, newTime);
         }
         DataHandling.saveMap();
-        ExcelWriter.write(appMap);
     }
 
     /**

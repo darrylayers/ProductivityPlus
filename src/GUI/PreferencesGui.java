@@ -262,5 +262,4 @@ public class PreferencesGui extends JDialog {
     public static boolean getIdleAutoChecked() {
         return prefs.getBoolean(IDLE_AUTO_CHECK, false);
     }
-
 }
