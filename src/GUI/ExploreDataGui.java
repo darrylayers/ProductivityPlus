@@ -1,7 +1,9 @@
 package GUI;
 
+import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -36,6 +38,7 @@ public class ExploreDataGui extends JDialog {
     private DatePicker datePicker = new DatePicker(datePickerSettings);
     private DatePickerSettings datePickerSettings2 = new DatePickerSettings();
     private DatePicker datePicker2 = new DatePicker(datePickerSettings2);
+    String formattedString;
 
     /**
      * Launch the About pop up window.
@@ -95,12 +98,13 @@ public class ExploreDataGui extends JDialog {
 
         JPanel panel_1 = new JPanel();
         contentPanel.add(panel_1, "cell 0 2,grow");
-        panel_1.setLayout(new MigLayout("", "[]", "[][]"));
+        panel_1.setLayout(new MigLayout("", "[][]", "[][]"));
 
         JRadioButton rdbtnExcelExport = new JRadioButton("Excel export");
         rdbtnExcelExport.setSelected(true);
         panel_1.add(rdbtnExcelExport, "cell 0 0");
 
+        JButton btnOpenOutput = new JButton("Open Output");
         JButton btnCreateExportFile = new JButton("Create export file");
         btnCreateExportFile.addMouseListener(new MouseAdapter() {
             @Override
@@ -114,7 +118,8 @@ public class ExploreDataGui extends JDialog {
 
                 DateTimeFormatter formatter =
                     DateTimeFormatter.ofPattern("MMDDyy");
-                String formattedString = date.format(formatter);
+                formattedString = date.format(formatter);
+                btnOpenOutput.setEnabled(true);
                 // System.out.println(formattedString);
                 try {
                     DataHandling.acceptDate(formattedString);
@@ -129,5 +134,20 @@ public class ExploreDataGui extends JDialog {
         btnCreateExportFile.setToolTipText(
             "File is exported to Productivity Plus installation directory");
         panel_1.add(btnCreateExportFile, "cell 0 1");
+
+        btnOpenOutput.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                try {
+                    Desktop.getDesktop().open(new File(
+                        "ProductivityPlusData" + formattedString + ".xlsx"));
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        btnOpenOutput.setEnabled(false);
+        panel_1.add(btnOpenOutput, "cell 1 1");
     }
 }

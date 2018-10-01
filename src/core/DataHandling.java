@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class DataHandling {
 
-    public static File savedMap = new File(getDate() + ".list");
+    public static File savedMap = new File(getDate() + ".map");
 
     /**
      * This method loads the appMap hash map in ProgramTimer.java
@@ -101,7 +101,7 @@ public class DataHandling {
         HashMap<String, Long> loadedAppMap = new HashMap<>();
         try {
             ObjectInputStream ois =
-                new ObjectInputStream(new FileInputStream(date + ".list"));
+                new ObjectInputStream(new FileInputStream(date + ".map"));
             Object readMap = ois.readObject();
             if (readMap != null && readMap instanceof HashMap) {
                 loadedAppMap
@@ -112,6 +112,6 @@ public class DataHandling {
         catch (Exception e) {
 
         }
-        ExcelWriter.write(loadedAppMap);
+        ExcelWriter.write(loadedAppMap, date);
     }
 }

@@ -31,7 +31,7 @@ public class ExcelWriter {
     /**
      * This method writes the values of the hashmap to the excel sheet.
      */
-    public static void write(HashMap<String, Long> appMap)
+    public static void write(HashMap<String, Long> appMap, String date)
         throws IOException {
 
         // Create the Workbook
@@ -75,7 +75,7 @@ public class ExcelWriter {
 
         // Write the output to a file
         FileOutputStream fileOut =
-            new FileOutputStream("ProductivityPlusData.xlsx");
+            new FileOutputStream("ProductivityPlusData" + date + ".xlsx");
         workbook.write(fileOut);
         fileOut.close();
 
