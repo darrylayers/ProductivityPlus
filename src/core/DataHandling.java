@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +84,7 @@ public class DataHandling {
     public static String getDate() {
         Date now = new Date();
         SimpleDateFormat dateFormatter =
-            new SimpleDateFormat("MMDDyy");
+            new SimpleDateFormat("DDyy");
         return dateFormatter.format(now);
     }
 
@@ -113,5 +114,84 @@ public class DataHandling {
 
         }
         ExcelWriter.write(loadedAppMap, date);
+    }
+
+    /**
+     * This method returns an arraylist containing all of the dates that need to
+     * be used to open the proper program history files. TODO: Make this work
+     * better, for years especially.
+     * 
+     * @param date1
+     * @param date2
+     * @return returns an arraylist of String dates
+     */
+    public static ArrayList<String> dateDiff(String date1, String date2) {
+
+        ArrayList<String> dates = new ArrayList<String>();
+        String days1 = date1.substring(0, 3);
+        String days2 = date2.substring(0, 3);
+        int days1_int = Integer.valueOf(days1);
+        int days2_int = Integer.valueOf(days2);
+        int dateCalc = (days2_int - days1_int);
+
+        for (int i = 0; i <= dateCalc; i++) {
+            dates.add(String.valueOf((days1_int + i)) + "18");
+        }
+        return dates;
+    }
+
+    /**
+     * loadMaps() loads an arraylist full of the requested hash maps from the
+     * date picker.
+     * 
+     * @param dates
+     * @return returns an arraylist of hashmaps used for program dates
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static ArrayList<HashMap> loadMaps(ArrayList<String> dates) {
+
+        ArrayList<HashMap> maps = new ArrayList<HashMap>();
+
+        for (int j = 0; j < dates.size(); j++) {
+            HashMap<String, Long> loadedAppMap = new HashMap<>();
+            try {
+                ObjectInputStream ois =
+                    new ObjectInputStream(
+                        new FileInputStream(dates.get(j) + ".map"));
+                Object readMap = ois.readObject();
+                if (readMap != null && readMap instanceof HashMap) {
+                    loadedAppMap
+                        .putAll(
+                            (Map<? extends String, ? extends Long>) readMap);
+                }
+                ois.close();
+            }
+            catch (Exception e) {
+
+            }
+            maps.add(loadedAppMap);
+        }
+        return maps;
+    }
+
+    /**
+     * This method writes the date range into one hashmap and then writes that
+     * map to an Excel file.
+     * 
+     * @param maps
+     * @throws IOException
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void writeDates(ArrayList<HashMap> maps,
+        ArrayList<String> dates)
+        throws IOException {
+
+        HashMap<String, Long> combinedMaps = new HashMap<>();
+        for (int k = 0; k < maps.size(); k++) {
+            combinedMaps.putAll(maps.get(k));
+        }
+        ExcelWriter.write(combinedMaps,
+            "date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
+
     }
 }

@@ -28,11 +28,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ExcelWriter {
 
+    private static String printedDate = "";
+
     /**
      * This method writes the values of the hashmap to the excel sheet.
      */
     public static void write(HashMap<String, Long> appMap, String date)
         throws IOException {
+
+        printedDate = date;
 
         // Create the Workbook
         Workbook workbook = new XSSFWorkbook();
@@ -81,5 +85,14 @@ public class ExcelWriter {
 
         // Close the workbook
         workbook.close();
+    }
+
+    /**
+     * Getter to return the text used to create the Excel files.
+     * 
+     * @return String of date or date range.
+     */
+    public static String getDate() {
+        return printedDate;
     }
 }

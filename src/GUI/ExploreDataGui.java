@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,6 +23,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import core.DataHandling;
+import core.ExcelWriter;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -39,6 +42,7 @@ public class ExploreDataGui extends JDialog {
     private DatePickerSettings datePickerSettings2 = new DatePickerSettings();
     private DatePicker datePicker2 = new DatePicker(datePickerSettings2);
     String formattedString;
+    String formattedString2;
 
     /**
      * Launch the About pop up window.
@@ -51,6 +55,7 @@ public class ExploreDataGui extends JDialog {
         }
         catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 
@@ -109,25 +114,32 @@ public class ExploreDataGui extends JDialog {
         btnCreateExportFile.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
+
                 LocalDate date = datePicker.getDate();
+                LocalDate date2 = datePicker2.getDate();
                 // Pass the date(s) to DateHandling.java
-                // TODO: Check for second date.
+
                 @SuppressWarnings("unused")
                 SimpleDateFormat dateFormatter =
-                    new SimpleDateFormat("MMDDyy");
+                    new SimpleDateFormat("DDyy");
 
                 DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern("MMDDyy");
+                    DateTimeFormatter.ofPattern("DDyy");
                 formattedString = date.format(formatter);
+                formattedString2 = date2.format(formatter);
                 btnOpenOutput.setEnabled(true);
-                // System.out.println(formattedString);
-                try {
-                    DataHandling.acceptDate(formattedString);
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ArrayList<String> dates =
+                    DataHandling.dateDiff(formattedString,
+                        formattedString2);
+                @SuppressWarnings("rawtypes")
+                ArrayList<HashMap> maps = DataHandling.loadMaps(dates);
 
+                try {
+                    DataHandling.writeDates(maps, dates);
+                }
+                catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -140,7 +152,8 @@ public class ExploreDataGui extends JDialog {
             public void mouseClicked(MouseEvent arg0) {
                 try {
                     Desktop.getDesktop().open(new File(
-                        "ProductivityPlusData" + formattedString + ".xlsx"));
+                        "ProductivityPlusData" + ExcelWriter.getDate()
+                            + ".xlsx"));
                 }
                 catch (IOException e) {
                     e.printStackTrace();
