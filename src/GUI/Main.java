@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,7 +21,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import core.CloseToSystemTray;
 import core.DataHandling;
@@ -40,6 +45,14 @@ public class Main {
     public static Main gui;
     public static JLabel lblCurrentlyNotTracking =
         new JLabel("Currently not tracking");
+    static JPanel panel = new JPanel();
+    // Table fields
+    private static DefaultTableModel model;
+    private static JTable table;
+    private static Vector data;
+    private static Vector row;
+    private static List colData;
+    private static Set<String> keys;
 
     /**
      * Main method that builds the GUI.
@@ -52,6 +65,13 @@ public class Main {
      * Constructor that builds the frame.
      */
     public Main() {
+
+        try {
+            DataHandling.loadMap();
+        }
+        catch (NumberFormatException | IOException e) {
+            e.printStackTrace();
+        }
 
         frame = new JFrame();
         frame.setLocation(100, 100);
@@ -104,21 +124,21 @@ public class Main {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         frame.getContentPane().add(tabbedPane, "cell 0 0,growx,aligny top");
 
-        JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
         panel.setToolTipText("");
         tabbedPane.addTab("Program Timer", null, panel, null);
-        panel.setLayout(new MigLayout("", "[121.00,grow][224.00,grow]",
-            "[35.00][200.00,grow]"));
+        panel.setLayout(
+            new MigLayout("", "[110.00][224.00,grow]", "[35.00][200.00,grow]"));
 
-        JLabel lblTimerControls = new JLabel("Timer Controls");
+        JLabel lblTimerControls = new JLabel("     Timer Controls");
         lblTimerControls.setFont(new Font("Verdana", Font.BOLD, 12));
-        panel.add(lblTimerControls, "cell 0 0");
+        panel.add(lblTimerControls, "cell 0 0,alignx left");
 
         lblCurrentlyNotTracking.setFont(new Font("Verdana", Font.BOLD, 12));
         panel.add(lblCurrentlyNotTracking, "cell 1 0");
 
         JPanel panel_3 = new JPanel();
+        panel_3.setToolTipText("Program data for today");
         panel_3.setBackground(Color.WHITE);
         panel.add(panel_3, "cell 0 1,grow");
         panel_3.setLayout(new MigLayout("", "[100]", "[25][][][]"));
@@ -142,6 +162,8 @@ public class Main {
                 SingletonTimer.setBeenCalled();
                 ProgramTimer.stop();
                 setStopLabel();
+                updateTable();
+                table.revalidate();
             }
         });
         btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 11));
@@ -160,24 +182,42 @@ public class Main {
         panel_3.add(btnNewButton_3, "cell 0 3");
         btnNewButton_3.setFont(new Font("Verdana", Font.PLAIN, 11));
 
-        JScrollPane scrollPane = new JScrollPane();
-        panel.add(scrollPane, "cell 1 1,grow");
-
-        JPanel panel_4 = new JPanel();
-        panel_4.setBackground(Color.WHITE);
-        scrollPane.setViewportView(panel_4);
-        panel_4.setLayout(new MigLayout("", "[258.00px]", "[300.00px]"));
-
-        JTextArea txtrSampleData = new JTextArea();
-        txtrSampleData.setEditable(false);
-        txtrSampleData.setRows(20);
-        txtrSampleData.setText("sample data");
-        panel_4.add(txtrSampleData, "cell 0 0,growx,aligny top");
         btnNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
             }
         });
+
+        // ************** Table ************** //
+        keys = ProgramTimer.appMap.keySet();
+        System.out.println(ProgramTimer.appMap.keySet());
+
+        model = new DefaultTableModel();
+        table = new JTable(model);
+        model.addColumn("Program");
+
+        for (String name : ProgramTimer.appMap.keySet()) {
+            String key = name.toString();
+            model.addRow(new Object[] {key});
+        }
+
+        data = model.getDataVector();
+        row = (Vector) data.elementAt(1);
+
+        int mColIndex = 0;
+        colData = new ArrayList(table.getRowCount());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            row = (Vector) data.elementAt(i);
+            colData.add(row.get(mColIndex));
+        }
+
+        // Append a new column with copied data
+        model.addColumn("Time (seconds)",
+            ProgramTimer.appMap.values().toArray());
+
+        panel.add(new JScrollPane(table), "cell 1 1");
+
+        // ************** Table ************** //
 
         JPanel panel_1 = new JPanel();
         panel_1.setBackground(Color.PINK);
@@ -195,13 +235,6 @@ public class Main {
             tray.startTray();
         }
         catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            DataHandling.loadMap();
-        }
-        catch (NumberFormatException | IOException e) {
             e.printStackTrace();
         }
 
@@ -231,6 +264,7 @@ public class Main {
         SingletonTimer.setBeenCalled();
         ProgramTimer.stop();
         setStopLabel();
+
     }
 
     /**
@@ -239,9 +273,6 @@ public class Main {
      * 'hang' the GUI.
      */
     public static void startTimer() {
-        /*        ProgramTimer programTimer = new ProgramTimer();
-        Thread t = new Thread(programTimer);
-        t.start();*/
 
         SingletonTimer.getInstance().callTimer();
     }
@@ -252,5 +283,34 @@ public class Main {
     public static void setFrameVisible() {
         frame.setVisible(true);
         frame.toFront();
+    }
+
+    public static void updateTable() {
+        keys = ProgramTimer.appMap.keySet();
+        System.out.println(ProgramTimer.appMap);
+
+        model = new DefaultTableModel();
+        table = new JTable(model);
+        model.addColumn("Program");
+
+        for (String name : ProgramTimer.appMap.keySet()) {
+            String key = name.toString();
+            model.addRow(new Object[] {key});
+        }
+
+        data = model.getDataVector();
+        row = (Vector) data.elementAt(1);
+
+        int mColIndex = 0;
+        colData = new ArrayList(table.getRowCount());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            row = (Vector) data.elementAt(i);
+            colData.add(row.get(mColIndex));
+        }
+
+        // Append a new column with copied data
+        model.addColumn("Time (seconds)",
+            ProgramTimer.appMap.values().toArray());
+
     }
 }
