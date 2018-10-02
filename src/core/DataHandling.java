@@ -77,14 +77,14 @@ public class DataHandling {
     }
 
     /**
-     * This method returns the date in the formatted String MMDDyy
+     * This method returns the date in the formatted String Dyy
      * 
-     * @return Today's date in form MMDDyy, ex: 093018 for 09/30/18
+     * @return Today's date in form Dyy, ex: 093018 for 09/30/18
      */
     public static String getDate() {
         Date now = new Date();
         SimpleDateFormat dateFormatter =
-            new SimpleDateFormat("DDyy");
+            new SimpleDateFormat("Dyy");
         return dateFormatter.format(now);
     }
 

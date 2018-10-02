@@ -132,10 +132,10 @@ public class ExploreDataGui extends JDialog {
 
                 @SuppressWarnings("unused")
                 SimpleDateFormat dateFormatter =
-                    new SimpleDateFormat("DDyy");
+                    new SimpleDateFormat("Dyy");
 
                 DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern("DDyy");
+                    DateTimeFormatter.ofPattern("Dyy");
                 formattedString = date.format(formatter);
                 if (!(date2 == null)) {
                     formattedString2 = date2.format(formatter);
