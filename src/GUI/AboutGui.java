@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;

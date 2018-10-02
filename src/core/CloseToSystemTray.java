@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import GUI.Main;
+import gui.Main;
 
 /**
  * CloseToSystemTray.java creates the system tray icon and functionality used to
