@@ -85,7 +85,6 @@ public class ProgramTimer implements Runnable {
             endTime();
             try {
                 mapTime();
-
             }
             catch (IOException e) {
                 e.printStackTrace();

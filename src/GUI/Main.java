@@ -163,6 +163,12 @@ public class Main {
                 SingletonTimer.setBeenCalled();
                 ProgramTimer.stop();
                 setStopLabel();
+                try {
+                    Thread.sleep(5);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 updateTable();
 
             }
