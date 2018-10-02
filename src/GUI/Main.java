@@ -53,6 +53,7 @@ public class Main {
     private static Vector row;
     private static List colData;
     private static Set<String> keys;
+    private static JScrollPane sc;
 
     /**
      * Main method that builds the GUI.
@@ -163,7 +164,7 @@ public class Main {
                 ProgramTimer.stop();
                 setStopLabel();
                 updateTable();
-                table.revalidate();
+
             }
         });
         btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 11));
@@ -215,7 +216,9 @@ public class Main {
         model.addColumn("Time (seconds)",
             ProgramTimer.appMap.values().toArray());
 
-        panel.add(new JScrollPane(table), "cell 1 1");
+        sc = new JScrollPane(table);
+
+        panel.add(sc);
 
         // ************** Table ************** //
 
@@ -286,6 +289,7 @@ public class Main {
     }
 
     public static void updateTable() {
+        panel.remove(sc);
         keys = ProgramTimer.appMap.keySet();
         System.out.println(ProgramTimer.appMap);
 
@@ -311,6 +315,10 @@ public class Main {
         // Append a new column with copied data
         model.addColumn("Time (seconds)",
             ProgramTimer.appMap.values().toArray());
+
+        sc = new JScrollPane(table);
+
+        panel.add(sc);
 
     }
 }
