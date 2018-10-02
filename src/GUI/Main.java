@@ -164,7 +164,7 @@ public class Main {
                 ProgramTimer.stop();
                 setStopLabel();
                 try {
-                    Thread.sleep(5);
+                    Thread.sleep(50);
                 }
                 catch (InterruptedException e) {
                     e.printStackTrace();
@@ -197,34 +197,42 @@ public class Main {
 
         // ************** Table ************** //
         keys = ProgramTimer.appMap.keySet();
-        System.out.println(ProgramTimer.appMap.keySet());
+        try {
+            model = new DefaultTableModel();
+            table = new JTable(model);
+            model.addColumn("Program");
 
-        model = new DefaultTableModel();
-        table = new JTable(model);
-        model.addColumn("Program");
+            for (String name : ProgramTimer.appMap.keySet()) {
+                String key = name.toString();
+                model.addRow(new Object[] {key});
+            }
 
-        for (String name : ProgramTimer.appMap.keySet()) {
-            String key = name.toString();
-            model.addRow(new Object[] {key});
+            data = model.getDataVector();
+            row = (Vector) data.elementAt(1);
+
+            int mColIndex = 0;
+            colData = new ArrayList(table.getRowCount());
+            for (int i = 0; i < table.getRowCount(); i++) {
+                row = (Vector) data.elementAt(i);
+                colData.add(row.get(mColIndex));
+            }
+
+            // Append a new column with copied data
+            model.addColumn("",
+                ProgramTimer.appMap.values().toArray());
+
+            sc = new JScrollPane(table);
+
+            panel.add(sc);
         }
-
-        data = model.getDataVector();
-        row = (Vector) data.elementAt(1);
-
-        int mColIndex = 0;
-        colData = new ArrayList(table.getRowCount());
-        for (int i = 0; i < table.getRowCount(); i++) {
-            row = (Vector) data.elementAt(i);
-            colData.add(row.get(mColIndex));
+        catch (ArrayIndexOutOfBoundsException exception) {
+            model = new DefaultTableModel(2, 2);
+            String[] colHeadings = {"Program", "Time (seconds)"};
+            model.setColumnIdentifiers(colHeadings);
+            table = new JTable(model);
+            sc = new JScrollPane(table);
+            panel.add(sc);
         }
-
-        // Append a new column with copied data
-        model.addColumn("Time (seconds)",
-            ProgramTimer.appMap.values().toArray());
-
-        sc = new JScrollPane(table);
-
-        panel.add(sc);
 
         // ************** Table ************** //
 
@@ -309,7 +317,8 @@ public class Main {
         }
 
         data = model.getDataVector();
-        row = (Vector) data.elementAt(1);
+        System.out.println(data);
+        row = (Vector) data.elementAt(0);
 
         int mColIndex = 0;
         colData = new ArrayList(table.getRowCount());
