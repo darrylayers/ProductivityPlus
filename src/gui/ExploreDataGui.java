@@ -59,6 +59,8 @@ public class ExploreDataGui extends JDialog {
         try {
             ExploreDataGui dialog = new ExploreDataGui();
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            Main.setWindowLoc();
+            dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
         }
         catch (Exception e) {

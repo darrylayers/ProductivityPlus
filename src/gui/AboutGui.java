@@ -31,6 +31,8 @@ public class AboutGui extends JDialog {
         try {
             AboutGui dialog = new AboutGui();
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            Main.setWindowLoc();
+            dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
         }
         catch (Exception e) {

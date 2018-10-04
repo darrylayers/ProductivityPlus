@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -47,12 +48,16 @@ public class Main {
     public static JLabel lblCurrentlyNotTracking =
         new JLabel("Currently not tracking.");
     static JPanel mainPanel = new JPanel();
+    private static Point windowLoc;
     
     // Table fields
     private static DefaultTableModel model;
     private static JTable table;
+	@SuppressWarnings("rawtypes")
 	private static Vector data;
+	@SuppressWarnings("rawtypes")
 	private static Vector row;
+	@SuppressWarnings("rawtypes")
 	private static List colData;
     private static Set<String> keys;
     private static JScrollPane sc;
@@ -67,7 +72,8 @@ public class Main {
     /**
      * Constructor that builds the frame.
      */
-    public Main() {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public Main() {
 
     	// Load the hashmap info ProgramTimer.appMap
         try {
@@ -85,6 +91,7 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setTitle("ProductivityPlus");
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
         // ************** Menu Bar ************** //
@@ -334,7 +341,8 @@ public class Main {
      * window of the gui. It works by destroying the current table
      * object and creates a new one.
      */
-    public static void updateTable() {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void updateTable() {
     	
     	// Remove old table object
     	mainPanel.remove(sc);
@@ -387,5 +395,23 @@ public class Main {
 	 */
 	public static void setKeys(Set<String> keys) {
 		Main.keys = keys;
+	}
+
+	/**
+	 * Setter to set the frame location variables
+	 * to be used to create new windows that 
+	 * match the position of the main gui.
+	 */
+	public static void setWindowLoc() {
+		windowLoc = frame.getLocation();		
+	}
+	
+	/**
+	 * Getter used to return the Point
+	 * of the gui (x and y).
+	 * @return Point of main gui.
+	 */
+	public static Point getWindowLoc() {
+		return windowLoc;		
 	}
 }
