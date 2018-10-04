@@ -7,3 +7,4 @@ Program_Log.txt
 *.zip
 *.list
 *.properties
+/bin/
