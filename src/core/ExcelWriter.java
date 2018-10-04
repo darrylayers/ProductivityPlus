@@ -33,6 +33,7 @@ public class ExcelWriter {
      */
     public static void write(HashMap<String, Long> appMap, String date)
         throws IOException {
+        ExploreDataGui.updateBar(0);
 
         printedDate = date;
 
@@ -64,7 +65,11 @@ public class ExcelWriter {
         cell1.setCellStyle(headerCellStyle);
 
         int rowNum = 1;
+        int j = 100 / appMap.size();
         for (String name : appMap.keySet()) {
+            ExploreDataGui.updateBar(j);
+            ExploreDataGui.updateBar(j);
+            j = 2 * j;
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(name);
             row.createCell(1).setCellValue(appMap.get(name));

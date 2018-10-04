@@ -115,6 +115,7 @@ public class DataHandling {
         catch (Exception e) {
 
         }
+
         ExcelWriter.write(loadedAppMap, date);
     }
 
@@ -189,9 +190,9 @@ public class DataHandling {
         ArrayList<String> dates)
         throws IOException {
 
-        int bar = 100 / maps.size();
-
         HashMap<String, Long> combinedMaps = new HashMap<>();
+
+        int i = 100 / maps.size();
 
         for (HashMap<String, Long> map : maps) {
 
@@ -202,14 +203,15 @@ public class DataHandling {
                     : entry.getValue() + current);
             }
 
-            ExploreDataGui.updateBar(ExploreDataGui.getBarValue() + bar);
+            ExploreDataGui.updateBar(i);
+            i = 2 * i;
 
         }
 
         System.out.println(combinedMaps);
 
         ExcelWriter.write(combinedMaps,
-            "date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
+            "_date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
 
     }
 }

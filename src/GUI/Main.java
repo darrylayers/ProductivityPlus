@@ -224,7 +224,7 @@ public class Main {
             }
 
             // Append a new column with copied data
-            model.addColumn("",
+            model.addColumn("Time (seconds)",
                 ProgramTimer.appMap.values().toArray());
 
             sc = new JScrollPane(table);

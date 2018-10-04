@@ -129,7 +129,7 @@ public class ExploreDataGui extends JDialog {
             @Override
             public void mouseClicked(MouseEvent arg0) {
 
-                ExploreDataGui.updateBar(1);
+                ExploreDataGui.updateBar(0);
                 btnOpenOutput.setEnabled(true);
                 LocalDate date = datePicker.getDate();
                 LocalDate date2 = datePicker2.getDate();
@@ -175,6 +175,7 @@ public class ExploreDataGui extends JDialog {
             public void mouseClicked(MouseEvent arg0) {
                 rdbtntxtExport.setSelected(false);
                 rdbtnExcelExport.setSelected(false);
+
             }
         });
         panel_1.add(rdbtnodsopenOffice, "cell 1 0");
