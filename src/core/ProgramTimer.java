@@ -28,7 +28,7 @@ public class ProgramTimer implements Runnable {
     private static long oldTime;
     private static long start;
     private static long end;
-    protected static boolean trackIfTrue;
+    public static boolean trackIfTrue;
     private static boolean leftApp = false;
     private static CheckIdle idle;
 

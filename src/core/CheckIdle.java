@@ -21,7 +21,6 @@ public class CheckIdle {
     // Sometimes the user will be "active" but not moving
     // their mouse or typing, so this option should be
     // optional and have a variable/customizable threshold for the time.
-    // TODO: Stop user from editing preferences while program is running
 
     public static Point old_p;
     public static Point new_p;
@@ -95,7 +94,6 @@ public class CheckIdle {
      * @return boolean, true if mouse has moved
      */
     public boolean checkWhileNotTracking() {
-
         try {
             // Thread.sleep(30000);
             Thread.sleep(1000);

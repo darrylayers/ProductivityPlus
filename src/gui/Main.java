@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -121,7 +122,14 @@ public class Main {
         mnPreferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                PreferencesGui.newWindow();
+            	// This statement prohibits edits
+            	// to the preferences while the program 
+            	// is currently tracking.
+            	if (ProgramTimer.trackIfTrue) {
+            		JOptionPane.showMessageDialog(null, "Cannot edit preferences while program tracker is running.");
+            	} else {
+            		PreferencesGui.newWindow();
+            	}
             }
         });
         mnHelp.add(mnPreferences);
