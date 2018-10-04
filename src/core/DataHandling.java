@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import gui.ExploreDataGui;
+
 /**
  * This class stores, loads, and handles the saved data from the application. As
  * of now, the file storage system works like this: The program writes all of
@@ -178,7 +180,8 @@ public class DataHandling {
      * This method writes the date range into one hashmap and then writes that
      * map to an Excel file.
      * 
-     * @param maps
+     * @param maps,
+     *            dates
      * @throws IOException
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -186,19 +189,21 @@ public class DataHandling {
         ArrayList<String> dates)
         throws IOException {
 
+        int bar = 100 / maps.size();
+
         HashMap<String, Long> combinedMaps = new HashMap<>();
-        /*        for (int k = 0; k < maps.size(); k++) {
-            combinedMaps.putAll(maps.get(k));
-        
-        }*/
 
         for (HashMap<String, Long> map : maps) {
+
             for (HashMap.Entry<String, Long> entry : map.entrySet()) {
                 String key = entry.getKey();
                 Long current = combinedMaps.get(key);
                 combinedMaps.put(key, current == null ? entry.getValue()
                     : entry.getValue() + current);
             }
+
+            ExploreDataGui.updateBar(ExploreDataGui.getBarValue() + bar);
+
         }
 
         System.out.println(combinedMaps);

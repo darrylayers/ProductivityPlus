@@ -14,6 +14,7 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
@@ -47,6 +48,9 @@ public class ExploreDataGui extends JDialog {
     private JRadioButton rdbtnExcelExport = new JRadioButton("Excel export");
     private JRadioButton rdbtnodsopenOffice =
         new JRadioButton(".ods (Open Office)");
+    private final static JProgressBar progressBar = new JProgressBar();
+    private static int barMin = 0;
+    private static int barMax = 100;
 
     /**
      * Launch the About pop up window.
@@ -69,7 +73,7 @@ public class ExploreDataGui extends JDialog {
     public ExploreDataGui() {
         setAlwaysOnTop(true);
         setTitle("Explore Data");
-        setBounds(100, 100, 450, 300);
+        setBounds(100, 100, 450, 334);
 
         // ************** Frame panels and panes ************** //
         getContentPane()
@@ -107,7 +111,7 @@ public class ExploreDataGui extends JDialog {
 
         JPanel panel_1 = new JPanel();
         contentPanel.add(panel_1, "cell 0 2,grow");
-        panel_1.setLayout(new MigLayout("", "[][][]", "[][]"));
+        panel_1.setLayout(new MigLayout("", "[][][]", "[][][33.00][22.00]"));
         rdbtnExcelExport.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -125,6 +129,7 @@ public class ExploreDataGui extends JDialog {
             @Override
             public void mouseClicked(MouseEvent arg0) {
 
+                ExploreDataGui.updateBar(1);
                 btnOpenOutput.setEnabled(true);
                 LocalDate date = datePicker.getDate();
                 LocalDate date2 = datePicker2.getDate();
@@ -145,6 +150,7 @@ public class ExploreDataGui extends JDialog {
                             formattedString2);
                     @SuppressWarnings("rawtypes")
                     ArrayList<HashMap> maps = DataHandling.loadMaps(dates);
+                    ;
 
                     try {
                         DataHandling.writeDates(maps, dates);
@@ -201,5 +207,19 @@ public class ExploreDataGui extends JDialog {
         });
         btnOpenOutput.setEnabled(false);
         panel_1.add(btnOpenOutput, "cell 1 1");
+
+        /////////// Progress Bar ///////////////
+        panel_1.add(progressBar, "cell 0 2");
+        progressBar.setMinimum(barMin);
+        progressBar.setMaximum(barMax);
+    }
+
+    public static void updateBar(int newValue) {
+        progressBar.setValue(newValue);
+    }
+
+    public static int getBarValue() {
+
+        return progressBar.getValue();
     }
 }

@@ -1,12 +1,8 @@
 package core;
 
 /*
- *  TODO: Reformat table to look nicer
  *  TODO: Format time correctly, example: 65 seconds should be displayed
  *        as 1 minute 5 seconds.
- *  TODO: Load data in, or else the excel output file will be
- *        overwritten on each launch.
- * 
  */
 
 import java.io.FileOutputStream;
@@ -20,6 +16,8 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import gui.ExploreDataGui;
 
 /**
  * ExcelWriter.java writes a hashmap to an Excel spreadsheet using the Apache
@@ -85,6 +83,9 @@ public class ExcelWriter {
 
         // Close the workbook
         workbook.close();
+
+        ExploreDataGui.updateBar(100);
+
     }
 
     /**

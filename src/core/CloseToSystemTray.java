@@ -5,11 +5,13 @@ import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import gui.Main;
 
@@ -68,12 +70,10 @@ public class CloseToSystemTray {
 
         trayPopupMenu.add(close);
 
-        // TODO: Tray icon does not load from executable .jar file.
-        this.getClass().getResource("resources/favicon.png");
+        this.getClass().getResource("/favicon.png");
 
         Image image =
-            Toolkit.getDefaultToolkit()
-                .getImage("resources/favicon.png");
+            ImageIO.read(new FileInputStream("resources/favicon.png"));
 
         TrayIcon trayIcon =
             new TrayIcon(image, "Productivity Plus", trayPopupMenu);

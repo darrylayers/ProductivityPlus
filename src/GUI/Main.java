@@ -176,6 +176,12 @@ public class Main {
         btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         JButton btnNewButton_2 = new JButton("Graphical Output");
+        btnNewButton_2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                GraphicalOutputGui.newWindow();
+            }
+        });
         panel_3.add(btnNewButton_2, "cell 0 2");
         btnNewButton_2.setFont(new Font("Verdana", Font.PLAIN, 11));
 
@@ -208,7 +214,7 @@ public class Main {
             }
 
             data = model.getDataVector();
-            row = (Vector) data.elementAt(1);
+            row = (Vector) data.elementAt(0);
 
             int mColIndex = 0;
             colData = new ArrayList(table.getRowCount());
