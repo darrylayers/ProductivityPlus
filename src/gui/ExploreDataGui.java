@@ -93,25 +93,29 @@ public class ExploreDataGui extends JDialog {
                 + "the left one selected with the date you desire to examine.");
         contentPanel.add(txtpnSimplySelectA, "cell 0 0,grow");
 
-        JPanel panel = new JPanel();
-        panel.setBorder(
+        // ************** Dates ************** //
+        
+        JPanel datePanel = new JPanel();
+        datePanel.setBorder(
             new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        contentPanel.add(panel, "cell 0 1,grow");
-        panel.setLayout(
+        contentPanel.add(datePanel, "cell 0 1,grow");
+        datePanel.setLayout(
             new MigLayout("", "[83.00,grow][][]", "[][][55.00,grow][grow]"));
 
         datePickerSettings.setFormatForDatesBeforeCommonEra("MM/dd/yyyy");
         datePickerSettings.setFormatForDatesCommonEra("MM/dd/yyyy");
-        panel.add(datePicker, "");
+        datePanel.add(datePicker, "");
         datePicker.setDateToToday();
 
         datePickerSettings2.setFormatForDatesBeforeCommonEra("MM/dd/yyyy");
         datePickerSettings2.setFormatForDatesCommonEra("MM/dd/yyyy");
-        panel.add(datePicker2, "");
+        datePanel.add(datePicker2, "");
 
-        JPanel panel_1 = new JPanel();
-        contentPanel.add(panel_1, "cell 0 2,grow");
-        panel_1.setLayout(new MigLayout("", "[][][]", "[][][33.00][22.00]"));
+        // ************** Exports ************** //
+        
+        JPanel exportPanel = new JPanel();
+        contentPanel.add(exportPanel, "cell 0 2,grow");
+        exportPanel.setLayout(new MigLayout("", "[][][]", "[][][33.00][22.00]"));
         rdbtnExcelExport.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -121,7 +125,7 @@ public class ExploreDataGui extends JDialog {
         });
 
         rdbtnExcelExport.setSelected(true);
-        panel_1.add(rdbtnExcelExport, "cell 0 0");
+        exportPanel.add(rdbtnExcelExport, "cell 0 0");
 
         JButton btnOpenOutput = new JButton("Open Output");
         JButton btnCreateExportFile = new JButton("Create export file");
@@ -171,6 +175,7 @@ public class ExploreDataGui extends JDialog {
         });
 
         rdbtnodsopenOffice.addMouseListener(new MouseAdapter() {
+        	
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 rdbtntxtExport.setSelected(false);
@@ -178,8 +183,9 @@ public class ExploreDataGui extends JDialog {
 
             }
         });
-        panel_1.add(rdbtnodsopenOffice, "cell 1 0");
+        exportPanel.add(rdbtnodsopenOffice, "cell 1 0");
         rdbtntxtExport.addMouseListener(new MouseAdapter() {
+        	
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 rdbtnodsopenOffice.setSelected(false);
@@ -187,11 +193,11 @@ public class ExploreDataGui extends JDialog {
             }
         });
 
-        panel_1.add(rdbtntxtExport, "cell 2 0");
+        exportPanel.add(rdbtntxtExport, "cell 2 0");
 
         btnCreateExportFile.setToolTipText(
             "File is exported to Productivity Plus installation directory");
-        panel_1.add(btnCreateExportFile, "cell 0 1");
+        exportPanel.add(btnCreateExportFile, "cell 0 1");
 
         btnOpenOutput.addMouseListener(new MouseAdapter() {
             @Override
@@ -207,20 +213,29 @@ public class ExploreDataGui extends JDialog {
             }
         });
         btnOpenOutput.setEnabled(false);
-        panel_1.add(btnOpenOutput, "cell 1 1");
+        exportPanel.add(btnOpenOutput, "cell 1 1");
 
-        /////////// Progress Bar ///////////////
-        panel_1.add(progressBar, "cell 0 2");
+        // ************** Progress Bar ************** //
+        exportPanel.add(progressBar, "cell 0 2");
         progressBar.setMinimum(barMin);
         progressBar.setMaximum(barMax);
     }
 
+    /**
+     * Method that updates the current progression
+     * the progress bar is at.
+     * @param newValue
+     */
     public static void updateBar(int newValue) {
         progressBar.setValue(newValue);
     }
 
+    /**
+     * Method that returns what value
+     * the progress bar is at.
+     * @return int value of progress bar.
+     */
     public static int getBarValue() {
-
         return progressBar.getValue();
     }
 }

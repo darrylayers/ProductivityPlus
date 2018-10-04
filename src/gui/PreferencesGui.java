@@ -24,8 +24,6 @@ import net.miginfocom.swing.MigLayout;
  * @author Austin Ayers
  * @version 9/25/18
  * 
- *          TODO: Bug where settings do not save when changed many times in
- *          Preferences menu.
  */
 public class PreferencesGui extends JDialog {
 
@@ -40,7 +38,7 @@ public class PreferencesGui extends JDialog {
     private final static String IDLE_TIMER = "idleValue";
     private final static String IDLE_CHECK = "idleCheck";
     private final static String IDLE_AUTO_CHECK = "idleAutoCheck";
-    private JCheckBox chckbxNewCheckBox;
+    private JCheckBox idleTimerCheckBox;
     private JSpinner spinner = new JSpinner();
 
     /**
@@ -73,17 +71,17 @@ public class PreferencesGui extends JDialog {
         contentPanel.setLayout(
             new MigLayout("", "[217.00,grow][][]", "[][63.00][grow][][grow]"));
 
-        JPanel panel = new JPanel();
-        contentPanel.add(panel, "cell 0 1,grow");
-        panel.setLayout(new MigLayout("", "[][][]", "[][][]"));
+        JPanel prefPanel = new JPanel();
+        contentPanel.add(prefPanel, "cell 0 1,grow");
+        prefPanel.setLayout(new MigLayout("", "[][][]", "[][][]"));
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, "cell 0 1,growx,aligny top");
 
-        JPanel panel_1 = new JPanel();
-        contentPanel.add(panel_1, "cell 0 2,grow");
-        panel_1.setLayout(new MigLayout("", "[160px][21px]", "[21px]"));
+        JPanel autoRestartPanel = new JPanel();
+        contentPanel.add(autoRestartPanel, "cell 0 2,grow");
+        autoRestartPanel.setLayout(new MigLayout("", "[160px][21px]", "[21px]"));
         // ************** Frame panels and panes ************** //
 
         // ************** Program Timer Preferences Label ************** //
@@ -94,12 +92,12 @@ public class PreferencesGui extends JDialog {
 
         // ************** Idle Interval Label ************** //
         JLabel lblIdleInterval = new JLabel("Idle Interval");
-        panel.add(lblIdleInterval, "cell 0 1");
+        prefPanel.add(lblIdleInterval, "cell 0 1");
         lblIdleInterval.setEnabled(getIdleChecked());
         // ************** Idle Interval Label ************** //
 
         // ************** Idle Spinner ************** //
-        panel.add(spinner, "cell 1 1");
+        prefPanel.add(spinner, "cell 1 1");
         spinner.setEnabled(getIdleChecked());
         spinner.addChangeListener(new ChangeListener() {
             @Override
@@ -112,17 +110,17 @@ public class PreferencesGui extends JDialog {
         // ************** Idle Spinner ************** //
 
         // ************** Minutes Label ************** //
-        JLabel lblminutes = new JLabel("(minutes)");
-        panel.add(lblminutes, "cell 2 1");
-        lblminutes.setEnabled(getIdleChecked());
+        JLabel lblMinutes = new JLabel("(minutes)");
+        prefPanel.add(lblMinutes, "cell 2 1");
+        lblMinutes.setEnabled(getIdleChecked());
         // ************** Minutes Label ************** //
 
         // ************** Idle Check box ************** //
-        chckbxNewCheckBox = new JCheckBox("Idle Timer");
-        chckbxNewCheckBox.setToolTipText(
+        idleTimerCheckBox = new JCheckBox("Idle Timer");
+        idleTimerCheckBox.setToolTipText(
             "If enabled, the program timer will stop timing when the mouse is enactive for the selected idle interval.");
-        panel.add(chckbxNewCheckBox, "cell 0 0");
-        chckbxNewCheckBox.setSelected(getIdleChecked());
+        prefPanel.add(idleTimerCheckBox, "cell 0 0");
+        idleTimerCheckBox.setSelected(getIdleChecked());
         // ************** Idle Check box ************** //
 
         // ************** Auto Restart Text ************** //
@@ -130,42 +128,42 @@ public class PreferencesGui extends JDialog {
             new JLabel("Auto-Restart Timer on movement");
         lblAutorestartTimerOn.setToolTipText("This doesn't work.");
         lblAutorestartTimerOn.setEnabled(getIdleChecked());
-        panel_1.add(lblAutorestartTimerOn,
+        autoRestartPanel.add(lblAutorestartTimerOn,
             "cell 0 0,alignx left,aligny center");
         // ************** Auto Restart Text ************** //
 
         // ************** Auto Restart Check Button ************** //
-        JCheckBox chckbxNewCheckBox_1 = new JCheckBox("");
-        chckbxNewCheckBox_1.addMouseListener(new MouseAdapter() {
+        JCheckBox autoRestartCheckBox = new JCheckBox("");
+        autoRestartCheckBox.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 setIdleAutoChecked();
             }
         });
-        chckbxNewCheckBox_1.setSelected(getIdleAutoChecked());
-        chckbxNewCheckBox_1.setEnabled(getIdleChecked());
-        chckbxNewCheckBox_1.setToolTipText(
+        autoRestartCheckBox.setSelected(getIdleAutoChecked());
+        autoRestartCheckBox.setEnabled(getIdleChecked());
+        autoRestartCheckBox.setToolTipText(
             "If enabled, the timer restarts tracking when it detects mouse movement again");
-        panel_1.add(chckbxNewCheckBox_1, "cell 1 0,alignx left,aligny top");
+        autoRestartPanel.add(autoRestartCheckBox, "cell 1 0,alignx left,aligny top");
         // ************** Auto Restart Check Button ************** //
 
         // ************** Idle Check Box Listener ************** //
-        chckbxNewCheckBox.addMouseListener(new MouseAdapter() {
+        idleTimerCheckBox.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 setIdleChecked();
                 if (!getIdleChecked()) {
                     lblIdleInterval.setEnabled(false);
-                    lblminutes.setEnabled(false);
+                    lblMinutes.setEnabled(false);
                     spinner.setEnabled(false);
-                    chckbxNewCheckBox_1.setEnabled(false);
+                    autoRestartCheckBox.setEnabled(false);
                     lblAutorestartTimerOn.setEnabled(false);
                 }
                 else {
                     lblIdleInterval.setEnabled(true);
-                    lblminutes.setEnabled(true);
+                    lblMinutes.setEnabled(true);
                     spinner.setEnabled(true);
-                    chckbxNewCheckBox_1.setEnabled(true);
+                    autoRestartCheckBox.setEnabled(true);
                     lblAutorestartTimerOn.setEnabled(true);
                 }
             }

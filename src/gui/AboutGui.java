@@ -53,15 +53,15 @@ public class AboutGui extends JDialog {
         contentPanel.setLayout(
             new MigLayout("", "[217.00,grow][][]", "[][164.00][grow][][grow]"));
 
-        JPanel panel = new JPanel();
-        panel.setBorder(
+        JPanel aboutPanel = new JPanel();
+        aboutPanel.setBorder(
             new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        contentPanel.add(panel, "cell 0 1,grow");
-        panel.setLayout(
+        contentPanel.add(aboutPanel, "cell 0 1,grow");
+        aboutPanel.setLayout(
             new MigLayout("", "[grow][][]", "[][][55.00,grow][grow]"));
 
         JLabel lblHowToUse = new JLabel("How to use ProductivityPlus");
-        panel.add(lblHowToUse, "cell 0 0");
+        aboutPanel.add(lblHowToUse, "cell 0 0");
 
         // ************** Text Areas ************** //
         JTextPane txtpnPressstartTimer = new JTextPane();
@@ -70,13 +70,13 @@ public class AboutGui extends JDialog {
             "Press 'Start Timer' to begin the program timer. This will track every process you open and log how"
                 + " long you are using it inside an Excel file in the same directory that this program is saved it."
                 + " The Excel file is named ProductivityPlusData.xlsx");
-        panel.add(txtpnPressstartTimer, "cell 0 1,grow");
+        aboutPanel.add(txtpnPressstartTimer, "cell 0 1,grow");
 
         JTextPane txtpnYouCanSet = new JTextPane();
         txtpnYouCanSet.setEditable(false);
         txtpnYouCanSet.setText(
             "You can set some preferences under the Preferences menu. Currently you can choose to stop the "
                 + "program if the program itself stops detecting mouse movement.");
-        panel.add(txtpnYouCanSet, "cell 0 2,grow");
+        aboutPanel.add(txtpnYouCanSet, "cell 0 2,grow");
     }
 }

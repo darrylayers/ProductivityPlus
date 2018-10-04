@@ -208,8 +208,6 @@ public class DataHandling {
 
         }
 
-        System.out.println(combinedMaps);
-
         ExcelWriter.write(combinedMaps,
             "_date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
 
