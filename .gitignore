@@ -6,5 +6,6 @@ Program_Log.txt
 *.jar
 *.zip
 *.list
+*.map
 *.properties
 /bin/

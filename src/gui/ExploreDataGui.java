@@ -16,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -51,6 +52,8 @@ public class ExploreDataGui extends JDialog {
     private final static JProgressBar progressBar = new JProgressBar();
     private static int barMin = 0;
     private static int barMax = 100;
+    private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+    private final JPanel panel = new JPanel();
 
     /**
      * Launch the About pop up window.
@@ -79,9 +82,12 @@ public class ExploreDataGui extends JDialog {
 
         // ************** Frame panels and panes ************** //
         getContentPane()
-            .setLayout(new MigLayout("", "[434px]", "[228px][33px]"));
+            .setLayout(
+                new MigLayout("", "[grow][434px]", "[228px,grow][33px]"));
+
+        getContentPane().add(tabbedPane, "cell 0 0,grow");
+        tabbedPane.addTab("Explore large data", null, contentPanel, null);
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        getContentPane().add(contentPanel, "cell 0 0,grow");
         contentPanel.setLayout(
             new MigLayout("", "[304.00,grow,left][-37.00][grow][][][][]",
                 "[grow][70.00,grow][-60.00,grow]"));
@@ -96,28 +102,23 @@ public class ExploreDataGui extends JDialog {
         contentPanel.add(txtpnSimplySelectA, "cell 0 0,grow");
 
         // ************** Dates ************** //
-        
+
         JPanel datePanel = new JPanel();
         datePanel.setBorder(
             new EtchedBorder(EtchedBorder.LOWERED, null, null));
         contentPanel.add(datePanel, "cell 0 1,grow");
         datePanel.setLayout(
             new MigLayout("", "[83.00,grow][][]", "[][][55.00,grow][grow]"));
-
-        datePickerSettings.setFormatForDatesBeforeCommonEra("MM/dd/yyyy");
-        datePickerSettings.setFormatForDatesCommonEra("MM/dd/yyyy");
         datePanel.add(datePicker, "");
         datePicker.setDateToToday();
-
-        datePickerSettings2.setFormatForDatesBeforeCommonEra("MM/dd/yyyy");
-        datePickerSettings2.setFormatForDatesCommonEra("MM/dd/yyyy");
         datePanel.add(datePicker2, "");
 
         // ************** Exports ************** //
-        
+
         JPanel exportPanel = new JPanel();
         contentPanel.add(exportPanel, "cell 0 2,grow");
-        exportPanel.setLayout(new MigLayout("", "[][][]", "[][][33.00][22.00]"));
+        exportPanel
+            .setLayout(new MigLayout("", "[][][]", "[][][33.00][22.00]"));
         rdbtnExcelExport.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -177,7 +178,7 @@ public class ExploreDataGui extends JDialog {
         });
 
         rdbtnodsopenOffice.addMouseListener(new MouseAdapter() {
-        	
+
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 rdbtntxtExport.setSelected(false);
@@ -187,7 +188,7 @@ public class ExploreDataGui extends JDialog {
         });
         exportPanel.add(rdbtnodsopenOffice, "cell 1 0");
         rdbtntxtExport.addMouseListener(new MouseAdapter() {
-        	
+
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 rdbtnodsopenOffice.setSelected(false);
@@ -221,11 +222,20 @@ public class ExploreDataGui extends JDialog {
         exportPanel.add(progressBar, "cell 0 2");
         progressBar.setMinimum(barMin);
         progressBar.setMaximum(barMax);
+
+        tabbedPane.addTab("Single program search", null, panel, null);
+        panel.setLayout(new MigLayout("", "[]", "[]"));
+
+        datePickerSettings.setFormatForDatesBeforeCommonEra("MM/dd/yyyy");
+        datePickerSettings.setFormatForDatesCommonEra("MM/dd/yyyy");
+
+        datePickerSettings2.setFormatForDatesBeforeCommonEra("MM/dd/yyyy");
+        datePickerSettings2.setFormatForDatesCommonEra("MM/dd/yyyy");
     }
 
     /**
-     * Method that updates the current progression
-     * the progress bar is at.
+     * Method that updates the current progression the progress bar is at.
+     * 
      * @param newValue
      */
     public static void updateBar(int newValue) {
@@ -233,8 +243,8 @@ public class ExploreDataGui extends JDialog {
     }
 
     /**
-     * Method that returns what value
-     * the progress bar is at.
+     * Method that returns what value the progress bar is at.
+     * 
      * @return int value of progress bar.
      */
     public static int getBarValue() {
