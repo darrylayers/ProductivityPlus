@@ -76,7 +76,7 @@ public class CheckIdle {
      */
     public void run() {
         try {
-            Thread.sleep(PreferencesGui.getIdleTimer() * 1000);
+            Thread.sleep(PreferencesGui.getIdleTimer() * 1000 * 60);
             if (this.checkMouse()) {
                 Main.simulateClick();
             }
