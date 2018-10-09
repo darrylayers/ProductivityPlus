@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -30,6 +31,7 @@ import core.CloseToSystemTray;
 import core.DataHandling;
 import core.ProgramTimer;
 import core.SingletonTimer;
+import core.TimeConvert;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -41,7 +43,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class Main {
 
-	// Gui fields
+    // Gui fields
     public static final int FRAME_SIZE = 300;
     public static JFrame frame;
     JButton stopTimerBtn;
@@ -50,16 +52,16 @@ public class Main {
         new JLabel("Currently not tracking.");
     static JPanel mainPanel = new JPanel();
     private static Point windowLoc;
-    
+
     // Table fields
     private static DefaultTableModel model;
     private static JTable table;
-	@SuppressWarnings("rawtypes")
-	private static Vector data;
-	@SuppressWarnings("rawtypes")
-	private static Vector row;
-	@SuppressWarnings("rawtypes")
-	private static List colData;
+    @SuppressWarnings("rawtypes")
+    private static Vector data;
+    @SuppressWarnings("rawtypes")
+    private static Vector row;
+    @SuppressWarnings("rawtypes")
+    private static List colData;
     private static Set<String> keys;
     private static JScrollPane sc;
 
@@ -73,10 +75,10 @@ public class Main {
     /**
      * Constructor that builds the frame.
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public Main() {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public Main() {
 
-    	// Load the hashmap info ProgramTimer.appMap
+        // Load the hashmap info ProgramTimer.appMap
         try {
             DataHandling.loadMap();
         }
@@ -85,7 +87,7 @@ public class Main {
         }
 
         // Frame creation
-        
+
         frame = new JFrame();
         frame.setLocation(100, 100);
         frame.setSize(533, 381);
@@ -96,7 +98,7 @@ public class Main {
         frame.setVisible(true);
 
         // ************** Menu Bar ************** //
-        
+
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
 
@@ -122,14 +124,16 @@ public class Main {
         mnPreferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-            	// This statement prohibits edits
-            	// to the preferences while the program 
-            	// is currently tracking.
-            	if (ProgramTimer.trackIfTrue) {
-            		JOptionPane.showMessageDialog(null, "Cannot edit preferences while program tracker is running.");
-            	} else {
-            		PreferencesGui.newWindow();
-            	}
+                // This statement prohibits edits
+                // to the preferences while the program
+                // is currently tracking.
+                if (ProgramTimer.trackIfTrue) {
+                    JOptionPane.showMessageDialog(null,
+                        "Cannot edit preferences while program tracker is running.");
+                }
+                else {
+                    PreferencesGui.newWindow();
+                }
             }
         });
         mnHelp.add(mnPreferences);
@@ -142,24 +146,23 @@ public class Main {
             }
         });
         mnHelp.add(mnAbout);
-        
+
         // ************** Panel creations ************** //
-        
+
         frame.getContentPane()
             .setLayout(new MigLayout("", "[531.00px]", "[337.00px]"));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setLayout(
             new MigLayout("", "[110.00][224.00,grow]", "[35.00][200.00,grow]"));
-        
+
         // ************** Tab pane ************** //
-        
+
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         frame.getContentPane().add(tabbedPane, "cell 0 0,growx,aligny top");
         tabbedPane.addTab("Program Timer", null, mainPanel, null);
 
-
         // ************** Timer controls labels ************** //
-        
+
         JLabel lblTimerControls = new JLabel("     Timer Controls");
         lblTimerControls.setFont(new Font("Verdana", Font.BOLD, 12));
         mainPanel.add(lblTimerControls, "cell 0 0,alignx left");
@@ -167,7 +170,7 @@ public class Main {
         mainPanel.add(lblCurrentlyNotTracking, "cell 1 0");
 
         // ************** Button panel ************** //
-        
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setToolTipText("Program data for today");
         buttonPanel.setBackground(Color.WHITE);
@@ -175,7 +178,7 @@ public class Main {
         buttonPanel.setLayout(new MigLayout("", "[100]", "[25][][][]"));
 
         // ************** Start button ************** //
-        
+
         JButton startTimerBtn = new JButton("Start Timer");
         buttonPanel.add(startTimerBtn, "cell 0 0");
         startTimerBtn.addMouseListener(new MouseAdapter() {
@@ -188,7 +191,7 @@ public class Main {
         startTimerBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         // ************** Stop button ************** //
-       
+
         stopTimerBtn = new JButton("Stop Timer");
         buttonPanel.add(stopTimerBtn, "cell 0 1");
         stopTimerBtn.addMouseListener(new MouseAdapter() {
@@ -208,7 +211,7 @@ public class Main {
             }
         });
         stopTimerBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
-        
+
         // ************** Graphical output button ************** //
 
         JButton graphOutputBtn = new JButton("Graphical Output");
@@ -232,14 +235,12 @@ public class Main {
         buttonPanel.add(exploreDataBtn, "cell 0 3");
         exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
-
-
         // ************** Table ************** //
-        
+
         // All the keys we need are loaded from the map
         setKeys(ProgramTimer.appMap.keySet());
         try {
-     
+
             model = new DefaultTableModel();
             table = new JTable(model);
             model.addColumn("Program");
@@ -279,9 +280,9 @@ public class Main {
             sc = new JScrollPane(table);
             mainPanel.add(sc);
         }
-        
+
         // ************** Pomodoro Timer ************** //
-        JPanel pomodoroPanel= new JPanel();
+        JPanel pomodoroPanel = new JPanel();
         pomodoroPanel.setBackground(Color.PINK);
         tabbedPane.addTab("Pomodoro Timer", null, pomodoroPanel, null);
 
@@ -290,7 +291,7 @@ public class Main {
         breakPanel.setBackground(Color.GRAY);
         tabbedPane.addTab("Break Stopper", null, breakPanel, null);
         breakPanel.setLayout(new MigLayout("", "[]", "[343.00]"));
-        
+
         // ************** Close to Tray ************** //
         CloseToSystemTray tray = new CloseToSystemTray();
         try {
@@ -300,7 +301,7 @@ public class Main {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Set the frame visible.
      */
@@ -345,17 +346,19 @@ public class Main {
     }
 
     /**
-     * This method updates the table found in the main
-     * window of the gui. It works by destroying the current table
-     * object and creates a new one.
+     * This method updates the table found in the main window of the gui. It
+     * works by destroying the current table object and creates a new one.
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void updateTable() {
-    	
-    	// Remove old table object
-    	mainPanel.remove(sc);
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static void updateTable() {
+        HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
+        HashMap<String, Double> finalMap =
+            TimeConvert.convertTime(toDisplayMap);
+
+        // Remove old table object
+        mainPanel.remove(sc);
         // All the keys we need are loaded from the map
-        setKeys(ProgramTimer.appMap.keySet());
+        setKeys(finalMap.keySet());
 
         model = new DefaultTableModel();
         table = new JTable(model);
@@ -364,12 +367,11 @@ public class Main {
         // Iterate through the entire map printing
         // the keys (program names) to the table left
         // program name coloumn.
-        for (String name : ProgramTimer.appMap.keySet()) {
+        for (String name : finalMap.keySet()) {
             String key = name.toString();
             model.addRow(new Object[] {key});
         }
 
-       
         data = model.getDataVector();
         row = (Vector) data.elementAt(0);
 
@@ -383,7 +385,7 @@ public class Main {
 
         // Append a new column with copied data
         model.addColumn("Time (seconds)",
-            ProgramTimer.appMap.values().toArray());
+            finalMap.values().toArray());
 
         sc = new JScrollPane(table);
         mainPanel.add(sc);
@@ -391,35 +393,37 @@ public class Main {
 
     /**
      * Getter for keys set.
+     * 
      * @return returns keys for appMap
      */
-	public static Set<String> getKeys() {
-		return keys;
-	}
+    public static Set<String> getKeys() {
+        return keys;
+    }
 
-	/**
-	 * Setter for keys set.
-	 * @param keys Set<String> 
-	 */
-	public static void setKeys(Set<String> keys) {
-		Main.keys = keys;
-	}
+    /**
+     * Setter for keys set.
+     * 
+     * @param keys
+     *            Set<String>
+     */
+    public static void setKeys(Set<String> keys) {
+        Main.keys = keys;
+    }
 
-	/**
-	 * Setter to set the frame location variables
-	 * to be used to create new windows that 
-	 * match the position of the main gui.
-	 */
-	public static void setWindowLoc() {
-		windowLoc = frame.getLocation();		
-	}
-	
-	/**
-	 * Getter used to return the Point
-	 * of the gui (x and y).
-	 * @return Point of main gui.
-	 */
-	public static Point getWindowLoc() {
-		return windowLoc;		
-	}
+    /**
+     * Setter to set the frame location variables to be used to create new
+     * windows that match the position of the main gui.
+     */
+    public static void setWindowLoc() {
+        windowLoc = frame.getLocation();
+    }
+
+    /**
+     * Getter used to return the Point of the gui (x and y).
+     * 
+     * @return Point of main gui.
+     */
+    public static Point getWindowLoc() {
+        return windowLoc;
+    }
 }
