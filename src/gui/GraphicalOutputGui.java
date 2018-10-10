@@ -36,6 +36,7 @@ public class GraphicalOutputGui extends JDialog {
      * Create the dialog.
      */
     public GraphicalOutputGui() {
+        setAlwaysOnTop(true);
         setTitle("Graphs");
         setBounds(100, 100, 450, 300);
 
