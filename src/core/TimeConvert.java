@@ -69,6 +69,40 @@ public class TimeConvert {
         return convertedMap;
     }
 
+    public static HashMap<String, Double> convertOutputTime(
+        HashMap<String, Long> map) {
+
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.FLOOR);
+
+        if (PreferencesGui.getExportIndex() == 0) {
+
+            for (String name : map.keySet()) {
+                Double convertedTime = (map.get(name) / 3600.0);
+                Double modTime = Double.valueOf(df.format(convertedTime));
+                convertedMap.put(name, modTime);
+                dataUnit = "Time (Hours)";
+            }
+        }
+        else if (PreferencesGui.getExportIndex() == 1) {
+            for (String name : map.keySet()) {
+                Double convertedTime = (map.get(name) / 60.0);
+                Double modTime = Double.valueOf(df.format(convertedTime));
+                convertedMap.put(name, modTime);
+                dataUnit = "Time (Minutes)";
+            }
+        }
+        else {
+            for (String name : map.keySet()) {
+                Double convertedTime = (map.get(name) / 1.0);
+                Double modTime = Double.valueOf(df.format(convertedTime));
+                convertedMap.put(name, modTime);
+                dataUnit = "Time (Seconds)";
+            }
+        }
+        return convertedMap;
+    }
+
     public static String getUnit() {
         return dataUnit;
     }

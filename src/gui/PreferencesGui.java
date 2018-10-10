@@ -48,10 +48,12 @@ public class PreferencesGui extends JDialog {
     private JSpinner numDecimalSpinner = new JSpinner();
     private static String[] exportTypes = {"Hours (ex: 1.3 hours)",
         "Minutes (ex: 95.2 minutes)", "Seconds (ex: 138 seconds)"};
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static JComboBox exportOptions = new JComboBox(exportTypes);
     private static String[] displayTypes = {"Hours (ex: 1.3 hours)",
         "Minutes (ex: 95.2 minutes)", "Seconds (ex: 138 seconds)",
         "Written (ex: 33 minutes 2 seconds)"};
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static JComboBox displayOptions = new JComboBox(displayTypes);
 
     /**
@@ -199,11 +201,11 @@ public class PreferencesGui extends JDialog {
 
         JLabel lblNumberOfDecimal = new JLabel("Number of decimal places");
         lblNumberOfDecimal.setEnabled(false);
-        displayPanel.add(lblNumberOfDecimal, "cell 3 1");
+        displayPanel.add(lblNumberOfDecimal, "cell 3 0");
         numDecimalSpinner.setEnabled(false);
 
         // ************** Decimal Spinner ************** //
-        displayPanel.add(numDecimalSpinner, "cell 4 1");
+        displayPanel.add(numDecimalSpinner, "cell 4 0");
         numDecimalSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent arg0) {

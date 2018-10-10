@@ -64,7 +64,6 @@ public class ProgramTimer implements Runnable {
                     mapTime();
                 }
                 catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
