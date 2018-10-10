@@ -105,15 +105,25 @@ public class TimeConvert {
     }
 
     public static HashMap<String, String> convertWritten(
-        // TODO make this work for hours
+
         HashMap<String, Long> map) {
         HashMap<String, String> stringMap = new HashMap<>();
         for (String name : map.keySet()) {
             String output = "";
+            String pluralHour = " hour ";
             String pluralMin = " minute ";
             String pluralSec = " seconds ";
             long convertedTime = map.get(name);
-            if (convertedTime >= 60) {
+
+            if (convertedTime > 3600) {
+                if (convertedTime >= 3600 * 2) {
+                    pluralHour = " hours ";
+                }
+                output = convertedTime / 3600 + pluralHour
+                    + (convertedTime - (convertedTime / 3600)) + pluralMin
+                    + convertedTime % 60 + pluralSec;
+            }
+            else if (convertedTime >= 60) {
                 if (convertedTime >= 120) {
                     pluralMin = " minutes ";
                 }
