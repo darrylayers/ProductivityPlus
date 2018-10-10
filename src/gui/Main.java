@@ -270,10 +270,23 @@ public class Main {
                 colData.add(row.get(mColIndex));
             }
 
+            /*            
             // Append a new column with copied data
             model.addColumn(TimeConvert.getUnit(),
-                finalMap2.values().toArray());
+                finalMap2.values().toArray());*/
 
+            if (PreferencesGui.getDisplayIndex() == 3) {
+                HashMap<String, String> finalMap3 =
+                    TimeConvert.convertWritten(toDisplayMap2);
+                // Append a new column with copied data
+                model.addColumn(TimeConvert.getUnit(),
+                    finalMap3.values().toArray());
+            }
+            else {
+                // Append a new column with copied data
+                model.addColumn(TimeConvert.getUnit(),
+                    finalMap2.values().toArray());
+            }
             sc = new JScrollPane(table);
             sc.setToolTipText(
                 "Click anywhere in the table to refresh the data!");
@@ -391,9 +404,22 @@ public class Main {
             colData.add(row.get(mColIndex));
         }
 
-        // Append a new column with copied data
+        /*        // Append a new column with copied data
         model.addColumn(TimeConvert.getUnit(),
-            finalMap.values().toArray());
+            finalMap.values().toArray());*/
+
+        if (PreferencesGui.getDisplayIndex() == 3) {
+            HashMap<String, String> finalMap2 =
+                TimeConvert.convertWritten(toDisplayMap);
+            // Append a new column with copied data
+            model.addColumn(TimeConvert.getUnit(),
+                finalMap2.values().toArray());
+        }
+        else {
+            // Append a new column with copied data
+            model.addColumn(TimeConvert.getUnit(),
+                finalMap.values().toArray());
+        }
 
         sc = new JScrollPane(table);
         mainPanel.add(sc);

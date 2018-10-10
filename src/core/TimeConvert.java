@@ -58,6 +58,7 @@ public class TimeConvert {
                 dataUnit = "Time (Minutes)";
             }
         }
+
         else {
             for (String name : map.keySet()) {
                 Double convertedTime = (map.get(name) / 1.0);
@@ -101,6 +102,34 @@ public class TimeConvert {
             }
         }
         return convertedMap;
+    }
+
+    public static HashMap<String, String> convertWritten(
+        HashMap<String, Long> map) {
+        HashMap<String, String> stringMap = new HashMap<>();
+        for (String name : map.keySet()) {
+            String output = "";
+            String pluralMin = " minute ";
+            String pluralSec = " seconds ";
+            long convertedTime = map.get(name);
+            if (convertedTime >= 60) {
+                if (convertedTime >= 120) {
+                    pluralMin = " minutes ";
+                }
+                output = convertedTime / 60 + pluralMin
+                    + convertedTime % 60 + pluralSec;
+            }
+            else {
+                if (convertedTime % 60 == 1) {
+                    pluralSec = " second ";
+                }
+                output = convertedTime + pluralSec;
+            }
+            stringMap.put(name, output);
+            dataUnit = "Time (Written)";
+        }
+        return stringMap;
+
     }
 
     public static String getUnit() {
