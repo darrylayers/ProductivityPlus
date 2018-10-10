@@ -105,6 +105,7 @@ public class TimeConvert {
     }
 
     public static HashMap<String, String> convertWritten(
+        // TODO make this work for hours
         HashMap<String, Long> map) {
         HashMap<String, String> stringMap = new HashMap<>();
         for (String name : map.keySet()) {
