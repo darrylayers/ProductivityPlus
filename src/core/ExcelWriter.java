@@ -35,6 +35,10 @@ public class ExcelWriter {
         throws IOException {
         ExploreDataGui.updateBar(0);
 
+        HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
+        HashMap<String, Double> finalMap =
+            TimeConvert.convertOutputTime(toDisplayMap);
+
         printedDate = date;
 
         // Create the Workbook
@@ -61,22 +65,22 @@ public class ExcelWriter {
         cell.setCellStyle(headerCellStyle);
 
         Cell cell1 = headerRow.createCell(1);
-        cell1.setCellValue("Time spent in seconds");
+        cell1.setCellValue(TimeConvert.getUnit());
         cell1.setCellStyle(headerCellStyle);
 
         int rowNum = 1;
         int j = 100 / appMap.size();
-        for (String name : appMap.keySet()) {
+        for (String name : finalMap.keySet()) {
             ExploreDataGui.updateBar(j);
             ExploreDataGui.updateBar(j);
             j = 2 * j;
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(name);
-            row.createCell(1).setCellValue(appMap.get(name));
+            row.createCell(1).setCellValue(finalMap.get(name));
         }
 
         // Resize all columns to fit the content size
-        for (int i = 0; i < appMap.size(); i++) {
+        for (int i = 0; i < finalMap.size(); i++) {
             sheet.autoSizeColumn(i);
         }
 
