@@ -1,5 +1,7 @@
 package core;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 import gui.PreferencesGui;
@@ -13,7 +15,9 @@ import gui.PreferencesGui;
  * @version 10/8/18
  */
 public class TimeConvert {
+
     public static HashMap<String, Double> convertedMap = new HashMap<>();;
+    private static String dataUnit = "";
 
     /**
      * We need to be able to convert the given time in seconds to the desired
@@ -34,66 +38,38 @@ public class TimeConvert {
     public static HashMap<String, Double> convertTime(
         HashMap<String, Long> map) {
 
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.FLOOR);
+
         if (PreferencesGui.getDisplayIndex() == 0) {
 
             for (String name : map.keySet()) {
                 Double convertedTime = (map.get(name) / 3600.0);
-                convertedTime = Math.floor(convertedTime * 100) / 100;
-                convertedMap.put(name, convertedTime);
+                Double modTime = Double.valueOf(df.format(convertedTime));
+                convertedMap.put(name, modTime);
+                dataUnit = "Time (Hours)";
             }
         }
         else if (PreferencesGui.getDisplayIndex() == 1) {
             for (String name : map.keySet()) {
                 Double convertedTime = (map.get(name) / 60.0);
-                convertedTime = Math.floor(convertedTime * 100) / 100;
-                convertedMap.put(name, convertedTime);
+                Double modTime = Double.valueOf(df.format(convertedTime));
+                convertedMap.put(name, modTime);
+                dataUnit = "Time (Minutes)";
             }
         }
         else {
             for (String name : map.keySet()) {
                 Double convertedTime = (map.get(name) / 1.0);
-                convertedTime = Math.floor(convertedTime * 100) / 100;
-                convertedMap.put(name, convertedTime);
+                Double modTime = Double.valueOf(df.format(convertedTime));
+                convertedMap.put(name, modTime);
+                dataUnit = "Time (Seconds)";
             }
         }
         return convertedMap;
     }
 
-}
-/*    public static void convertTime() {
-        convertedMap = (HashMap<String, Double>) ProgramTimer.appMap.clone();
-        // Check to see which option is checked in preferences class.
-        if (PreferencesGui.getDisplayIndex() == 0) {
-            for (String name : convertedMap.keySet()) {
-                Double convertedTime = (convertedMap.get(name) / 3600.0);
-                convertedTime = Math.floor(convertedTime * 100) / 100;
-                convertedMap.put(name, convertedTime);
-            }
-        }
-        else if (PreferencesGui.getDisplayIndex() == 1) {
-            for (String name : convertedMap.keySet()) {
-                Double convertedTime = (convertedMap.get(name) / 60.0);
-                convertedTime = Math.floor(convertedTime * 100) / 100;
-                convertedMap.put(name, convertedTime);
-            }
-        }
-        else {
-            for (String name : convertedMap.keySet()) {
-                Double convertedTime = (convertedMap.get(name));
-                convertedTime = Math.floor(convertedTime * 100) / 100;
-                convertedMap.put(name, convertedTime);
-            }
-        }
+    public static String getUnit() {
+        return dataUnit;
     }
-    public static Double getUnit() {
-        // Check to see which option is checked in preferences class.
-        if (PreferencesGui.getDisplayIndex() == 0) {
-            return 3600.0;
-        }
-        else if (PreferencesGui.getDisplayIndex() == 1) {
-            return 60.0;
-        }
-        else {
-            return 1.0;
-        }
-    }*/
+}

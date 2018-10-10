@@ -175,7 +175,7 @@ public class Main {
         buttonPanel.setToolTipText("Program data for today");
         buttonPanel.setBackground(Color.WHITE);
         mainPanel.add(buttonPanel, "cell 0 1,grow");
-        buttonPanel.setLayout(new MigLayout("", "[100]", "[25][][][]"));
+        buttonPanel.setLayout(new MigLayout("", "[100]", "[25][][][][]"));
 
         // ************** Start button ************** //
 
@@ -238,7 +238,13 @@ public class Main {
         // ************** Table ************** //
 
         // All the keys we need are loaded from the map
-        setKeys(ProgramTimer.appMap.keySet());
+
+        HashMap<String, Long> toDisplayMap2 =
+            new HashMap<>(ProgramTimer.appMap);
+        HashMap<String, Double> finalMap2 =
+            TimeConvert.convertTime(toDisplayMap2);
+
+        setKeys(finalMap2.keySet());
         try {
 
             model = new DefaultTableModel();
@@ -248,7 +254,7 @@ public class Main {
             // Iterate through the entire map printing
             // the keys (program names) to the table left
             // program name coloumn.
-            for (String name : ProgramTimer.appMap.keySet()) {
+            for (String name : finalMap2.keySet()) {
                 String key = name.toString();
                 model.addRow(new Object[] {key});
             }
@@ -265,16 +271,18 @@ public class Main {
             }
 
             // Append a new column with copied data
-            model.addColumn("Time (seconds)",
-                ProgramTimer.appMap.values().toArray());
+            model.addColumn(TimeConvert.getUnit(),
+                finalMap2.values().toArray());
 
             sc = new JScrollPane(table);
+            sc.setToolTipText(
+                "Click anywhere in the table to refresh the data!");
 
             mainPanel.add(sc);
         }
         catch (ArrayIndexOutOfBoundsException exception) {
             model = new DefaultTableModel(1, 2);
-            String[] colHeadings = {"Program", "Time (seconds)"};
+            String[] colHeadings = {"Program", TimeConvert.getUnit()};
             model.setColumnIdentifiers(colHeadings);
             table = new JTable(model);
             sc = new JScrollPane(table);
@@ -384,7 +392,7 @@ public class Main {
         }
 
         // Append a new column with copied data
-        model.addColumn("Time (seconds)",
+        model.addColumn(TimeConvert.getUnit(),
             finalMap.values().toArray());
 
         sc = new JScrollPane(table);

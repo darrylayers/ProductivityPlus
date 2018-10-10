@@ -77,7 +77,7 @@ public class PreferencesGui extends JDialog {
     public PreferencesGui() {
         setAlwaysOnTop(true);
         setTitle("Preferences");
-        setBounds(100, 100, 502, 363);
+        setBounds(100, 100, 502, 411);
 
         // ************** Frame panels and panes ************** //
         getContentPane()
@@ -86,7 +86,7 @@ public class PreferencesGui extends JDialog {
         getContentPane().add(contentPanel, "cell 0 0,grow");
         contentPanel.setLayout(
             new MigLayout("", "[217.00,grow][][]",
-                "[][63.00][33.00,grow][][40.00,grow][][40.00,grow]"));
+                "[][63.00][33.00,grow][][40.00,grow][][40.00,grow][]"));
 
         JPanel prefTimerPanel = new JPanel();
         contentPanel.add(prefTimerPanel, "cell 0 1,grow");
@@ -107,7 +107,7 @@ public class PreferencesGui extends JDialog {
 
         JPanel displayPanel = new JPanel();
         contentPanel.add(displayPanel, "cell 0 6,grow");
-        displayPanel.setLayout(new MigLayout("", "[][][][][grow]", "[grow]"));
+        displayPanel.setLayout(new MigLayout("", "[][][][][grow]", "[grow][]"));
 
         // ************** Program Timer Preferences Label ************** //
         JLabel lblProgramTimerPreferences =
@@ -130,16 +130,6 @@ public class PreferencesGui extends JDialog {
         });
         spinner.setModel(new SpinnerNumberModel(getIdleTimer(), new Long(0),
             null, new Long(1)));
-
-        // ************** Decimal Spinner ************** //
-        displayPanel.add(numDecimalSpinner, "cell 4 0");
-        numDecimalSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent arg0) {
-                setNumberSpinner();
-            }
-        });
-        numDecimalSpinner.setValue(getNumberSpinner());
 
         // ************** Minutes Label ************** //
         JLabel lblMinutes = new JLabel("(minutes)");
@@ -201,13 +191,26 @@ public class PreferencesGui extends JDialog {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 setDisplayIndex();
+                Main.updateTable();
             }
         });
         displayOptions.setSelectedIndex(getDisplayIndex());
         displayPanel.add(displayOptions, "cell 0 0,grow");
 
         JLabel lblNumberOfDecimal = new JLabel("Number of decimal places");
-        displayPanel.add(lblNumberOfDecimal, "cell 3 0");
+        lblNumberOfDecimal.setEnabled(false);
+        displayPanel.add(lblNumberOfDecimal, "cell 3 1");
+        numDecimalSpinner.setEnabled(false);
+
+        // ************** Decimal Spinner ************** //
+        displayPanel.add(numDecimalSpinner, "cell 4 1");
+        numDecimalSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                setNumberSpinner();
+            }
+        });
+        numDecimalSpinner.setValue(getNumberSpinner());
 
         // ************** Idle Check Box Listener ************** //
         idleTimerCheckBox.addMouseListener(new MouseAdapter() {
