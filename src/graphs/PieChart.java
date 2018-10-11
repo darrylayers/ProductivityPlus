@@ -16,6 +16,7 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 
 import core.DataHandling;
+import gui.GraphicalOutputGui;
 
 public class PieChart extends ApplicationFrame {
 
@@ -37,7 +38,7 @@ public class PieChart extends ApplicationFrame {
         orderedMap = DataHandling.orderedMap();
         DefaultPieDataset localDefaultPieDataset = new DefaultPieDataset();
 
-        String keyList[] = new String[5];
+        String keyList[] = new String[GraphicalOutputGui.getNumProgs()];
         String lKeyLast = "";
         int k = 1;
         int counter = 0;
@@ -49,7 +50,7 @@ public class PieChart extends ApplicationFrame {
         keyList[0] = lKeyLast;
         String oldKey = "";
 
-        for (int p = 0; p < 4; p++) {
+        for (int p = 0; p < GraphicalOutputGui.getNumProgs() - 1; p++) {
             for (String key : orderedMap.keySet()) {
                 if (key == keyList[counter]) {
                     keyList[k] = oldKey;
@@ -59,7 +60,7 @@ public class PieChart extends ApplicationFrame {
                 oldKey = key;
             }
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < GraphicalOutputGui.getNumProgs(); i++) {
             System.out.println(keyList[i]);
             localDefaultPieDataset.setValue(
                 keyList[i], orderedMap.get(keyList[i]));
@@ -73,7 +74,7 @@ public class PieChart extends ApplicationFrame {
             true, true, false);
         PiePlot localPiePlot = (PiePlot) localJFreeChart.getPlot();
 
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < GraphicalOutputGui.getNumProgs() - 1; j++) {
             localPiePlot.setSectionPaint(
                 orderedMap.entrySet().iterator().next().getKey(),
                 new Color(160, 160, 255));

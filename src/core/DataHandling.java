@@ -250,6 +250,10 @@ public class DataHandling {
     }
 
     public static LinkedHashMap<String, Double> orderedMap() {
+        /**
+         * Need to put a check in here to know which map to load...
+         */
+
         HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
         HashMap<String, Double> finalMap =
             TimeConvert.convertOutputTime(toDisplayMap);
