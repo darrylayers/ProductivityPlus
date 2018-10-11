@@ -33,7 +33,8 @@ import gui.ExploreDataGui;
  */
 public class DataHandling {
 
-    public static File savedMap = new File(getDate() + ".map");
+    public static File savedMap =
+        new File("./saved_data/" + getDate() + ".map");
 
     /**
      * This method loads the appMap hash map in ProgramTimer.java
@@ -104,7 +105,8 @@ public class DataHandling {
         HashMap<String, Long> loadedAppMap = new HashMap<>();
         try {
             ObjectInputStream ois =
-                new ObjectInputStream(new FileInputStream(date + ".map"));
+                new ObjectInputStream(
+                    new FileInputStream("./saved_data/" + date + ".map"));
             Object readMap = ois.readObject();
             if (readMap != null && readMap instanceof HashMap) {
                 loadedAppMap
@@ -160,7 +162,8 @@ public class DataHandling {
             try {
                 ObjectInputStream ois =
                     new ObjectInputStream(
-                        new FileInputStream(dates.get(j) + ".map"));
+                        new FileInputStream(
+                            "./saved_data/" + dates.get(j) + ".map"));
                 Object readMap = ois.readObject();
                 if (readMap != null && readMap instanceof HashMap) {
                     loadedAppMap
@@ -207,7 +210,6 @@ public class DataHandling {
             i = 2 * i;
 
         }
-
         ExcelWriter.write(combinedMaps,
             "_date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
 

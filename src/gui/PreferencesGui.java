@@ -193,7 +193,6 @@ public class PreferencesGui extends JDialog {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 setDisplayIndex();
-                Main.updateTable();
             }
         });
         displayOptions.setSelectedIndex(getDisplayIndex());
@@ -241,7 +240,6 @@ public class PreferencesGui extends JDialog {
         saveButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                Main.updateTable();
                 dispose();
             }
         });
@@ -254,7 +252,6 @@ public class PreferencesGui extends JDialog {
         cancelButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                Main.updateTable();
                 dispose();
             }
         });

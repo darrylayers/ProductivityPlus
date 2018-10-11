@@ -1,18 +1,19 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,7 +26,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import core.CloseToSystemTray;
 import core.DataHandling;
@@ -55,13 +60,7 @@ public class Main {
 
     // Table fields
     private static DefaultTableModel model;
-    private static JTable table;
-    @SuppressWarnings("rawtypes")
-    private static Vector data;
-    @SuppressWarnings("rawtypes")
-    private static Vector row;
-    @SuppressWarnings("rawtypes")
-    private static List colData;
+    static JTable table;
     private static Set<String> keys;
     private static JScrollPane sc;
 
@@ -75,7 +74,6 @@ public class Main {
     /**
      * Constructor that builds the frame.
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public Main() {
 
         // Load the hashmap info ProgramTimer.appMap
@@ -90,7 +88,7 @@ public class Main {
 
         frame = new JFrame();
         frame.setLocation(100, 100);
-        frame.setSize(533, 381);
+        frame.setSize(666, 554);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setTitle("ProductivityPlus");
         frame.setResizable(false);
@@ -105,22 +103,43 @@ public class Main {
         JMenu mnFile = new JMenu("File");
         menuBar.add(mnFile);
 
-        JMenuItem mntmItem = new JMenuItem("Item 1");
+        JMenuItem mntmItem = new JMenuItem("Open output folder");
+        mntmItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    Desktop.getDesktop().open(new File("./output"));
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         mnFile.add(mntmItem);
 
-        JMenuItem mntmItem_1 = new JMenuItem("Item 2");
+        JMenuItem mntmItem_1 = new JMenuItem("Open saved data folder");
+        mntmItem_1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    Desktop.getDesktop().open(new File("./saved_data"));
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
         mnFile.add(mntmItem_1);
 
         JMenu mnEdit = new JMenu("Edit");
         menuBar.add(mnEdit);
 
-        JMenuItem mntmItem_2 = new JMenuItem("Item 1");
-        mnEdit.add(mntmItem_2);
-
-        JMenu mnHelp = new JMenu("Help");
-        menuBar.add(mnHelp);
-
         JMenuItem mnPreferences = new JMenuItem("Preferences");
+        mnEdit.add(mnPreferences);
         mnPreferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -136,7 +155,9 @@ public class Main {
                 }
             }
         });
-        mnHelp.add(mnPreferences);
+
+        JMenu mnHelp = new JMenu("Help");
+        menuBar.add(mnHelp);
 
         JMenuItem mnAbout = new JMenuItem("About");
         mnAbout.addActionListener(new ActionListener() {
@@ -147,13 +168,22 @@ public class Main {
         });
         mnHelp.add(mnAbout);
 
+        JMenuItem mntmFaq = new JMenuItem("FAQ");
+        mntmFaq.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                FaqGui.newWindow();
+            }
+        });
+        mnHelp.add(mntmFaq);
+
         // ************** Panel creations ************** //
 
         frame.getContentPane()
-            .setLayout(new MigLayout("", "[531.00px]", "[337.00px]"));
+            .setLayout(new MigLayout("", "[678.00px]", "[482.00px]"));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setLayout(
-            new MigLayout("", "[110.00][224.00,grow]", "[35.00][200.00,grow]"));
+            new MigLayout("", "[110.00][224.00,grow]", "[35.00][414.00,grow]"));
 
         // ************** Tab pane ************** //
 
@@ -175,12 +205,12 @@ public class Main {
         buttonPanel.setToolTipText("Program data for today");
         buttonPanel.setBackground(Color.WHITE);
         mainPanel.add(buttonPanel, "cell 0 1,grow");
-        buttonPanel.setLayout(new MigLayout("", "[100]", "[25][][][][]"));
+        buttonPanel.setLayout(new MigLayout("", "[100]", "[25][][][][][][][]"));
 
         // ************** Start button ************** //
 
         JButton startTimerBtn = new JButton("Start Timer");
-        buttonPanel.add(startTimerBtn, "cell 0 0");
+        buttonPanel.add(startTimerBtn, "cell 0 0,growx");
         startTimerBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -193,7 +223,7 @@ public class Main {
         // ************** Stop button ************** //
 
         stopTimerBtn = new JButton("Stop Timer");
-        buttonPanel.add(stopTimerBtn, "cell 0 1");
+        buttonPanel.add(stopTimerBtn, "cell 0 1,growx");
         stopTimerBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -206,7 +236,7 @@ public class Main {
                 catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                updateTable();
+                updateTable(false);
 
             }
         });
@@ -221,10 +251,11 @@ public class Main {
                 GraphicalOutputGui.newWindow();
             }
         });
-        buttonPanel.add(graphOutputBtn, "cell 0 2");
+        buttonPanel.add(graphOutputBtn, "cell 0 2,growx");
         graphOutputBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         // ************** Explore data button ************** //
+
         JButton exploreDataBtn = new JButton("Explore Data");
         exploreDataBtn.addMouseListener(new MouseAdapter() {
             @Override
@@ -232,74 +263,39 @@ public class Main {
                 ExploreDataGui.newWindow();
             }
         });
-        buttonPanel.add(exploreDataBtn, "cell 0 3");
+        buttonPanel.add(exploreDataBtn, "cell 0 3,growx");
         exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
+
+        JLabel secretLabel = new JLabel("");
+        buttonPanel.add(secretLabel, "cell 0 7,alignx center");
+
+        JButton btnRefreshTable = new JButton("Refresh Table");
+        btnRefreshTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                updateTable(false);
+                secretLabel.setText("  ");
+                secretLabel.setText("");
+
+            }
+        });
+        btnRefreshTable.setFont(new Font("Verdana", Font.PLAIN, 11));
+        buttonPanel.add(btnRefreshTable, "cell 0 4,growx");
 
         // ************** Table ************** //
 
-        // All the keys we need are loaded from the map
-
-        HashMap<String, Long> toDisplayMap2 =
-            new HashMap<>(ProgramTimer.appMap);
-        HashMap<String, Double> finalMap2 =
-            TimeConvert.convertTime(toDisplayMap2);
-
-        setKeys(finalMap2.keySet());
-        try {
-
-            model = new DefaultTableModel();
-            table = new JTable(model);
-            model.addColumn("Program");
-
-            // Iterate through the entire map printing
-            // the keys (program names) to the table left
-            // program name coloumn.
-            for (String name : finalMap2.keySet()) {
-                String key = name.toString();
-                model.addRow(new Object[] {key});
-            }
-
-            data = model.getDataVector();
-            row = (Vector) data.elementAt(0);
-
-            // Load all the program times to the table
-            int mColIndex = 0;
-            colData = new ArrayList(table.getRowCount());
-            for (int i = 0; i < table.getRowCount(); i++) {
-                row = (Vector) data.elementAt(i);
-                colData.add(row.get(mColIndex));
-            }
-
-            /*            
-            // Append a new column with copied data
-            model.addColumn(TimeConvert.getUnit(),
-                finalMap2.values().toArray());*/
-
-            if (PreferencesGui.getDisplayIndex() == 3) {
-                HashMap<String, String> finalMap3 =
-                    TimeConvert.convertWritten(toDisplayMap2);
-                // Append a new column with copied data
-                model.addColumn(TimeConvert.getUnit(),
-                    finalMap3.values().toArray());
-            }
-            else {
-                // Append a new column with copied data
-                model.addColumn(TimeConvert.getUnit(),
-                    finalMap2.values().toArray());
-            }
-            sc = new JScrollPane(table);
-            sc.setToolTipText(
-                "Click anywhere in the table to refresh the data!");
-
-            mainPanel.add(sc);
-        }
-        catch (ArrayIndexOutOfBoundsException exception) {
+        File savedMap =
+            new File("./saved_data/" + DataHandling.getDate() + ".map");
+        if (!savedMap.exists()) {
             model = new DefaultTableModel(1, 2);
-            String[] colHeadings = {"Program", TimeConvert.getUnit()};
+            String[] colHeadings = {"Program", "Time"};
             model.setColumnIdentifiers(colHeadings);
             table = new JTable(model);
             sc = new JScrollPane(table);
             mainPanel.add(sc);
+        }
+        else {
+            updateTable(true);
         }
 
         // ************** Pomodoro Timer ************** //
@@ -370,59 +366,82 @@ public class Main {
      * This method updates the table found in the main window of the gui. It
      * works by destroying the current table object and creates a new one.
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void updateTable() {
+    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    public static void updateTable(boolean fresh) {
         HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
         HashMap<String, Double> finalMap =
-            TimeConvert.convertTime(toDisplayMap);
+            new HashMap<>(TimeConvert.convertTime(toDisplayMap));
 
         // Remove old table object
-        mainPanel.remove(sc);
+        if (!fresh) {
+            mainPanel.remove(sc);
+            mainPanel.remove(table);
+        }
+
         // All the keys we need are loaded from the map
         setKeys(finalMap.keySet());
 
-        model = new DefaultTableModel();
+        String columns[] = {"Program", TimeConvert.getUnit()};
+
+        model = new DefaultTableModel(getRows(finalMap), columns) {
+            @Override
+            public Class getColumnClass(int column) {
+                Class returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                }
+                else {
+                    returnValue = Object.class;
+                }
+                return returnValue;
+            }
+        };
         table = new JTable(model);
-        model.addColumn("Program");
-
-        // Iterate through the entire map printing
-        // the keys (program names) to the table left
-        // program name coloumn.
-        for (String name : finalMap.keySet()) {
-            String key = name.toString();
-            model.addRow(new Object[] {key});
-        }
-
-        data = model.getDataVector();
-        row = (Vector) data.elementAt(0);
-
-        // Load all the program times to the table
-        int mColIndex = 0;
-        colData = new ArrayList(table.getRowCount());
-        for (int i = 0; i < table.getRowCount(); i++) {
-            row = (Vector) data.elementAt(i);
-            colData.add(row.get(mColIndex));
-        }
-
-        /*        // Append a new column with copied data
-        model.addColumn(TimeConvert.getUnit(),
-            finalMap.values().toArray());*/
 
         if (PreferencesGui.getDisplayIndex() == 3) {
+            model = new DefaultTableModel();
+            table = new JTable(model);
+            model.addColumn("Program");
+            setKeys(finalMap.keySet());
+            for (String name : finalMap.keySet()) {
+                String key = name.toString();
+                model.addRow(new Object[] {key});
+            }
             HashMap<String, String> finalMap2 =
                 TimeConvert.convertWritten(toDisplayMap);
+
             // Append a new column with copied data
             model.addColumn(TimeConvert.getUnit(),
                 finalMap2.values().toArray());
         }
         else {
-            // Append a new column with copied data
-            model.addColumn(TimeConvert.getUnit(),
-                finalMap.values().toArray());
+
+            RowSorter<TableModel> sorter =
+                new TableRowSorter<TableModel>(model);
+            table.setRowSorter(sorter);
+
         }
+        DefaultTableCellRenderer renderer =
+            (DefaultTableCellRenderer) table.getDefaultRenderer(Double.class);
+        renderer.setHorizontalAlignment(JLabel.LEFT);
 
         sc = new JScrollPane(table);
         mainPanel.add(sc);
+
+    }
+
+    public static Object[][] getRows(HashMap<String, Double> map) {
+        Object[][] rows = new Object[map.size()][2];
+        Set<Entry<String, Double>> entries = map.entrySet();
+        Iterator<Entry<String, Double>> entriesIterator = entries.iterator();
+        int i = 0;
+        while (entriesIterator.hasNext()) {
+            Entry<String, Double> mapping = entriesIterator.next();
+            rows[i][0] = mapping.getKey();
+            rows[i][1] = mapping.getValue();
+            i++;
+        }
+        return rows;
     }
 
     /**
