@@ -251,7 +251,8 @@ public class Main {
 
         // ************** Table ************** //
 
-        File savedMap = new File(DataHandling.getDate() + ".map");
+        File savedMap =
+            new File("./saved_data/" + DataHandling.getDate() + ".map");
         if (!savedMap.exists()) {
             model = new DefaultTableModel(1, 2);
             String[] colHeadings = {"Program", "Time"};
