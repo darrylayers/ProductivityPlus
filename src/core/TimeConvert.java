@@ -120,7 +120,9 @@ public class TimeConvert {
                     pluralHour = " hours ";
                 }
                 output = convertedTime / 3600 + pluralHour
-                    + (convertedTime - (convertedTime / 3600)) + pluralMin
+                    + Integer.valueOf(
+                        (int) Math.floor(((convertedTime / 3600.0) - 1) * 60))
+                    + " minutes "
                     + convertedTime % 60 + pluralSec;
             }
             else if (convertedTime >= 60) {
