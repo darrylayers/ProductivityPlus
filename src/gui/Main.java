@@ -10,7 +10,9 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
@@ -25,7 +27,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import core.CloseToSystemTray;
 import core.DataHandling;
@@ -394,30 +400,32 @@ public class Main {
         // All the keys we need are loaded from the map
         setKeys(finalMap.keySet());
 
-        model = new DefaultTableModel();
+        String columns[] = {"Program Times", TimeConvert.getUnit()};
+
+        model = new DefaultTableModel(getRows(finalMap), columns) {
+            @Override
+            public Class getColumnClass(int column) {
+                Class returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                }
+                else {
+                    returnValue = Object.class;
+                }
+                return returnValue;
+            }
+        };
         table = new JTable(model);
-        model.addColumn("Program");
-
-        // Iterate through the entire map printing
-        // the keys (program names) to the table left
-        // program name coloumn.
-        for (String name : finalMap.keySet()) {
-            String key = name.toString();
-            model.addRow(new Object[] {key});
-        }
-
-        data = model.getDataVector();
-        row = (Vector) data.elementAt(0);
-
-        // Load all the program times to the table
-        int mColIndex = 0;
-        colData = new ArrayList(table.getRowCount());
-        for (int i = 0; i < table.getRowCount(); i++) {
-            row = (Vector) data.elementAt(i);
-            colData.add(row.get(mColIndex));
-        }
 
         if (PreferencesGui.getDisplayIndex() == 3) {
+            model = new DefaultTableModel();
+            table = new JTable(model);
+            model.addColumn("Program");
+            setKeys(finalMap.keySet());
+            for (String name : finalMap.keySet()) {
+                String key = name.toString();
+                model.addRow(new Object[] {key});
+            }
             HashMap<String, String> finalMap2 =
                 TimeConvert.convertWritten(toDisplayMap);
             // Append a new column with copied data
@@ -425,13 +433,32 @@ public class Main {
                 finalMap2.values().toArray());
         }
         else {
-            // Append a new column with copied data
-            model.addColumn(TimeConvert.getUnit(),
-                finalMap.values().toArray());
+
+            RowSorter<TableModel> sorter =
+                new TableRowSorter<TableModel>(model);
+
         }
+        DefaultTableCellRenderer renderer =
+            (DefaultTableCellRenderer) table.getDefaultRenderer(Double.class);
+        renderer.setHorizontalAlignment(JLabel.LEFT);
 
         sc = new JScrollPane(table);
         mainPanel.add(sc);
+
+    }
+
+    public static Object[][] getRows(HashMap<String, Double> map) {
+        Object[][] rows = new Object[map.size()][2];
+        Set entries = map.entrySet();
+        Iterator entriesIterator = entries.iterator();
+        int i = 0;
+        while (entriesIterator.hasNext()) {
+            Map.Entry mapping = (Map.Entry) entriesIterator.next();
+            rows[i][0] = mapping.getKey();
+            rows[i][1] = mapping.getValue();
+            i++;
+        }
+        return rows;
     }
 
     /**
