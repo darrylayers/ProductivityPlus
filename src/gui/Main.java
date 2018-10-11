@@ -55,7 +55,7 @@ public class Main {
 
     // Table fields
     private static DefaultTableModel model;
-    private static JTable table;
+    static JTable table;
     @SuppressWarnings("rawtypes")
     private static Vector data;
     @SuppressWarnings("rawtypes")
@@ -175,7 +175,7 @@ public class Main {
         buttonPanel.setToolTipText("Program data for today");
         buttonPanel.setBackground(Color.WHITE);
         mainPanel.add(buttonPanel, "cell 0 1,grow");
-        buttonPanel.setLayout(new MigLayout("", "[100]", "[25][][][][]"));
+        buttonPanel.setLayout(new MigLayout("", "[100]", "[25][][][][][][][]"));
 
         // ************** Start button ************** //
 
@@ -235,6 +235,22 @@ public class Main {
         buttonPanel.add(exploreDataBtn, "cell 0 3");
         exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
+        JLabel secretLabel = new JLabel("");
+        buttonPanel.add(secretLabel, "cell 0 7,alignx center");
+
+        JButton btnRefreshTable = new JButton("Refresh Table");
+        btnRefreshTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                updateTable();
+                secretLabel.setText("  ");
+                secretLabel.setText("");
+
+            }
+        });
+        btnRefreshTable.setFont(new Font("Verdana", Font.PLAIN, 11));
+        buttonPanel.add(btnRefreshTable, "cell 0 4");
+
         // ************** Table ************** //
 
         // All the keys we need are loaded from the map
@@ -269,11 +285,6 @@ public class Main {
                 row = (Vector) data.elementAt(i);
                 colData.add(row.get(mColIndex));
             }
-
-            /*            
-            // Append a new column with copied data
-            model.addColumn(TimeConvert.getUnit(),
-                finalMap2.values().toArray());*/
 
             if (PreferencesGui.getDisplayIndex() == 3) {
                 HashMap<String, String> finalMap3 =
@@ -374,10 +385,12 @@ public class Main {
     public static void updateTable() {
         HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
         HashMap<String, Double> finalMap =
-            TimeConvert.convertTime(toDisplayMap);
+            new HashMap<>(TimeConvert.convertTime(toDisplayMap));
 
         // Remove old table object
+        table.addNotify();
         mainPanel.remove(sc);
+        mainPanel.remove(table);
         // All the keys we need are loaded from the map
         setKeys(finalMap.keySet());
 
@@ -403,10 +416,6 @@ public class Main {
             row = (Vector) data.elementAt(i);
             colData.add(row.get(mColIndex));
         }
-
-        /*        // Append a new column with copied data
-        model.addColumn(TimeConvert.getUnit(),
-            finalMap.values().toArray());*/
 
         if (PreferencesGui.getDisplayIndex() == 3) {
             HashMap<String, String> finalMap2 =
