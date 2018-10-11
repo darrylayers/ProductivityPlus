@@ -207,7 +207,6 @@ public class DataHandling {
             i = 2 * i;
 
         }
-
         ExcelWriter.write(combinedMaps,
             "_date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
 

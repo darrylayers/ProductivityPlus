@@ -7,14 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -62,12 +60,6 @@ public class Main {
     // Table fields
     private static DefaultTableModel model;
     static JTable table;
-    @SuppressWarnings("rawtypes")
-    private static Vector data;
-    @SuppressWarnings("rawtypes")
-    private static Vector row;
-    @SuppressWarnings("rawtypes")
-    private static List colData;
     private static Set<String> keys;
     private static JScrollPane sc;
 
@@ -81,7 +73,6 @@ public class Main {
     /**
      * Constructor that builds the frame.
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public Main() {
 
         // Load the hashmap info ProgramTimer.appMap
@@ -212,7 +203,7 @@ public class Main {
                 catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                updateTable();
+                updateTable(false);
 
             }
         });
@@ -231,6 +222,7 @@ public class Main {
         graphOutputBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         // ************** Explore data button ************** //
+
         JButton exploreDataBtn = new JButton("Explore Data");
         exploreDataBtn.addMouseListener(new MouseAdapter() {
             @Override
@@ -248,7 +240,7 @@ public class Main {
         btnRefreshTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                updateTable();
+                updateTable(false);
                 secretLabel.setText("  ");
                 secretLabel.setText("");
 
@@ -259,64 +251,17 @@ public class Main {
 
         // ************** Table ************** //
 
-        // All the keys we need are loaded from the map
-
-        HashMap<String, Long> toDisplayMap2 =
-            new HashMap<>(ProgramTimer.appMap);
-        HashMap<String, Double> finalMap2 =
-            TimeConvert.convertTime(toDisplayMap2);
-
-        setKeys(finalMap2.keySet());
-        try {
-
-            model = new DefaultTableModel();
-            table = new JTable(model);
-            model.addColumn("Program");
-
-            // Iterate through the entire map printing
-            // the keys (program names) to the table left
-            // program name coloumn.
-            for (String name : finalMap2.keySet()) {
-                String key = name.toString();
-                model.addRow(new Object[] {key});
-            }
-
-            data = model.getDataVector();
-            row = (Vector) data.elementAt(0);
-
-            // Load all the program times to the table
-            int mColIndex = 0;
-            colData = new ArrayList(table.getRowCount());
-            for (int i = 0; i < table.getRowCount(); i++) {
-                row = (Vector) data.elementAt(i);
-                colData.add(row.get(mColIndex));
-            }
-
-            if (PreferencesGui.getDisplayIndex() == 3) {
-                HashMap<String, String> finalMap3 =
-                    TimeConvert.convertWritten(toDisplayMap2);
-                // Append a new column with copied data
-                model.addColumn(TimeConvert.getUnit(),
-                    finalMap3.values().toArray());
-            }
-            else {
-                // Append a new column with copied data
-                model.addColumn(TimeConvert.getUnit(),
-                    finalMap2.values().toArray());
-            }
-            sc = new JScrollPane(table);
-            sc.setToolTipText(
-                "Click anywhere in the table to refresh the data!");
-
-            mainPanel.add(sc);
-        }
-        catch (ArrayIndexOutOfBoundsException exception) {
+        File savedMap = new File(DataHandling.getDate() + ".map");
+        if (!savedMap.exists()) {
             model = new DefaultTableModel(1, 2);
-            String[] colHeadings = {"Program", TimeConvert.getUnit()};
+            String[] colHeadings = {"Program", "Time"};
             model.setColumnIdentifiers(colHeadings);
             table = new JTable(model);
             sc = new JScrollPane(table);
             mainPanel.add(sc);
+        }
+        else {
+            updateTable(true);
         }
 
         // ************** Pomodoro Timer ************** //
@@ -387,20 +332,22 @@ public class Main {
      * This method updates the table found in the main window of the gui. It
      * works by destroying the current table object and creates a new one.
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void updateTable() {
+    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    public static void updateTable(boolean fresh) {
         HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
         HashMap<String, Double> finalMap =
             new HashMap<>(TimeConvert.convertTime(toDisplayMap));
 
         // Remove old table object
-        table.addNotify();
-        mainPanel.remove(sc);
-        mainPanel.remove(table);
+        if (!fresh) {
+            mainPanel.remove(sc);
+            mainPanel.remove(table);
+        }
+
         // All the keys we need are loaded from the map
         setKeys(finalMap.keySet());
 
-        String columns[] = {"Program Times", TimeConvert.getUnit()};
+        String columns[] = {"Program", TimeConvert.getUnit()};
 
         model = new DefaultTableModel(getRows(finalMap), columns) {
             @Override
@@ -428,6 +375,7 @@ public class Main {
             }
             HashMap<String, String> finalMap2 =
                 TimeConvert.convertWritten(toDisplayMap);
+
             // Append a new column with copied data
             model.addColumn(TimeConvert.getUnit(),
                 finalMap2.values().toArray());
@@ -436,6 +384,7 @@ public class Main {
 
             RowSorter<TableModel> sorter =
                 new TableRowSorter<TableModel>(model);
+            table.setRowSorter(sorter);
 
         }
         DefaultTableCellRenderer renderer =
@@ -449,11 +398,11 @@ public class Main {
 
     public static Object[][] getRows(HashMap<String, Double> map) {
         Object[][] rows = new Object[map.size()][2];
-        Set entries = map.entrySet();
-        Iterator entriesIterator = entries.iterator();
+        Set<Entry<String, Double>> entries = map.entrySet();
+        Iterator<Entry<String, Double>> entriesIterator = entries.iterator();
         int i = 0;
         while (entriesIterator.hasNext()) {
-            Map.Entry mapping = (Map.Entry) entriesIterator.next();
+            Entry<String, Double> mapping = entriesIterator.next();
             rows[i][0] = mapping.getKey();
             rows[i][1] = mapping.getValue();
             i++;
