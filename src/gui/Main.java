@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -87,7 +88,7 @@ public class Main {
 
         frame = new JFrame();
         frame.setLocation(100, 100);
-        frame.setSize(533, 381);
+        frame.setSize(666, 554);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setTitle("ProductivityPlus");
         frame.setResizable(false);
@@ -102,22 +103,43 @@ public class Main {
         JMenu mnFile = new JMenu("File");
         menuBar.add(mnFile);
 
-        JMenuItem mntmItem = new JMenuItem("Item 1");
+        JMenuItem mntmItem = new JMenuItem("Open output folder");
+        mntmItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    Desktop.getDesktop().open(new File("./output"));
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         mnFile.add(mntmItem);
 
-        JMenuItem mntmItem_1 = new JMenuItem("Item 2");
+        JMenuItem mntmItem_1 = new JMenuItem("Open saved data folder");
+        mntmItem_1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    Desktop.getDesktop().open(new File("./saved_data"));
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
         mnFile.add(mntmItem_1);
 
         JMenu mnEdit = new JMenu("Edit");
         menuBar.add(mnEdit);
 
-        JMenuItem mntmItem_2 = new JMenuItem("Item 1");
-        mnEdit.add(mntmItem_2);
-
-        JMenu mnHelp = new JMenu("Help");
-        menuBar.add(mnHelp);
-
         JMenuItem mnPreferences = new JMenuItem("Preferences");
+        mnEdit.add(mnPreferences);
         mnPreferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -133,7 +155,9 @@ public class Main {
                 }
             }
         });
-        mnHelp.add(mnPreferences);
+
+        JMenu mnHelp = new JMenu("Help");
+        menuBar.add(mnHelp);
 
         JMenuItem mnAbout = new JMenuItem("About");
         mnAbout.addActionListener(new ActionListener() {
@@ -144,13 +168,22 @@ public class Main {
         });
         mnHelp.add(mnAbout);
 
+        JMenuItem mntmFaq = new JMenuItem("FAQ");
+        mntmFaq.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                FaqGui.newWindow();
+            }
+        });
+        mnHelp.add(mntmFaq);
+
         // ************** Panel creations ************** //
 
         frame.getContentPane()
-            .setLayout(new MigLayout("", "[531.00px]", "[337.00px]"));
+            .setLayout(new MigLayout("", "[678.00px]", "[482.00px]"));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setLayout(
-            new MigLayout("", "[110.00][224.00,grow]", "[35.00][200.00,grow]"));
+            new MigLayout("", "[110.00][224.00,grow]", "[35.00][414.00,grow]"));
 
         // ************** Tab pane ************** //
 
@@ -177,7 +210,7 @@ public class Main {
         // ************** Start button ************** //
 
         JButton startTimerBtn = new JButton("Start Timer");
-        buttonPanel.add(startTimerBtn, "cell 0 0");
+        buttonPanel.add(startTimerBtn, "cell 0 0,growx");
         startTimerBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -190,7 +223,7 @@ public class Main {
         // ************** Stop button ************** //
 
         stopTimerBtn = new JButton("Stop Timer");
-        buttonPanel.add(stopTimerBtn, "cell 0 1");
+        buttonPanel.add(stopTimerBtn, "cell 0 1,growx");
         stopTimerBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -218,7 +251,7 @@ public class Main {
                 GraphicalOutputGui.newWindow();
             }
         });
-        buttonPanel.add(graphOutputBtn, "cell 0 2");
+        buttonPanel.add(graphOutputBtn, "cell 0 2,growx");
         graphOutputBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         // ************** Explore data button ************** //
@@ -230,7 +263,7 @@ public class Main {
                 ExploreDataGui.newWindow();
             }
         });
-        buttonPanel.add(exploreDataBtn, "cell 0 3");
+        buttonPanel.add(exploreDataBtn, "cell 0 3,growx");
         exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         JLabel secretLabel = new JLabel("");
@@ -247,7 +280,7 @@ public class Main {
             }
         });
         btnRefreshTable.setFont(new Font("Verdana", Font.PLAIN, 11));
-        buttonPanel.add(btnRefreshTable, "cell 0 4");
+        buttonPanel.add(btnRefreshTable, "cell 0 4,growx");
 
         // ************** Table ************** //
 
