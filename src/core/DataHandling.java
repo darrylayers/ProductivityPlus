@@ -8,8 +8,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import gui.ExploreDataGui;
@@ -214,4 +218,43 @@ public class DataHandling {
             "_date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
 
     }
+
+    public static LinkedHashMap<String, Double> sortHashMapByValues(
+        HashMap<String, Double> finalMap) {
+        List<String> mapKeys = new ArrayList<>(finalMap.keySet());
+        List<Double> mapValues = new ArrayList<>(finalMap.values());
+        Collections.sort(mapValues);
+        Collections.sort(mapKeys);
+
+        LinkedHashMap<String, Double> sortedMap =
+            new LinkedHashMap<>();
+
+        Iterator<Double> valueIt = mapValues.iterator();
+        while (valueIt.hasNext()) {
+            Double val = valueIt.next();
+            Iterator<String> keyIt = mapKeys.iterator();
+
+            while (keyIt.hasNext()) {
+                String key = keyIt.next();
+                Double comp1 = finalMap.get(key);
+                Double comp2 = val;
+
+                if (comp1.equals(comp2)) {
+                    keyIt.remove();
+                    sortedMap.put(key, val);
+                    break;
+                }
+            }
+        }
+        return sortedMap;
+    }
+
+    public static LinkedHashMap<String, Double> orderedMap() {
+        HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
+        HashMap<String, Double> finalMap =
+            TimeConvert.convertOutputTime(toDisplayMap);
+        DataHandling.sortHashMapByValues(finalMap);
+        return DataHandling.sortHashMapByValues(finalMap);
+    }
+
 }
