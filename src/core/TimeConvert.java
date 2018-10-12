@@ -18,6 +18,7 @@ public class TimeConvert {
 
     public static HashMap<String, Double> convertedMap = new HashMap<>();;
     private static String dataUnit = "";
+    private static String dataUnitExport = "";
 
     /**
      * We need to be able to convert the given time in seconds to the desired
@@ -82,7 +83,7 @@ public class TimeConvert {
                 Double convertedTime = (map.get(name) / 3600.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
                 convertedMap.put(name, modTime);
-                dataUnit = "Time (Hours)";
+                dataUnitExport = "Time (Hours)";
             }
         }
         else if (PreferencesGui.getExportIndex() == 1) {
@@ -90,7 +91,7 @@ public class TimeConvert {
                 Double convertedTime = (map.get(name) / 60.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
                 convertedMap.put(name, modTime);
-                dataUnit = "Time (Minutes)";
+                dataUnitExport = "Time (Minutes)";
             }
         }
         else {
@@ -98,7 +99,7 @@ public class TimeConvert {
                 Double convertedTime = (map.get(name) / 1.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
                 convertedMap.put(name, modTime);
-                dataUnit = "Time (Seconds)";
+                dataUnitExport = "Time (Seconds)";
             }
         }
         return convertedMap;
@@ -147,5 +148,9 @@ public class TimeConvert {
 
     public static String getUnit() {
         return dataUnit;
+    }
+
+    public static String getDataUnitExport() {
+        return dataUnitExport;
     }
 }
