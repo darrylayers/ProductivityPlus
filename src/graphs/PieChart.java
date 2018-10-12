@@ -29,7 +29,7 @@ public class PieChart extends ApplicationFrame {
     public PieChart(String paramString) {
         super(paramString);
         JPanel localJPanel = createDemoPanel();
-        localJPanel.setPreferredSize(new Dimension(800, 270));
+        localJPanel.setPreferredSize(new Dimension(1800, 1670));
         setContentPane(localJPanel);
     }
 

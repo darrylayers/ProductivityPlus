@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import gui.ExploreDataGui;
+import gui.PreferencesGui;
 
 /**
  * ExcelWriter.java writes a hashmap to an Excel spreadsheet using the Apache
@@ -35,8 +36,9 @@ public class ExcelWriter {
         throws IOException {
         ExploreDataGui.updateBar(0);
 
-        HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
+        HashMap<String, Long> toDisplayMap = new HashMap<>(appMap);
         HashMap<String, Double> finalMap =
+            // TimeConvert.convertOutputTime(toDisplayMap);
             TimeConvert.convertOutputTime(toDisplayMap);
 
         printedDate = date;
@@ -65,23 +67,38 @@ public class ExcelWriter {
         cell.setCellStyle(headerCellStyle);
 
         Cell cell1 = headerRow.createCell(1);
-        cell1.setCellValue(TimeConvert.getUnit());
+        if (PreferencesGui.getExportIndex() == 0) {
+            cell1.setCellValue("Time (Hours)");
+        }
+        else if (PreferencesGui.getExportIndex() == 1) {
+            cell1.setCellValue("Time (Minutes)");
+        }
+        else if (PreferencesGui.getExportIndex() == 2) {
+            cell1.setCellValue("Time (Seconds)");
+        }
+
         cell1.setCellStyle(headerCellStyle);
 
         int rowNum = 1;
-        int j = 100 / appMap.size();
-        for (String name : finalMap.keySet()) {
-            ExploreDataGui.updateBar(j);
-            ExploreDataGui.updateBar(j);
-            j = 2 * j;
-            Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(name);
-            row.createCell(1).setCellValue(finalMap.get(name));
-        }
+        if (appMap.size() > 0) {
 
-        // Resize all columns to fit the content size
-        for (int i = 0; i < finalMap.size(); i++) {
-            sheet.autoSizeColumn(i);
+            int j = 100 / appMap.size();
+            for (String name : finalMap.keySet()) {
+                ExploreDataGui.updateBar(j);
+                ExploreDataGui.updateBar(j);
+                j = 2 * j;
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(name);
+                row.createCell(1).setCellValue(finalMap.get(name));
+            }
+
+            // Resize all columns to fit the content size
+            for (int i = 0; i < finalMap.size(); i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            ExploreDataGui.updateBar(100);
+
         }
 
         // Write the output to a file
@@ -93,9 +110,6 @@ public class ExcelWriter {
 
         // Close the workbook
         workbook.close();
-
-        ExploreDataGui.updateBar(100);
-
     }
 
     /**

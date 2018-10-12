@@ -24,7 +24,7 @@ import net.miginfocom.swing.MigLayout;
  * Gui class for Graphical Output window.
  * 
  * @author Austin Ayers
- * @version 9/28/18
+ * @version 10/10/18
  * 
  */
 public class GraphicalOutputGui extends JDialog {
@@ -59,10 +59,11 @@ public class GraphicalOutputGui extends JDialog {
     /**
      * Create the dialog.
      */
+    @SuppressWarnings("deprecation")
     public GraphicalOutputGui() {
         setAlwaysOnTop(true);
         setTitle("Graphs");
-        setBounds(100, 100, 994, 633);
+        setBounds(100, 100, 1084, 582);
         getContentPane().setLayout(
             new MigLayout("", "[156.00,grow][817.00,grow]", "[][503.00,grow]"));
 
@@ -75,7 +76,7 @@ public class GraphicalOutputGui extends JDialog {
         controlPanel
             .setLayout(
                 new MigLayout("", "[94.00][231.00,grow,left][-163.00][-64.00]",
-                    "[18.00][][][][32.00][][][][][][][][][][][][][][grow]"));
+                    "[18.00][][][][32.00][][][][][][][][][][][][][][]"));
 
         JPanel panel_7 = new JPanel();
         controlPanel.add(panel_7, "cell 1 0,alignx left,growy");
@@ -124,17 +125,17 @@ public class GraphicalOutputGui extends JDialog {
         controlPanel.add(btnOpenjpgLocation, "cell 1 10");
 
         JButton btnSaveInput = new JButton("Save input");
-        controlPanel.add(btnSaveInput, "cell 1 15");
+        controlPanel.add(btnSaveInput, "cell 1 16");
 
         JButton btnRefreshGraphs = new JButton("Refresh graphs");
-        controlPanel.add(btnRefreshGraphs, "cell 1 16");
+        controlPanel.add(btnRefreshGraphs, "cell 1 17");
 
         JTextPane txtpnnoticeHitSave_1 = new JTextPane();
         txtpnnoticeHitSave_1.setEditable(false);
         txtpnnoticeHitSave_1.setText(
             "(Notice: Hit save input if any changes are made, otherwise today's data is loaded.");
         txtpnnoticeHitSave_1.setBackground(SystemColor.controlHighlight);
-        controlPanel.add(txtpnnoticeHitSave_1, "cell 1 17,grow");
+        controlPanel.add(txtpnnoticeHitSave_1, "cell 1 18,grow");
 
         JPanel graphPanel = new JPanel();
         getContentPane().add(graphPanel, "cell 1 1,grow");

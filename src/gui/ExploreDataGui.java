@@ -157,7 +157,6 @@ public class ExploreDataGui extends JDialog {
                             formattedString2);
                     @SuppressWarnings("rawtypes")
                     ArrayList<HashMap> maps = DataHandling.loadMaps(dates);
-                    ;
 
                     try {
                         DataHandling.writeDates(maps, dates);
@@ -207,16 +206,22 @@ public class ExploreDataGui extends JDialog {
             public void mouseClicked(MouseEvent arg0) {
                 try {
                     Desktop.getDesktop().open(new File(
-                        "ProductivityPlusData" + ExcelWriter.getDate()
+                        "./output/ProductivityPlusData" + ExcelWriter.getDate()
                             + ".xlsx"));
                 }
-                catch (IOException e) {
+                catch (java.lang.IllegalArgumentException | IOException e) {
                     e.printStackTrace();
                 }
             }
         });
         btnOpenOutput.setEnabled(false);
         exportPanel.add(btnOpenOutput, "cell 1 1");
+        progressBar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                progressBar.setValue(0);
+            }
+        });
 
         // ************** Progress Bar ************** //
         exportPanel.add(progressBar, "cell 0 2");
