@@ -130,6 +130,11 @@ public class DataHandling {
                 "Warning: Loaded map was empty.");
         }
 
+        if (loadedAppMap.size() == 0) {
+            JOptionPane.showMessageDialog(null,
+                "Warning: Loaded map was empty.");
+        }
+
         ExcelWriter.write(loadedAppMap, date);
     }
 
@@ -141,6 +146,7 @@ public class DataHandling {
      * @param date2
      * @return returns an arraylist of String dates
      */
+    @SuppressWarnings("unused")
     public static List<String> dateDiff(String date1, String date2) {
 
         List<String> dates = new ArrayList<String>();

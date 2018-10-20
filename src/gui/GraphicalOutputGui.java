@@ -34,6 +34,7 @@ public class GraphicalOutputGui extends JDialog {
      */
     private static final long serialVersionUID = 1L;
     public static JSpinner spinner = new JSpinner();
+    @SuppressWarnings("unused")
     private static String[] displayTypes = {"Pie Chart",
         "Chart 2", "Chart 3",
         "Chart 4"};
