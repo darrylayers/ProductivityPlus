@@ -267,6 +267,15 @@ public class Main {
         buttonPanel.add(exploreDataBtn, "cell 0 3,growx");
         exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
+        JButton btnPrintAppmap = new JButton("Print appMap");
+        btnPrintAppmap.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                System.out.println(ProgramTimer.appMap);
+            }
+        });
+        buttonPanel.add(btnPrintAppmap, "cell 0 5");
+
         JLabel secretLabel = new JLabel("");
         buttonPanel.add(secretLabel, "cell 0 7,alignx center");
 
@@ -369,9 +378,9 @@ public class Main {
      */
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
     public static void updateTable(boolean fresh) {
-        Map<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
-        Map<String, Double> finalMap =
-            new HashMap<>(TimeConvert.convertTime(toDisplayMap));
+
+        Map<String, Double> convertedMap =
+            new HashMap<>(TimeConvert.convertTime(ProgramTimer.appMap));
 
         // Remove old table object
         if (!fresh) {
@@ -380,7 +389,7 @@ public class Main {
         }
 
         // All the keys we need are loaded from the map
-        setKeys(finalMap.keySet());
+        setKeys(ProgramTimer.appMap.keySet());
 
         String columns[] = {"Program", TimeConvert.getUnit()};
 
@@ -390,17 +399,23 @@ public class Main {
             model.setColumnIdentifiers(colHeadings);
         }
         else {
-
-            model = new DefaultTableModel(getRows(finalMap), columns) {
+            System.out.println(
+                "final map: " + (TimeConvert.convertTime(ProgramTimer.appMap)));
+            model = new DefaultTableModel(
+                getRows((TimeConvert.convertTime(ProgramTimer.appMap))),
+                columns) {
                 @Override
                 public Class getColumnClass(int column) {
                     Class returnValue;
                     if ((column >= 0) && (column < getColumnCount())) {
                         returnValue = getValueAt(0, column).getClass();
+                        // System.out.println("if " + returnValue);
                     }
                     else {
                         returnValue = Object.class;
+                        // System.out.println("else " + returnValue);
                     }
+                    // System.out.println("actual return " + returnValue);
                     return returnValue;
                 }
             };
@@ -408,17 +423,17 @@ public class Main {
         table = new JTable(model);
 
         if (PreferencesGui.getDisplayIndex() == 3) {
-            // model = new DefaultTableModel();
-            model = new DefaultTableModel(1, 2);
+            model = new DefaultTableModel();
+            // model = new DefaultTableModel(1, 2);
             table = new JTable(model);
             model.addColumn("Program");
-            setKeys(finalMap.keySet());
-            for (String name : finalMap.keySet()) {
+            setKeys(ProgramTimer.appMap.keySet());
+            for (String name : ProgramTimer.appMap.keySet()) {
                 String key = name.toString();
                 model.addRow(new Object[] {key});
             }
             Map<String, String> finalMap2 =
-                TimeConvert.convertWritten(toDisplayMap);
+                TimeConvert.convertWritten(ProgramTimer.appMap);
 
             // Append a new column with copied data
             model.addColumn(TimeConvert.getUnit(),

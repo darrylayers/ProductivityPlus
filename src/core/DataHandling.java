@@ -130,11 +130,6 @@ public class DataHandling {
                 "Warning: Loaded map was empty.");
         }
 
-        if (loadedAppMap.size() == 0) {
-            JOptionPane.showMessageDialog(null,
-                "Warning: Loaded map was empty.");
-        }
-
         ExcelWriter.write(loadedAppMap, date);
     }
 

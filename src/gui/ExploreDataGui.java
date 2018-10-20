@@ -76,7 +76,6 @@ public class ExploreDataGui extends JDialog {
      * Create the dialog.
      */
     public ExploreDataGui() {
-        setAlwaysOnTop(true);
         setTitle("Explore Data");
         setBounds(100, 100, 450, 334);
 
