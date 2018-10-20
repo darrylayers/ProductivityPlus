@@ -39,6 +39,10 @@ public class TimeConvert {
      */
     public static Map<String, Double> convertTime(
         Map<String, Long> toDisplayMap) {
+        Map<String, Double> convertedMap = new HashMap<>();
+        ;
+
+        System.out.println("inside convert time" + toDisplayMap);
 
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.FLOOR);
@@ -62,13 +66,18 @@ public class TimeConvert {
         }
 
         else {
+            System.out.println("keyset " + toDisplayMap.keySet());
             for (String name : toDisplayMap.keySet()) {
                 Double convertedTime = (toDisplayMap.get(name) / 1.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
+                System.out.println("putting: " + name);
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Seconds)";
+                System.out.println("in for loop: " + convertedMap);
             }
+
         }
+        System.out.println("convert time returned map " + convertedMap);
         return convertedMap;
     }
 
