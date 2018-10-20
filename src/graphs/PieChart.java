@@ -2,7 +2,7 @@ package graphs;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -16,6 +16,7 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 
 import core.DataHandling;
+import core.ProgramTimer;
 import gui.GraphicalOutputGui;
 
 public class PieChart extends ApplicationFrame {
@@ -24,7 +25,7 @@ public class PieChart extends ApplicationFrame {
      * 
      */
     private static final long serialVersionUID = 1L;
-    public static LinkedHashMap<String, Double> orderedMap;
+    public static Map<String, Double> orderedMap;
 
     public PieChart(String paramString) {
         super(paramString);
@@ -37,6 +38,10 @@ public class PieChart extends ApplicationFrame {
 
         orderedMap = DataHandling.orderedMap();
         DefaultPieDataset localDefaultPieDataset = new DefaultPieDataset();
+
+        if (ProgramTimer.appMap.size() == 0) {
+            return localDefaultPieDataset;
+        }
 
         String keyList[] = new String[GraphicalOutputGui.getNumProgs()];
         String lKeyLast = "";
@@ -60,11 +65,13 @@ public class PieChart extends ApplicationFrame {
                 oldKey = key;
             }
         }
+
         for (int i = 0; i < GraphicalOutputGui.getNumProgs(); i++) {
-            System.out.println(keyList[i]);
+            // System.out.println(keyList[i]);
             localDefaultPieDataset.setValue(
                 keyList[i], orderedMap.get(keyList[i]));
         }
+
         return localDefaultPieDataset;
     }
 
@@ -96,4 +103,20 @@ public class PieChart extends ApplicationFrame {
         localChartPanel.setMouseWheelEnabled(true);
         return localChartPanel;
     }
+
+    /**
+     * This method returns the minimum number of values that we can graph.
+     * Default 5.
+     * 
+     * @return 5, or less if less values are in map.
+     */
+    public static int checkValues() {
+        int size = ProgramTimer.appMap.size();
+        if (size < 5) {
+            return size;
+        }
+        return 5;
+
+    }
+
 }

@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -152,11 +152,11 @@ public class ExploreDataGui extends JDialog {
                 if (!(date2 == null)) {
                     formattedString2 = date2.format(formatter);
 
-                    ArrayList<String> dates =
+                    List<String> dates =
                         DataHandling.dateDiff(formattedString,
                             formattedString2);
                     @SuppressWarnings("rawtypes")
-                    ArrayList<HashMap> maps = DataHandling.loadMaps(dates);
+                    List<Map> maps = DataHandling.loadMaps(dates);
 
                     try {
                         DataHandling.writeDates(maps, dates);

@@ -2,6 +2,7 @@ package core;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
@@ -19,7 +20,7 @@ import gui.PreferencesGui;
 
 public class ProgramTimer implements Runnable {
 
-    public static HashMap<String, Long> appMap = new HashMap<>();
+    public static Map<String, Long> appMap = new HashMap<>();
     private static char[] buffer = new char[4096];
     private static HWND hwnd;
     private static String prog = "";

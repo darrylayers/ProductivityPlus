@@ -1,13 +1,9 @@
 package core;
 
-/*
- *  TODO: Format time correctly, example: 65 seconds should be displayed
- *        as 1 minute 5 seconds.
- */
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -32,13 +28,12 @@ public class ExcelWriter {
     /**
      * This method writes the values of the hashmap to the excel sheet.
      */
-    public static void write(HashMap<String, Long> appMap, String date)
+    public static void write(Map<String, Long> combinedMaps, String date)
         throws IOException {
         ExploreDataGui.updateBar(0);
 
-        HashMap<String, Long> toDisplayMap = new HashMap<>(appMap);
-        HashMap<String, Double> finalMap =
-            // TimeConvert.convertOutputTime(toDisplayMap);
+        Map<String, Long> toDisplayMap = new HashMap<>(combinedMaps);
+        Map<String, Double> finalMap =
             TimeConvert.convertOutputTime(toDisplayMap);
 
         printedDate = date;
@@ -80,9 +75,9 @@ public class ExcelWriter {
         cell1.setCellStyle(headerCellStyle);
 
         int rowNum = 1;
-        if (appMap.size() > 0) {
+        if (combinedMaps.size() > 0) {
 
-            int j = 100 / appMap.size();
+            int j = 100 / combinedMaps.size();
             for (String name : finalMap.keySet()) {
                 ExploreDataGui.updateBar(j);
                 ExploreDataGui.updateBar(j);

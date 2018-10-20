@@ -70,7 +70,9 @@ public class AboutGui extends JDialog {
         JTextPane txtpnPressstartTimer = new JTextPane();
         txtpnPressstartTimer.setEditable(false);
         txtpnPressstartTimer.setText(
-            "Press the Start button to begin tracking. ProductivityPlus will track everything you do and save it to a file ending in .map. You can view your data in the table on the main screen, or by exporting it into an Excel file. The Excel outputs are saved in the same directory as ProductivityPlus. The Excel files are titled by appending the day of the year to the year. So 10/9/18's data log files would export to ProductivityPlusData28218.xlsx");
+            "Press the Start button to begin tracking. ProductivityPlus will track everything you do and save it to a file ending in .map. You can view your data in the "
+                + "table on the main screen, or by exporting it into an Excel file. The Excel outputs are saved in the same directory as ProductivityPlus. The Excel files are titled "
+                + "by appending the day of the year to the year. So 10/9/18's data log files would export to ProductivityPlusData28218.xlsx");
         aboutPanel.add(txtpnPressstartTimer, "cell 0 1,grow");
 
         JTextPane txtpnYouCanSet = new JTextPane();

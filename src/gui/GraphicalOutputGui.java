@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -17,6 +16,7 @@ import javax.swing.JTextPane;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 
+import core.ProgramTimer;
 import graphs.PieChart;
 import net.miginfocom.swing.MigLayout;
 
@@ -37,8 +37,6 @@ public class GraphicalOutputGui extends JDialog {
     private static String[] displayTypes = {"Pie Chart",
         "Chart 2", "Chart 3",
         "Chart 4"};
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private static JComboBox displayOptions = new JComboBox(displayTypes);
 
     /**
      * Launch the graphical output pop up window.
@@ -110,23 +108,6 @@ public class GraphicalOutputGui extends JDialog {
         JEditorPane editorPane = new JEditorPane();
         controlPanel.add(editorPane, "cell 1 5,grow");
 
-        JTextPane txtpnSelectAGraph = new JTextPane();
-        txtpnSelectAGraph.setEditable(false);
-        txtpnSelectAGraph.setText("Select a graph to output as .jpg");
-        txtpnSelectAGraph.setBackground(SystemColor.controlHighlight);
-        controlPanel.add(txtpnSelectAGraph, "cell 1 7,grow");
-
-        controlPanel.add(displayOptions, "cell 1 8,growx");
-
-        JButton btnExport = new JButton("Export");
-        controlPanel.add(btnExport, "cell 1 9");
-
-        JButton btnOpenjpgLocation = new JButton("Open .jpg location");
-        controlPanel.add(btnOpenjpgLocation, "cell 1 10");
-
-        JButton btnSaveInput = new JButton("Save input");
-        controlPanel.add(btnSaveInput, "cell 1 16");
-
         JButton btnRefreshGraphs = new JButton("Refresh graphs");
         controlPanel.add(btnRefreshGraphs, "cell 1 17");
 
@@ -169,6 +150,11 @@ public class GraphicalOutputGui extends JDialog {
     }
 
     public static int getNumProgs() {
-        return 5;
+        int size = ProgramTimer.appMap.size();
+        if (size >= 5) {
+            return 5;
+        }
+
+        return size;
     }
 }

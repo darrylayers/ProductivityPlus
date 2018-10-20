@@ -3,6 +3,7 @@ package core;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.Map;
 
 import gui.PreferencesGui;
 
@@ -16,7 +17,7 @@ import gui.PreferencesGui;
  */
 public class TimeConvert {
 
-    public static HashMap<String, Double> convertedMap = new HashMap<>();;
+    public static Map<String, Double> convertedMap = new HashMap<>();;
     private static String dataUnit = "";
     private static String dataUnitExport = "";
 
@@ -36,24 +37,24 @@ public class TimeConvert {
      *            either the current data, or the current iteration of a saved
      *            value.
      */
-    public static HashMap<String, Double> convertTime(
-        HashMap<String, Long> map) {
+    public static Map<String, Double> convertTime(
+        Map<String, Long> toDisplayMap) {
 
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.FLOOR);
 
         if (PreferencesGui.getDisplayIndex() == 0) {
 
-            for (String name : map.keySet()) {
-                Double convertedTime = (map.get(name) / 3600.0);
+            for (String name : toDisplayMap.keySet()) {
+                Double convertedTime = (toDisplayMap.get(name) / 3600.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Hours)";
             }
         }
         else if (PreferencesGui.getDisplayIndex() == 1) {
-            for (String name : map.keySet()) {
-                Double convertedTime = (map.get(name) / 60.0);
+            for (String name : toDisplayMap.keySet()) {
+                Double convertedTime = (toDisplayMap.get(name) / 60.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Minutes)";
@@ -61,8 +62,8 @@ public class TimeConvert {
         }
 
         else {
-            for (String name : map.keySet()) {
-                Double convertedTime = (map.get(name) / 1.0);
+            for (String name : toDisplayMap.keySet()) {
+                Double convertedTime = (toDisplayMap.get(name) / 1.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Seconds)";
@@ -71,8 +72,8 @@ public class TimeConvert {
         return convertedMap;
     }
 
-    public static HashMap<String, Double> convertOutputTime(
-        HashMap<String, Long> map) {
+    public static Map<String, Double> convertOutputTime(
+        Map<String, Long> map) {
 
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.FLOOR);
@@ -105,10 +106,10 @@ public class TimeConvert {
         return convertedMap;
     }
 
-    public static HashMap<String, String> convertWritten(
+    public static Map<String, String> convertWritten(
 
-        HashMap<String, Long> map) {
-        HashMap<String, String> stringMap = new HashMap<>();
+        Map<String, Long> map) {
+        Map<String, String> stringMap = new HashMap<>();
         for (String name : map.keySet()) {
             String output = "";
             String pluralHour = " hour ";

@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -368,8 +369,8 @@ public class Main {
      */
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
     public static void updateTable(boolean fresh) {
-        HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
-        HashMap<String, Double> finalMap =
+        Map<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
+        Map<String, Double> finalMap =
             new HashMap<>(TimeConvert.convertTime(toDisplayMap));
 
         // Remove old table object
@@ -383,23 +384,32 @@ public class Main {
 
         String columns[] = {"Program", TimeConvert.getUnit()};
 
-        model = new DefaultTableModel(getRows(finalMap), columns) {
-            @Override
-            public Class getColumnClass(int column) {
-                Class returnValue;
-                if ((column >= 0) && (column < getColumnCount())) {
-                    returnValue = getValueAt(0, column).getClass();
+        if (ProgramTimer.appMap.size() == 0) {
+            model = new DefaultTableModel(1, 2);
+            String[] colHeadings = {"Program", "Time"};
+            model.setColumnIdentifiers(colHeadings);
+        }
+        else {
+
+            model = new DefaultTableModel(getRows(finalMap), columns) {
+                @Override
+                public Class getColumnClass(int column) {
+                    Class returnValue;
+                    if ((column >= 0) && (column < getColumnCount())) {
+                        returnValue = getValueAt(0, column).getClass();
+                    }
+                    else {
+                        returnValue = Object.class;
+                    }
+                    return returnValue;
                 }
-                else {
-                    returnValue = Object.class;
-                }
-                return returnValue;
-            }
-        };
+            };
+        }
         table = new JTable(model);
 
         if (PreferencesGui.getDisplayIndex() == 3) {
-            model = new DefaultTableModel();
+            // model = new DefaultTableModel();
+            model = new DefaultTableModel(1, 2);
             table = new JTable(model);
             model.addColumn("Program");
             setKeys(finalMap.keySet());
@@ -407,7 +417,7 @@ public class Main {
                 String key = name.toString();
                 model.addRow(new Object[] {key});
             }
-            HashMap<String, String> finalMap2 =
+            Map<String, String> finalMap2 =
                 TimeConvert.convertWritten(toDisplayMap);
 
             // Append a new column with copied data
@@ -430,9 +440,9 @@ public class Main {
 
     }
 
-    public static Object[][] getRows(HashMap<String, Double> map) {
-        Object[][] rows = new Object[map.size()][2];
-        Set<Entry<String, Double>> entries = map.entrySet();
+    public static Object[][] getRows(Map<String, Double> finalMap) {
+        Object[][] rows = new Object[finalMap.size()][2];
+        Set<Entry<String, Double>> entries = finalMap.entrySet();
         Iterator<Entry<String, Double>> entriesIterator = entries.iterator();
         int i = 0;
         while (entriesIterator.hasNext()) {

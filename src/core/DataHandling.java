@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
 
 import gui.ExploreDataGui;
 
@@ -106,7 +109,7 @@ public class DataHandling {
     @SuppressWarnings("unchecked")
     public static void acceptDate(String date) throws IOException {
 
-        HashMap<String, Long> loadedAppMap = new HashMap<>();
+        Map<String, Long> loadedAppMap = new HashMap<>();
         try {
             ObjectInputStream ois =
                 new ObjectInputStream(
@@ -122,26 +125,31 @@ public class DataHandling {
 
         }
 
+        if (loadedAppMap.size() == 0) {
+            JOptionPane.showMessageDialog(null,
+                "Warning: Loaded map was empty.");
+        }
+
         ExcelWriter.write(loadedAppMap, date);
     }
 
     /**
      * This method returns an arraylist containing all of the dates that need to
-     * be used to open the proper program history files. TODO: Make this work
-     * better, for years especially.
+     * be used to open the proper program history files.
      * 
      * @param date1
      * @param date2
      * @return returns an arraylist of String dates
      */
-    public static ArrayList<String> dateDiff(String date1, String date2) {
+    public static List<String> dateDiff(String date1, String date2) {
 
-        ArrayList<String> dates = new ArrayList<String>();
+        List<String> dates = new ArrayList<String>();
         String days1 = date1.substring(0, 3);
         String days2 = date2.substring(0, 3);
         int days1_int = Integer.valueOf(days1);
         int days2_int = Integer.valueOf(days2);
         int dateCalc = (days2_int - days1_int);
+        int year = Calendar.getInstance().get(Calendar.YEAR);
 
         for (int i = 0; i <= dateCalc; i++) {
             dates.add(String.valueOf((days1_int + i)) + "18");
@@ -157,12 +165,12 @@ public class DataHandling {
      * @return returns an arraylist of hashmaps used for program dates
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static ArrayList<HashMap> loadMaps(ArrayList<String> dates) {
+    public static List<Map> loadMaps(List<String> dates) {
 
-        ArrayList<HashMap> maps = new ArrayList<HashMap>();
+        List<Map> maps = new ArrayList<Map>();
 
         for (int j = 0; j < dates.size(); j++) {
-            HashMap<String, Long> loadedAppMap = new HashMap<>();
+            Map<String, Long> loadedAppMap = new HashMap<>();
             try {
                 ObjectInputStream ois =
                     new ObjectInputStream(
@@ -193,17 +201,17 @@ public class DataHandling {
      * @throws IOException
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void writeDates(ArrayList<HashMap> maps,
-        ArrayList<String> dates)
+    public static void writeDates(List<Map> maps,
+        List<String> dates)
         throws IOException {
 
-        HashMap<String, Long> combinedMaps = new HashMap<>();
+        Map<String, Long> combinedMaps = new HashMap<>();
 
         int i = 100 / maps.size();
 
-        for (HashMap<String, Long> map : maps) {
+        for (Map<String, Long> map : maps) {
 
-            for (HashMap.Entry<String, Long> entry : map.entrySet()) {
+            for (Map.Entry<String, Long> entry : map.entrySet()) {
                 String key = entry.getKey();
                 Long current = combinedMaps.get(key);
                 combinedMaps.put(key, current == null ? entry.getValue()
@@ -219,14 +227,14 @@ public class DataHandling {
 
     }
 
-    public static LinkedHashMap<String, Double> sortHashMapByValues(
-        HashMap<String, Double> finalMap) {
+    public static Map<String, Double> sortHashMapByValues(
+        Map<String, Double> finalMap) {
         List<String> mapKeys = new ArrayList<>(finalMap.keySet());
         List<Double> mapValues = new ArrayList<>(finalMap.values());
         Collections.sort(mapValues);
         Collections.sort(mapKeys);
 
-        LinkedHashMap<String, Double> sortedMap =
+        Map<String, Double> sortedMap =
             new LinkedHashMap<>();
 
         Iterator<Double> valueIt = mapValues.iterator();
@@ -249,13 +257,13 @@ public class DataHandling {
         return sortedMap;
     }
 
-    public static LinkedHashMap<String, Double> orderedMap() {
+    public static Map<String, Double> orderedMap() {
         /**
          * Need to put a check in here to know which map to load...
          */
 
-        HashMap<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
-        HashMap<String, Double> finalMap =
+        Map<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
+        Map<String, Double> finalMap =
             TimeConvert.convertOutputTime(toDisplayMap);
         DataHandling.sortHashMapByValues(finalMap);
         return DataHandling.sortHashMapByValues(finalMap);
