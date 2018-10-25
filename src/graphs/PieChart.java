@@ -67,7 +67,6 @@ public class PieChart extends ApplicationFrame {
         }
 
         for (int i = 0; i < GraphicalOutputGui.getNumProgs(); i++) {
-            // System.out.println(keyList[i]);
             localDefaultPieDataset.setValue(
                 keyList[i], orderedMap.get(keyList[i]));
         }
