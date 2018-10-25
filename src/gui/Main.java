@@ -374,7 +374,7 @@ public class Main {
         // ************** Break Stopper ************** //
         JPanel breakPanel = new JPanel();
         breakPanel.setBackground(Color.GRAY);
-        tabbedPane.addTab("Break Stopper", null, breakPanel, null);
+        // tabbedPane.addTab("Break Stopper", null, breakPanel, null);
         breakPanel.setLayout(new MigLayout("", "[]", "[343.00]"));
 
         // ************** Close to Tray ************** //
@@ -437,11 +437,6 @@ public class Main {
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
     public static void updateTable(boolean fresh) {
 
-        System.out.println("inside update table");
-
-        Map<String, Double> convertedMap =
-            new HashMap<>(TimeConvert.convertTime(ProgramTimer.appMap));
-
         // Remove old table object
         if (!fresh) {
             mainPanel.remove(sc);
@@ -459,8 +454,6 @@ public class Main {
             model.setColumnIdentifiers(colHeadings);
         }
         else {
-            System.out.println(
-                "final map: " + (TimeConvert.convertTime(ProgramTimer.appMap)));
             model = new DefaultTableModel(
                 getRows((TimeConvert.convertTime(ProgramTimer.appMap))),
                 columns) {
@@ -469,13 +462,10 @@ public class Main {
                     Class returnValue;
                     if ((column >= 0) && (column < getColumnCount())) {
                         returnValue = getValueAt(0, column).getClass();
-                        // System.out.println("if " + returnValue);
                     }
                     else {
                         returnValue = Object.class;
-                        // System.out.println("else " + returnValue);
                     }
-                    // System.out.println("actual return " + returnValue);
                     return returnValue;
                 }
             };
@@ -512,7 +502,6 @@ public class Main {
 
         sc = new JScrollPane(table);
         mainPanel.add(sc);
-
     }
 
     public static Object[][] getRows(Map<String, Double> finalMap) {
@@ -573,11 +562,8 @@ public class Main {
     public static void loadTable(Map<String, Long> loadedMap) {
 
         // Remove old table object
-        // if (!fresh) {
         mainPanel.remove(sc);
         mainPanel.remove(table);
-        System.out.print("in load table");
-        // }
 
         // All the keys we need are loaded from the map
         setKeys(loadedMap.keySet());
@@ -599,13 +585,10 @@ public class Main {
                     Class returnValue;
                     if ((column >= 0) && (column < getColumnCount())) {
                         returnValue = getValueAt(0, column).getClass();
-                        // System.out.println("if " + returnValue);
                     }
                     else {
                         returnValue = Object.class;
-                        // System.out.println("else " + returnValue);
                     }
-                    // System.out.println("actual return " + returnValue);
                     return returnValue;
                 }
             };
