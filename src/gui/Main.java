@@ -352,24 +352,12 @@ public class Main {
 
         // ************** Table ************** //
 
-        File savedMap =
-            new File("./saved_data/" + DataHandling.getDate() + ".map");
-        if (!savedMap.exists()) {
-            model = new DefaultTableModel(1, 2);
-            String[] colHeadings = {"Program", "Time"};
-            model.setColumnIdentifiers(colHeadings);
-            table = new JTable(model);
-            sc = new JScrollPane(table);
-            mainPanel.add(sc);
-        }
-        else {
-            updateTable(true);
-        }
+        updateTable(true);
 
         // ************** Pomodoro Timer ************** //
         JPanel pomodoroPanel = new JPanel();
         pomodoroPanel.setBackground(Color.PINK);
-        tabbedPane.addTab("Pomodoro Timer", null, pomodoroPanel, null);
+        //tabbedPane.addTab("Pomodoro Timer", null, pomodoroPanel, null);
 
         // ************** Break Stopper ************** //
         JPanel breakPanel = new JPanel();
@@ -436,7 +424,6 @@ public class Main {
      */
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
     public static void updateTable(boolean fresh) {
-
         // Remove old table object
         if (!fresh) {
             mainPanel.remove(sc);
@@ -471,10 +458,8 @@ public class Main {
             };
         }
         table = new JTable(model);
-
         if (PreferencesGui.getDisplayIndex() == 3) {
             model = new DefaultTableModel();
-            // model = new DefaultTableModel(1, 2);
             table = new JTable(model);
             model.addColumn("Program");
             setKeys(ProgramTimer.appMap.keySet());
@@ -502,6 +487,8 @@ public class Main {
 
         sc = new JScrollPane(table);
         mainPanel.add(sc);
+        secretLabel.setText("  ");
+        secretLabel.setText("");
     }
 
     public static Object[][] getRows(Map<String, Double> finalMap) {
