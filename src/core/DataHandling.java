@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
 
@@ -259,6 +260,47 @@ public class DataHandling {
 		Map<String, Double> finalMap = TimeConvert.convertOutputTime(toDisplayMap);
 		DataHandling.sortHashMapByValues(finalMap);
 		return DataHandling.sortHashMapByValues(finalMap);
+	}
+
+	public static Map<String, Long> validateData(Map<String, Long> inputMap) {
+
+		Map<String, Long> editedMap = new HashMap<String, Long>();
+
+		// Check to see if any program key-value pairs need to be combined
+		
+		
+		
+		
+		boolean first = true;
+		for (Entry<String, Long> entry : inputMap.entrySet()) {
+		    String key = entry.getKey();
+			Long current = inputMap.get(key);
+			if (!(key.contains("- Google Chrome"))) {
+				editedMap.put(key, inputMap.get(key));
+			} else {
+				
+				//System.out.println(entry.getKey());
+				System.out.println(editedMap);
+				
+				if(first) {
+					editedMap.put("Google Chrome", inputMap.get(key));
+					first = false;
+				} else {
+					Long toAdd = editedMap.get("Google Chrome") + current;
+					editedMap.put("Google Chrome", editedMap.get("Google Chrome") + current);
+				}
+				
+
+			}
+		}
+		
+
+
+
+		
+		// Validate what needs to be printed or displayed
+
+		return editedMap;
 	}
 
 }
