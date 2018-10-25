@@ -9,7 +9,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,6 +37,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import core.CloseToSystemTray;
 import core.DataHandling;
@@ -64,6 +72,7 @@ public class Main {
     static JTable table;
     private static Set<String> keys;
     private static JScrollPane sc;
+    private static JLabel secretLabel;
 
     /**
      * Main method that builds the GUI.
@@ -206,7 +215,8 @@ public class Main {
         buttonPanel.setToolTipText("Program data for today");
         buttonPanel.setBackground(Color.WHITE);
         mainPanel.add(buttonPanel, "cell 0 1,grow");
-        buttonPanel.setLayout(new MigLayout("", "[100]", "[25][][][][][][][]"));
+        buttonPanel.setLayout(
+            new MigLayout("", "[100,grow]", "[25][][][][][][][][27.00][]"));
 
         // ************** Start button ************** //
 
@@ -267,16 +277,7 @@ public class Main {
         buttonPanel.add(exploreDataBtn, "cell 0 3,growx");
         exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
-        JButton btnPrintAppmap = new JButton("Print appMap");
-        btnPrintAppmap.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                System.out.println(ProgramTimer.appMap);
-            }
-        });
-        buttonPanel.add(btnPrintAppmap, "cell 0 5");
-
-        JLabel secretLabel = new JLabel("");
+        secretLabel = new JLabel("");
         buttonPanel.add(secretLabel, "cell 0 7,alignx center");
 
         JButton btnRefreshTable = new JButton("Refresh Table");
@@ -291,6 +292,63 @@ public class Main {
         });
         btnRefreshTable.setFont(new Font("Verdana", Font.PLAIN, 11));
         buttonPanel.add(btnRefreshTable, "cell 0 4,growx");
+
+        DatePicker datePicker = new DatePicker((DatePickerSettings) null);
+        buttonPanel.add(datePicker, "cell 0 8,grow");
+
+        JButton btnLoadData = new JButton("Load Data");
+        btnLoadData.addMouseListener(new MouseAdapter() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                LocalDate date = datePicker.getDate();
+
+                if (date != null) {
+                    @SuppressWarnings("unused")
+                    SimpleDateFormat dateFormatter =
+                        new SimpleDateFormat("Dyy");
+
+                    DateTimeFormatter formatter =
+                        DateTimeFormatter.ofPattern("Dyy");
+                    String formattedString = date.format(formatter);
+
+                    Map<String, Long> loadedMap = new HashMap<>();
+                    try {
+                        ObjectInputStream ois =
+                            new ObjectInputStream(
+                                new FileInputStream(
+                                    "./saved_data/" + formattedString
+                                        + ".map"));
+                        Object readMap = ois.readObject();
+                        if (readMap != null && readMap instanceof HashMap) {
+                            loadedMap
+                                .putAll(
+                                    (Map<? extends String, ? extends Long>) readMap);
+                        }
+                        ois.close();
+                    }
+                    catch (Exception e) {
+
+                    }
+
+                    if (loadedMap.size() != 0) {
+                        loadTable(loadedMap);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null,
+                            "Warning: Loaded map was empty.");
+                    }
+
+                }
+                else {
+                    JOptionPane.showMessageDialog(null,
+                        "No date was entered.");
+                }
+
+            }
+        });
+        btnLoadData.setFont(new Font("Verdana", Font.PLAIN, 11));
+        buttonPanel.add(btnLoadData, "cell 0 9,growx");
 
         // ************** Table ************** //
 
@@ -378,6 +436,8 @@ public class Main {
      */
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
     public static void updateTable(boolean fresh) {
+
+        System.out.println("inside update table");
 
         Map<String, Double> convertedMap =
             new HashMap<>(TimeConvert.convertTime(ProgramTimer.appMap));
@@ -503,5 +563,86 @@ public class Main {
      */
     public static Point getWindowLoc() {
         return windowLoc;
+    }
+
+    /**
+     * This method updates the table found in the main window of the gui. It
+     * works by destroying the current table object and creates a new one.
+     */
+    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    public static void loadTable(Map<String, Long> loadedMap) {
+
+        // Remove old table object
+        // if (!fresh) {
+        mainPanel.remove(sc);
+        mainPanel.remove(table);
+        System.out.print("in load table");
+        // }
+
+        // All the keys we need are loaded from the map
+        setKeys(loadedMap.keySet());
+
+        String columns[] = {"Program", TimeConvert.getUnit()};
+
+        if (loadedMap.size() == 0) {
+            model = new DefaultTableModel(1, 2);
+            String[] colHeadings = {"Program", "Time"};
+            model.setColumnIdentifiers(colHeadings);
+        }
+        else {
+
+            model = new DefaultTableModel(
+                getRows((TimeConvert.convertTime(loadedMap))),
+                columns) {
+                @Override
+                public Class getColumnClass(int column) {
+                    Class returnValue;
+                    if ((column >= 0) && (column < getColumnCount())) {
+                        returnValue = getValueAt(0, column).getClass();
+                        // System.out.println("if " + returnValue);
+                    }
+                    else {
+                        returnValue = Object.class;
+                        // System.out.println("else " + returnValue);
+                    }
+                    // System.out.println("actual return " + returnValue);
+                    return returnValue;
+                }
+            };
+        }
+        table = new JTable(model);
+
+        if (PreferencesGui.getDisplayIndex() == 3) {
+            model = new DefaultTableModel();
+            // model = new DefaultTableModel(1, 2);
+            table = new JTable(model);
+            model.addColumn("Program");
+            setKeys(loadedMap.keySet());
+            for (String name : loadedMap.keySet()) {
+                String key = name.toString();
+                model.addRow(new Object[] {key});
+            }
+            Map<String, String> finalMap2 =
+                TimeConvert.convertWritten(loadedMap);
+
+            // Append a new column with copied data
+            model.addColumn(TimeConvert.getUnit(),
+                finalMap2.values().toArray());
+        }
+        else {
+
+            RowSorter<TableModel> sorter =
+                new TableRowSorter<TableModel>(model);
+            table.setRowSorter(sorter);
+
+        }
+        DefaultTableCellRenderer renderer =
+            (DefaultTableCellRenderer) table.getDefaultRenderer(Double.class);
+        renderer.setHorizontalAlignment(JLabel.LEFT);
+
+        sc = new JScrollPane(table);
+        mainPanel.add(sc);
+        secretLabel.setText("  ");
+        secretLabel.setText("");
     }
 }
