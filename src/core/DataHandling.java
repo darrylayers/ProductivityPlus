@@ -132,6 +132,30 @@ public class DataHandling {
 
         ExcelWriter.write(loadedAppMap, date);
     }
+    
+    public static Map<String, Long> acceptDateTable(String date) throws IOException {
+
+        Map<String, Long> loadedAppMap = new HashMap<>();
+        try {
+            ObjectInputStream ois =
+                new ObjectInputStream(
+                    new FileInputStream("./saved_data/" + date + ".map"));
+            Object readMap = ois.readObject();
+            if (readMap != null && readMap instanceof HashMap) {
+                loadedAppMap
+                    .putAll((Map<? extends String, ? extends Long>) readMap);
+            }
+            ois.close();
+        }
+        catch (Exception e) {
+
+        }
+
+
+        return loadedAppMap;
+    }
+    
+    
 
     /**
      * This method returns an arraylist containing all of the dates that need to

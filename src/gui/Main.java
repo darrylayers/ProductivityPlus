@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -216,7 +217,7 @@ public class Main {
         buttonPanel.setBackground(Color.WHITE);
         mainPanel.add(buttonPanel, "cell 0 1,grow");
         buttonPanel.setLayout(
-            new MigLayout("", "[100,grow]", "[25][][][][][][][][27.00][]"));
+            new MigLayout("", "[100,grow]", "[25][][][][][][][][][][][][]"));
 
         // ************** Start button ************** //
 
@@ -276,6 +277,9 @@ public class Main {
         });
         buttonPanel.add(exploreDataBtn, "cell 0 3,growx");
         exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
+        
+        JLabel lblStartDate = new JLabel("Start Date");
+        buttonPanel.add(lblStartDate, "flowx,cell 0 7");
 
         secretLabel = new JLabel("");
         buttonPanel.add(secretLabel, "cell 0 7,alignx center");
@@ -295,60 +299,94 @@ public class Main {
 
         DatePicker datePicker = new DatePicker((DatePickerSettings) null);
         buttonPanel.add(datePicker, "cell 0 8,grow");
+        
+        DatePicker datePicker2 = new DatePicker((DatePickerSettings) null);
+        buttonPanel.add(datePicker2, "cell 0 10,grow");
+        
+                JButton btnLoadData = new JButton("Load Data");
+                btnLoadData.addMouseListener(new MouseAdapter() {
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public void mouseClicked(MouseEvent arg0) {
+                        
+                    	 LocalDate date = datePicker.getDate();
+                         LocalDate date2 = datePicker2.getDate();
+                         
+                         if(date == null) {
+                        	 JOptionPane.showMessageDialog(null,
+                                     "Please enter a start date.");
+                         } else {
+                         
+                         String formattedString;
+                         String formattedString2;
+                         // Pass the date(s) to DateHandling.java
+                         @SuppressWarnings("unused")
+                         SimpleDateFormat dateFormatter =
+                             new SimpleDateFormat("Dyy");
+                         DateTimeFormatter formatter =
+                                 DateTimeFormatter.ofPattern("Dyy");
+                         formattedString = date.format(formatter);
+                         if(date2 == null) {
 
-        JButton btnLoadData = new JButton("Load Data");
-        btnLoadData.addMouseListener(new MouseAdapter() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                LocalDate date = datePicker.getDate();
+                             
+                         try {
+							loadTable(DataHandling.acceptDateTable(formattedString));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                         }
+                         if(date2 != null) {
+                        	 
+ 
 
-                if (date != null) {
-                    @SuppressWarnings("unused")
-                    SimpleDateFormat dateFormatter =
-                        new SimpleDateFormat("Dyy");
 
-                    DateTimeFormatter formatter =
-                        DateTimeFormatter.ofPattern("Dyy");
-                    String formattedString = date.format(formatter);
+                      //   if (!(date2 == null)) {
+                             formattedString2 = date2.format(formatter);
 
-                    Map<String, Long> loadedMap = new HashMap<>();
-                    try {
-                        ObjectInputStream ois =
-                            new ObjectInputStream(
-                                new FileInputStream(
-                                    "./saved_data/" + formattedString
-                                        + ".map"));
-                        Object readMap = ois.readObject();
-                        if (readMap != null && readMap instanceof HashMap) {
-                            loadedMap
-                                .putAll(
-                                    (Map<? extends String, ? extends Long>) readMap);
-                        }
-                        ois.close();
-                    }
-                    catch (Exception e) {
+                             List<String> dates =
+                                 DataHandling.dateDiff(formattedString,
+                                     formattedString2);
+                             @SuppressWarnings("rawtypes")
+                             List<Map> maps = DataHandling.loadMaps(dates);
+                        
 
-                    }
 
-                    if (loadedMap.size() != 0) {
-                        loadTable(loadedMap);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null,
-                            "Warning: Loaded map was empty.");
-                    }
+                        // }/*else {
+/*                         JOptionPane.showMessageDialog(null,
+                         "No date was entered.");*/
+                         //}
+                             Map<String, Long> combinedMaps = new HashMap<>();
 
+                             int i = 100 / maps.size();
+
+                             for (Map<String, Long> map : maps) {
+
+                                 for (Map.Entry<String, Long> entry : map.entrySet()) {
+                                     String key = entry.getKey();
+                                     Long current = combinedMaps.get(key);
+                                     combinedMaps.put(key, current == null ? entry.getValue()
+                                         : entry.getValue() + current);
+                                 }
+
+                                 ExploreDataGui.updateBar(i);
+                                 i = 2 * i;
+
+                             }
+                             loadTable(combinedMaps);
+                         }
+                      }
                 }
-                else {
-                    JOptionPane.showMessageDialog(null,
-                        "No date was entered.");
-                }
+                    
+                });
+                
+                JLabel lblEndDate = new JLabel("End Date");
+                lblEndDate.setToolTipText("Leave end date blank if only viewing one day");
+                buttonPanel.add(lblEndDate, "cell 0 9");
+                
 
-            }
-        });
-        btnLoadData.setFont(new Font("Verdana", Font.PLAIN, 11));
-        buttonPanel.add(btnLoadData, "cell 0 9,growx");
+                btnLoadData.setFont(new Font("Verdana", Font.PLAIN, 11));
+                buttonPanel.add(btnLoadData, "cell 0 12,growx");
 
         // ************** Table ************** //
 
@@ -547,10 +585,17 @@ public class Main {
      */
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
     public static void loadTable(Map<String, Long> loadedMap) {
+    	
+    	if(loadedMap.isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Warning: Loaded time table was empty");
+    	}
 
         // Remove old table object
         mainPanel.remove(sc);
         mainPanel.remove(table);
+        
+        System.out.println(loadedMap);
 
         // All the keys we need are loaded from the map
         setKeys(loadedMap.keySet());
@@ -584,7 +629,6 @@ public class Main {
 
         if (PreferencesGui.getDisplayIndex() == 3) {
             model = new DefaultTableModel();
-            // model = new DefaultTableModel(1, 2);
             table = new JTable(model);
             model.addColumn("Program");
             setKeys(loadedMap.keySet());
@@ -594,8 +638,8 @@ public class Main {
             }
             Map<String, String> finalMap2 =
                 TimeConvert.convertWritten(loadedMap);
-
-            // Append a new column with copied data
+            
+              // Append a new column with copied data
             model.addColumn(TimeConvert.getUnit(),
                 finalMap2.values().toArray());
         }
@@ -614,5 +658,7 @@ public class Main {
         mainPanel.add(sc);
         secretLabel.setText("  ");
         secretLabel.setText("");
+
+
     }
 }
