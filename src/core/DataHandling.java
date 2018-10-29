@@ -41,6 +41,8 @@ import gui.ExploreDataGui;
  */
 public class DataHandling {
 
+    public static List<String> combinedList = new ArrayList<String>();
+
     public static File savedMap =
         new File("./saved_data/" + getDate() + ".map");
 
@@ -285,37 +287,42 @@ public class DataHandling {
         return DataHandling.sortHashMapByValues(finalMap);
     }
 
-    // TODO This is where the data is being sorted
     public static Map<String, Long> validateData(Map<String, Long> inputMap) {
 
         Map<String, Long> editedMap = new HashMap<String, Long>();
+        Map<String, Long> doNotAdd = new HashMap<String, Long>();
+        String[] itemstoHide = new String[2];
+        itemstoHide[0] = " - Google Chrome";
+        itemstoHide[1] = " - Discord";
 
-        // Check to see if any program key-value pairs need to be combined
-
-        boolean first = true;
+        // For each item in the input map...
         for (Entry<String, Long> entry : inputMap.entrySet()) {
-            String key = entry.getKey();
-            Long current = inputMap.get(key);
-            if (!(key.contains("- Google Chrome"))) {
-                editedMap.put(key, inputMap.get(key));
+
+            // Save the current item's key-value pair
+            String key = entry.getKey(); // Current prog we are looking at
+            Long current = inputMap.get(key); // Current prog's time
+
+            // Check to see if the key needs to be combined or not
+            for (String element : itemstoHide) {
+                if (key.contains(element)) {
+                    if (editedMap
+                        .get(element.substring(3, element.length())) == null) {
+                        editedMap.put(element.substring(3, element.length()),
+                            current);
+                    }
+                    else {
+                        Long old = editedMap
+                            .get(element.substring(3, element.length()));
+                        editedMap.put(element.substring(3, element.length()),
+                            current + old);
+                    }
+                    doNotAdd.put(key, (long) 1);
+                }
             }
-            else {
-
-                if (first) {
-                    editedMap.put("Google Chrome", inputMap.get(key));
-                    first = false;
-                }
-                else {
-                    editedMap.put("Google Chrome",
-                        editedMap.get("Google Chrome") + current);
-                }
-
+            if (!doNotAdd.containsKey(key)) {
+                editedMap.put(key, current);
             }
         }
-
-        // Validate what needs to be printed or displayed
-
         return editedMap;
     }
-
 }
