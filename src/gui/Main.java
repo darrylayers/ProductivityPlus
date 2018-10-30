@@ -149,6 +149,15 @@ public class Main {
 
         JMenuItem mnPreferences = new JMenuItem("Preferences");
         mnEdit.add(mnPreferences);
+
+        JMenuItem WhatToTrack = new JMenuItem("What to track");
+        WhatToTrack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                WhatToTrackGui.newWindow();
+            }
+        });
+        mnEdit.add(WhatToTrack);
         mnPreferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -279,15 +288,6 @@ public class Main {
         buttonPanel.add(exploreDataBtn, "cell 0 3,growx");
         exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
-        JButton btnPrintAppmap = new JButton("Print appmap");
-        btnPrintAppmap.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                System.out.println(ProgramTimer.appMap);
-            }
-        });
-        buttonPanel.add(btnPrintAppmap, "cell 0 5");
-
         secretLabel = new JLabel("");
         buttonPanel.add(secretLabel, "cell 0 7,alignx center");
 
@@ -353,7 +353,6 @@ public class Main {
                                 DataHandling.acceptDateTable(formattedString)));
                         }
                         catch (IOException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
@@ -594,8 +593,6 @@ public class Main {
         // Remove old table object
         mainPanel.remove(sc);
         mainPanel.remove(table);
-
-        System.out.println(loadedMap);
 
         // All the keys we need are loaded from the map
         setKeys(loadedMap.keySet());

@@ -41,6 +41,8 @@ import gui.ExploreDataGui;
  */
 public class DataHandling {
 
+    public static String[] itemstoHide = new String[100];
+
     public static File savedMap =
         new File("./saved_data/" + getDate() + ".map");
 
@@ -131,6 +133,7 @@ public class DataHandling {
         ExcelWriter.write(loadedAppMap, date);
     }
 
+    @SuppressWarnings("unchecked")
     public static Map<String, Long> acceptDateTable(String date)
         throws IOException {
 
@@ -285,37 +288,52 @@ public class DataHandling {
         return DataHandling.sortHashMapByValues(finalMap);
     }
 
-    // TODO This is where the data is being sorted
     public static Map<String, Long> validateData(Map<String, Long> inputMap) {
 
         Map<String, Long> editedMap = new HashMap<String, Long>();
+        Map<String, Long> doNotAdd = new HashMap<String, Long>();
 
-        // Check to see if any program key-value pairs need to be combined
+        itemstoHide[0] = "2";
+        itemstoHide[1] = (" - Google Chrome");
+        itemstoHide[2] = (" - Discord");
 
-        boolean first = true;
+        int size = Integer.valueOf(itemstoHide[0]);
+
+        // For each item in the input map...
         for (Entry<String, Long> entry : inputMap.entrySet()) {
-            String key = entry.getKey();
-            Long current = inputMap.get(key);
-            if (!(key.contains("- Google Chrome"))) {
-                editedMap.put(key, inputMap.get(key));
+
+            // Save the current item's key-value pair
+            String key = entry.getKey(); // Current prog we are looking at
+            Long current = inputMap.get(key); // Current prog's time
+
+            // Check to see if the key needs to be combined or not
+            for (int i = 0; i <= size; i++) {
+                // for (String element : itemstoHide) {
+                if (key.contains(itemstoHide[i])) {
+                    if (editedMap
+                        .get(itemstoHide[i].substring(3,
+                            itemstoHide[i].length())) == null) {
+                        editedMap.put(
+                            itemstoHide[i].substring(3,
+                                itemstoHide[i].length()),
+                            current);
+                    }
+                    else {
+                        Long old = editedMap
+                            .get(itemstoHide[i].substring(3,
+                                itemstoHide[i].length()));
+                        editedMap.put(
+                            itemstoHide[i].substring(3,
+                                itemstoHide[i].length()),
+                            current + old);
+                    }
+                    doNotAdd.put(key, (long) 1);
+                }
             }
-            else {
-
-                if (first) {
-                    editedMap.put("Google Chrome", inputMap.get(key));
-                    first = false;
-                }
-                else {
-                    editedMap.put("Google Chrome",
-                        editedMap.get("Google Chrome") + current);
-                }
-
+            if (!doNotAdd.containsKey(key)) {
+                editedMap.put(key, current);
             }
         }
-
-        // Validate what needs to be printed or displayed
-
         return editedMap;
     }
-
 }
