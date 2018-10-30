@@ -41,7 +41,7 @@ import gui.ExploreDataGui;
  */
 public class DataHandling {
 
-    public static List<String> combinedList = new ArrayList<String>();
+    public static String[] itemstoHide = new String[100];
 
     public static File savedMap =
         new File("./saved_data/" + getDate() + ".map");
@@ -133,6 +133,7 @@ public class DataHandling {
         ExcelWriter.write(loadedAppMap, date);
     }
 
+    @SuppressWarnings("unchecked")
     public static Map<String, Long> acceptDateTable(String date)
         throws IOException {
 
@@ -291,9 +292,12 @@ public class DataHandling {
 
         Map<String, Long> editedMap = new HashMap<String, Long>();
         Map<String, Long> doNotAdd = new HashMap<String, Long>();
-        String[] itemstoHide = new String[2];
-        itemstoHide[0] = " - Google Chrome";
-        itemstoHide[1] = " - Discord";
+
+        itemstoHide[0] = "2";
+        itemstoHide[1] = (" - Google Chrome");
+        itemstoHide[2] = (" - Discord");
+
+        int size = Integer.valueOf(itemstoHide[0]);
 
         // For each item in the input map...
         for (Entry<String, Long> entry : inputMap.entrySet()) {
@@ -303,17 +307,24 @@ public class DataHandling {
             Long current = inputMap.get(key); // Current prog's time
 
             // Check to see if the key needs to be combined or not
-            for (String element : itemstoHide) {
-                if (key.contains(element)) {
+            for (int i = 0; i <= size; i++) {
+                // for (String element : itemstoHide) {
+                if (key.contains(itemstoHide[i])) {
                     if (editedMap
-                        .get(element.substring(3, element.length())) == null) {
-                        editedMap.put(element.substring(3, element.length()),
+                        .get(itemstoHide[i].substring(3,
+                            itemstoHide[i].length())) == null) {
+                        editedMap.put(
+                            itemstoHide[i].substring(3,
+                                itemstoHide[i].length()),
                             current);
                     }
                     else {
                         Long old = editedMap
-                            .get(element.substring(3, element.length()));
-                        editedMap.put(element.substring(3, element.length()),
+                            .get(itemstoHide[i].substring(3,
+                                itemstoHide[i].length()));
+                        editedMap.put(
+                            itemstoHide[i].substring(3,
+                                itemstoHide[i].length()),
                             current + old);
                     }
                     doNotAdd.put(key, (long) 1);
