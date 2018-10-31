@@ -400,6 +400,9 @@ public class Main {
         // ************** Table ************** //
 
         updateTable(true);
+        updateTable(false);
+        secretLabel.setText("  ");
+        secretLabel.setText("");
 
         // ************** Close to Tray ************** //
         CloseToSystemTray tray = new CloseToSystemTray();
