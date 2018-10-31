@@ -419,7 +419,12 @@ public class Main {
                             i = 2 * i;
                         }
 
-                        loadTable(DataHandling.validateData(combinedMaps));
+                        if (getChecked()) {
+                            loadTable(DataHandling.validateData(combinedMaps));
+                        }
+                        else {
+                            loadTable(combinedMaps);
+                        }
                     }
                 }
             }
@@ -501,8 +506,13 @@ public class Main {
             mainPanel.remove(table);
         }
 
-        Map<String, Long> loadedCurrentMap =
-            DataHandling.validateData(ProgramTimer.appMap);
+        Map<String, Long> loadedCurrentMap;
+        if (getChecked()) {
+            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
+        }
+        else {
+            loadedCurrentMap = ProgramTimer.appMap;
+        }
 
         // All the keys we need are loaded from the map
         setKeys(loadedCurrentMap.keySet());

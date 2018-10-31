@@ -96,7 +96,7 @@ public class ConsolidationGui extends JDialog {
         btnPrintArraylist.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                removeRow(txtInput.getText());
+                removeRow("- " + txtInput.getText());
             }
         });
 
@@ -104,7 +104,7 @@ public class ConsolidationGui extends JDialog {
         btnEnterProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                addRow(txtInput.getText());
+                addRow("- " + txtInput.getText());
             }
         });
 
@@ -147,7 +147,7 @@ public class ConsolidationGui extends JDialog {
 
         // Load the able
         for (String entry : list) {
-            model.addRow(new Object[] {entry});
+            model.addRow(new Object[] {entry.substring(2, entry.length())});
         }
 
         RowSorter<TableModel> sorter =
@@ -187,7 +187,7 @@ public class ConsolidationGui extends JDialog {
     }
 
     public static boolean inList(String item) {
-        if (list.contains(item)) {
+        if (list.contains("- " + item) || list.contains(item)) {
             return true;
         }
         else {
