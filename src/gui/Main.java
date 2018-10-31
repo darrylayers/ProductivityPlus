@@ -58,6 +58,7 @@ public class Main {
 
     // Gui fields
     public static final int FRAME_SIZE = 300;
+    public static boolean toTrack = false;
     public static JFrame frame;
     JButton stopTimerBtn;
     public static Main gui;

@@ -2,8 +2,14 @@ package gui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -42,6 +48,9 @@ public class WhatToTrackGui extends JDialog {
     private static JPanel panel2;
     private JLabel secretLabel;
     private JLabel lblNewLabel;
+    private byte[] bytes;
+    private static Preferences prefs =
+        Preferences.userRoot().node("WhatToTrackGui");
 
     /**
      * Launch the About pop up window.
@@ -109,16 +118,16 @@ public class WhatToTrackGui extends JDialog {
     }
 
     public void loadTable(boolean init) {
-        if (!init) {
+        if (Main.toTrack) {
             panel2.remove(sc);
-            System.out.println("removed?");
         }
         else {
             getList();
+            Main.toTrack = true;
         }
 
-        System.out.println(list.size());
-        System.out.println(list);
+        /*        System.out.println(list.size());
+        System.out.println(list);*/
 
         model = new DefaultTableModel(0, 1);
         String[] colHeadings = {"Program in list"};
@@ -135,10 +144,6 @@ public class WhatToTrackGui extends JDialog {
             new TableRowSorter<TableModel>(model);
         table.setRowSorter(sorter);
 
-        /*        DefaultTableCellRenderer renderer =
-            (DefaultTableCellRenderer) table.getDefaultRenderer(Double.class);
-        renderer.setHorizontalAlignment(JLabel.LEFT);*/
-
         sc = new JScrollPane(table);
         panel2.add(sc, "cell 2 3");
         secretLabel.setText("  ");
@@ -154,13 +159,21 @@ public class WhatToTrackGui extends JDialog {
             list.add(item);
             txtInput.setText("");
             loadTable(false);
+            saveList();
         }
     }
 
     public void removeRow(String item) {
-        list.remove(item);
-        txtInput.setText("");
-        loadTable(false);
+        if (!inList(item)) {
+            JOptionPane.showMessageDialog(null,
+                "Item not in list to remove.");
+        }
+        else {
+            list.remove(item);
+            txtInput.setText("");
+            loadTable(false);
+            saveList();
+        }
     }
 
     public boolean inList(String item) {
@@ -173,7 +186,41 @@ public class WhatToTrackGui extends JDialog {
     }
 
     public void getList() {
-        list.add("- Google Chrome");
-        list.add("- Discord");
+        loadList();
+    }
+
+    public void loadList() {
+        byte[] temp = {0};
+        bytes = prefs.getByteArray("PREF_LIST", temp);
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        DataInputStream in = new DataInputStream(bais);
+        try {
+            while (in.available() > 0) {
+                String element = in.readUTF();
+                System.out.println("printing element " + element);
+                list.add(element);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveList() {
+        System.out.print("Saving list: " + list + "\n");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(baos);
+        for (String element : list) {
+            try {
+                out.writeUTF(element);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        bytes = baos.toByteArray();
+
+        prefs.putByteArray("PREF_LIST", bytes);
+
     }
 }
