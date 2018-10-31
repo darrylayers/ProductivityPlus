@@ -19,8 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -59,6 +61,9 @@ public class Main {
     // Gui fields
     public static final int FRAME_SIZE = 300;
     public static boolean toTrack = false;
+    private static Preferences prefs =
+        Preferences.userRoot().node("Main");
+    private final static String VALIDATE_STRINGS = "validate";
     public static JFrame frame;
     JButton stopTimerBtn;
     public static Main gui;
@@ -151,14 +156,14 @@ public class Main {
         JMenuItem mnPreferences = new JMenuItem("Preferences");
         mnEdit.add(mnPreferences);
 
-        JMenuItem WhatToTrack = new JMenuItem("What to track");
-        WhatToTrack.addActionListener(new ActionListener() {
+        JMenuItem consolidation = new JMenuItem("Program Consolidation");
+        consolidation.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                WhatToTrackGui.newWindow();
+                ConsolidationGui.newWindow();
             }
         });
-        mnEdit.add(WhatToTrack);
+        mnEdit.add(consolidation);
         mnPreferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -289,6 +294,17 @@ public class Main {
         buttonPanel.add(exploreDataBtn, "cell 0 3,growx");
         exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
+        JCheckBox chckbxConsolidatePrograms =
+            new JCheckBox("Consolidate Programs");
+        chckbxConsolidatePrograms.setSelected(getChecked());
+        chckbxConsolidatePrograms.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                setChecked();
+            }
+        });
+        buttonPanel.add(chckbxConsolidatePrograms, "cell 0 5,growx");
+
         secretLabel = new JLabel("");
         buttonPanel.add(secretLabel, "cell 0 7,alignx center");
 
@@ -347,14 +363,30 @@ public class Main {
                     formattedString = date.format(formatter);
                     if (date2 == null) {
 
-                        try {
-                            DataHandling.validateData(
-                                DataHandling.acceptDateTable(formattedString));
-                            loadTable(DataHandling.validateData(
-                                DataHandling.acceptDateTable(formattedString)));
+                        if (getChecked()) {
+                            try {
+
+                                DataHandling.validateData(
+                                    DataHandling
+                                        .acceptDateTable(formattedString));
+                                loadTable(DataHandling.validateData(
+                                    DataHandling
+                                        .acceptDateTable(formattedString)));
+                            }
+                            catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
                         }
-                        catch (IOException e) {
-                            e.printStackTrace();
+                        else {
+                            try {
+                                DataHandling.acceptDateTable(formattedString);
+                                loadTable(DataHandling
+                                    .acceptDateTable(formattedString));
+                            }
+                            catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                     if (date2 != null) {
@@ -659,5 +691,28 @@ public class Main {
         secretLabel.setText("  ");
         secretLabel.setText("");
 
+    }
+
+    /**
+     * Set the Idle check box from its saved preference, if never saved then set
+     * to false by default.
+     */
+    public void setChecked() {
+        if (getChecked()) {
+            prefs.putBoolean(VALIDATE_STRINGS, false);
+        }
+        else {
+            prefs.putBoolean(VALIDATE_STRINGS, true);
+        }
+    }
+
+    /**
+     * Returns the status of the Idle check box, if the box does not have a save
+     * preference it returns false by default.
+     * 
+     * @return boolean, false is no preference saved.
+     */
+    public static boolean getChecked() {
+        return prefs.getBoolean(VALIDATE_STRINGS, false);
     }
 }

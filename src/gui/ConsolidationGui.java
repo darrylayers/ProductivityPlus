@@ -33,7 +33,7 @@ import net.miginfocom.swing.MigLayout;
  * @version 10/29/18
  * 
  */
-public class WhatToTrackGui extends JDialog {
+public class ConsolidationGui extends JDialog {
 
     /**
      * 
@@ -58,7 +58,7 @@ public class WhatToTrackGui extends JDialog {
      */
     public static void newWindow() {
         try {
-            WhatToTrackGui dialog = new WhatToTrackGui();
+            ConsolidationGui dialog = new ConsolidationGui();
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
@@ -72,7 +72,7 @@ public class WhatToTrackGui extends JDialog {
     /**
      * Create the dialog.
      */
-    public WhatToTrackGui() {
+    public ConsolidationGui() {
         setTitle("What to Track");
         setBounds(100, 100, 528, 399);
         getContentPane()

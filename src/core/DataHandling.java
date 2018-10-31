@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 import javax.swing.JOptionPane;
 
 import gui.ExploreDataGui;
-import gui.WhatToTrackGui;
+import gui.ConsolidationGui;
 
 /**
  * This class stores, loads, and handles the saved data from the application. As
@@ -292,10 +292,10 @@ public class DataHandling {
         Map<String, Long> editedMap = new HashMap<String, Long>();
         Map<String, Long> doNotAdd = new HashMap<String, Long>();
 
-        int size = WhatToTrackGui.getSavedList().size();
-        WhatToTrackGui.loadList();
+        int size = ConsolidationGui.getSavedList().size();
+        ConsolidationGui.loadList();
         String[] itemstoHide =
-            WhatToTrackGui.list.toArray(new String[WhatToTrackGui.list.size()]);
+            ConsolidationGui.list.toArray(new String[ConsolidationGui.list.size()]);
 
         // For each item in the input map...
         for (Entry<String, Long> entry : inputMap.entrySet()) {
