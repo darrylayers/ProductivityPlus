@@ -48,9 +48,10 @@ public class WhatToTrackGui extends JDialog {
     private static JPanel panel2;
     private JLabel secretLabel;
     private JLabel lblNewLabel;
-    private byte[] bytes;
+    private static byte[] bytes;
     private static Preferences prefs =
         Preferences.userRoot().node("WhatToTrackGui");
+    private JButton btnPrintList;
 
     /**
      * Launch the About pop up window.
@@ -80,7 +81,7 @@ public class WhatToTrackGui extends JDialog {
         panel = new JPanel();
         panel2 = new JPanel();
         getContentPane().add(panel, "cell 0 0,grow");
-        panel.setLayout(new MigLayout("", "[][grow][]", "[][fill][][][]"));
+        panel.setLayout(new MigLayout("", "[][grow][]", "[][fill][][][][]"));
 
         getContentPane().add(panel2, "cell 0 0,grow");
         panel2.setLayout(new MigLayout("", "[][grow]", "[][][][]"));
@@ -112,6 +113,15 @@ public class WhatToTrackGui extends JDialog {
         txtInput.setColumns(10);
         panel.add(btnEnterProgram, "cell 1 3,growx");
         panel.add(btnPrintArraylist, "cell 1 4,growx");
+
+        btnPrintList = new JButton("Print list");
+        btnPrintList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                System.out.println(list);
+            }
+        });
+        // panel.add(btnPrintList, "cell 1 5,growx");
 
         // ************** Frame panels and panes ************** //
         loadTable(true);
@@ -176,7 +186,7 @@ public class WhatToTrackGui extends JDialog {
         }
     }
 
-    public boolean inList(String item) {
+    public static boolean inList(String item) {
         if (list.contains(item)) {
             return true;
         }
@@ -189,7 +199,7 @@ public class WhatToTrackGui extends JDialog {
         loadList();
     }
 
-    public void loadList() {
+    public static void loadList() {
         byte[] temp = {0};
         bytes = prefs.getByteArray("PREF_LIST", temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
@@ -197,8 +207,9 @@ public class WhatToTrackGui extends JDialog {
         try {
             while (in.available() > 0) {
                 String element = in.readUTF();
-                System.out.println("printing element " + element);
-                list.add(element);
+                if (!inList(element)) {
+                    list.add(element);
+                }
             }
         }
         catch (IOException e) {
@@ -222,5 +233,9 @@ public class WhatToTrackGui extends JDialog {
 
         prefs.putByteArray("PREF_LIST", bytes);
 
+    }
+
+    public static List<String> getSavedList() {
+        return list;
     }
 }
