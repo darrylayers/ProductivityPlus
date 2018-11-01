@@ -48,6 +48,11 @@ import core.ProgramTimer;
 import core.SingletonTimer;
 import core.TimeConvert;
 import net.miginfocom.swing.MigLayout;
+import java.awt.Component;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 /**
  * Main class, currently holding all the GUI code.
@@ -67,7 +72,7 @@ public class Main {
     public static JFrame frame;
     JButton stopTimerBtn;
     public static Main gui;
-    public static JLabel lblCurrentlyNotTracking =
+    public static JLabel trackStatusLabel =
         new JLabel("Currently not tracking.");
     static JPanel mainPanel = new JPanel();
     private static Point windowLoc;
@@ -78,6 +83,7 @@ public class Main {
     private static Set<String> keys;
     private static JScrollPane sc;
     private static JLabel secretLabel;
+    private JTextField progTextField;
 
     /**
      * Main method that builds the GUI.
@@ -118,8 +124,8 @@ public class Main {
         JMenu mnFile = new JMenu("File");
         menuBar.add(mnFile);
 
-        JMenuItem mntmItem = new JMenuItem("Open output folder");
-        mntmItem.addActionListener(new ActionListener() {
+        JMenuItem outputFolderItem = new JMenuItem("Open output folder");
+        outputFolderItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
@@ -132,10 +138,10 @@ public class Main {
             }
         });
 
-        mnFile.add(mntmItem);
+        mnFile.add(outputFolderItem);
 
-        JMenuItem mntmItem_1 = new JMenuItem("Open saved data folder");
-        mntmItem_1.addActionListener(new ActionListener() {
+        JMenuItem savedDataItem = new JMenuItem("Open saved data folder");
+        savedDataItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
@@ -148,23 +154,23 @@ public class Main {
             }
 
         });
-        mnFile.add(mntmItem_1);
+        mnFile.add(savedDataItem);
 
         JMenu mnEdit = new JMenu("Edit");
         menuBar.add(mnEdit);
 
-        JMenuItem mnPreferences = new JMenuItem("Preferences");
-        mnEdit.add(mnPreferences);
+        JMenuItem preferencesItem = new JMenuItem("Preferences");
+        mnEdit.add(preferencesItem);
 
-        JMenuItem consolidation = new JMenuItem("Program Consolidation");
-        consolidation.addActionListener(new ActionListener() {
+        JMenuItem consolidationItem = new JMenuItem("Program Consolidation");
+        consolidationItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 ConsolidationGui.newWindow();
             }
         });
-        mnEdit.add(consolidation);
-        mnPreferences.addActionListener(new ActionListener() {
+        mnEdit.add(consolidationItem);
+        preferencesItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // This statement prohibits edits
@@ -183,23 +189,23 @@ public class Main {
         JMenu mnHelp = new JMenu("Help");
         menuBar.add(mnHelp);
 
-        JMenuItem mnAbout = new JMenuItem("About");
-        mnAbout.addActionListener(new ActionListener() {
+        JMenuItem aboutItem = new JMenuItem("About");
+        aboutItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 AboutGui.newWindow();
             }
         });
-        mnHelp.add(mnAbout);
+        mnHelp.add(aboutItem);
 
-        JMenuItem mntmFaq = new JMenuItem("FAQ");
-        mntmFaq.addActionListener(new ActionListener() {
+        JMenuItem faqItem = new JMenuItem("FAQ");
+        faqItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 FaqGui.newWindow();
             }
         });
-        mnHelp.add(mntmFaq);
+        mnHelp.add(faqItem);
 
         // ************** Panel creations ************** //
 
@@ -217,14 +223,64 @@ public class Main {
 
         JPanel trackPanel = new JPanel();
         tabbedPane.addTab("What to track", null, trackPanel, null);
+        trackPanel.setLayout(new MigLayout("", "[310.00px,grow][450,grow][450,grow]", "[75][457.00px,grow]"));
+        
+        JLabel controlsLabel = new JLabel("Controls");
+        trackPanel.add(controlsLabel, "cell 0 0,alignx center,aligny center");
+        
+        JLabel inclusionsLabel = new JLabel("Inclusions");
+        inclusionsLabel.setToolTipText("These are the ONLY programs that will be tracked if the \"Track inclusions\" button is selected. This is useful if you only want to track a few programs.");
+        trackPanel.add(inclusionsLabel, "cell 1 0,alignx center,aligny center");
+        
+        JLabel exclusionsLabel = new JLabel("Exclusions");
+        exclusionsLabel.setToolTipText("These are the programs that will be excluded from tracking if the \"Track exclusions\" button is selected. This is useful if you want to avoid tracking only a few programs.");
+        trackPanel.add(exclusionsLabel, "cell 2 0,alignx center,aligny center");
+        
+        JPanel controlPanel = new JPanel();
+        trackPanel.add(controlPanel, "cell 0 1,grow");
+        controlPanel.setLayout(new MigLayout("", "[132.00,grow]", "[][][][][][][][]"));
+        
+        JLabel modeLabel = new JLabel("Mode - What to track");
+        controlPanel.add(modeLabel, "cell 0 0,alignx center,aligny center");
+        
+        JRadioButton trackAllRButton = new JRadioButton("Track all");
+        trackAllRButton.setToolTipText("All programs will be tracked if this is chosen.");
+        controlPanel.add(trackAllRButton, "cell 0 1");
+        
+        JRadioButton trackInclusionsRButton = new JRadioButton("Track inclusions");
+        trackInclusionsRButton.setToolTipText("Only the programs inside the Inclusions table will be tracked. This is useful if you only want to track a few programs.");
+        controlPanel.add(trackInclusionsRButton, "cell 0 2");
+        
+        JRadioButton trackExclusionsRButton = new JRadioButton("Track exclusions");
+        trackExclusionsRButton.setToolTipText("Everything will be tracked except the programs in the Exclusions table if this is selected. This is useful if you want to avoid tracking only a few programs.");
+        controlPanel.add(trackExclusionsRButton, "cell 0 3");
+        
+        progTextField = new JTextField();
+        progTextField.setToolTipText("Put the program name here");
+        controlPanel.add(progTextField, "cell 0 5,growx");
+        progTextField.setColumns(10);
+        
+        JButton addProgramButton = new JButton("Add program");
+        addProgramButton.setToolTipText("Add a program from whichever table is selected above.");
+        controlPanel.add(addProgramButton, "cell 0 6,grow");
+        
+        JButton removeProgramButton = new JButton("Remove Program");
+        removeProgramButton.setToolTipText("Remove a program from whichever table is selected above.");
+        controlPanel.add(removeProgramButton, "cell 0 7,grow");
+        
+        JScrollPane inclusionScrollPane = new JScrollPane((Component) null);
+        trackPanel.add(inclusionScrollPane, "cell 1 1,grow");
+        
+        JScrollPane exclusionScrollPane = new JScrollPane((Component) null);
+        trackPanel.add(exclusionScrollPane, "cell 2 1,grow");
 
         // ************** Timer controls labels ************** //
 
-        JLabel lblTimerControls = new JLabel("     Timer Controls");
-        lblTimerControls.setFont(new Font("Verdana", Font.BOLD, 12));
-        mainPanel.add(lblTimerControls, "cell 0 0,alignx left");
-        lblCurrentlyNotTracking.setFont(new Font("Verdana", Font.BOLD, 12));
-        mainPanel.add(lblCurrentlyNotTracking, "cell 1 0");
+        JLabel timerControlsLabel = new JLabel("     Timer Controls");
+        timerControlsLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+        mainPanel.add(timerControlsLabel, "cell 0 0,alignx left");
+        trackStatusLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+        mainPanel.add(trackStatusLabel, "cell 1 0");
 
         // ************** Button panel ************** //
 
@@ -243,10 +299,9 @@ public class Main {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 startTimer();
-                lblCurrentlyNotTracking.setText("Currently tracking...");
+                trackStatusLabel.setText("Currently tracking...");
             }
         });
-        startTimerBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         // ************** Stop button ************** //
 
@@ -268,7 +323,6 @@ public class Main {
 
             }
         });
-        stopTimerBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         // ************** Graphical output button ************** //
 
@@ -280,7 +334,6 @@ public class Main {
             }
         });
         buttonPanel.add(graphOutputBtn, "cell 0 2,growx");
-        graphOutputBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         // ************** Explore data button ************** //
 
@@ -292,7 +345,6 @@ public class Main {
             }
         });
         buttonPanel.add(exploreDataBtn, "cell 0 3,growx");
-        exploreDataBtn.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         JCheckBox chckbxConsolidatePrograms =
             new JCheckBox("Consolidate Programs");
@@ -323,7 +375,6 @@ public class Main {
 
             }
         });
-        btnRefreshTable.setFont(new Font("Verdana", Font.PLAIN, 11));
         buttonPanel.add(btnRefreshTable, "cell 0 4,growx");
 
         JLabel lblLoadTable = new JLabel("Load Table");
@@ -436,7 +487,6 @@ public class Main {
 
         });
 
-        btnLoadData.setFont(new Font("Verdana", Font.PLAIN, 11));
         buttonPanel.add(btnLoadData, "cell 0 13,growx");
 
         // ************** Table ************** //
@@ -468,14 +518,14 @@ public class Main {
      * Set the status label to the 'not tracking' state.
      */
     public static void setStopLabel() {
-        lblCurrentlyNotTracking.setText("Currently not tracking.");
+        trackStatusLabel.setText("Currently not tracking.");
     }
 
     /**
      * Set the status label to the 'tracking' state.
      */
     public static void setStartLabel() {
-        lblCurrentlyNotTracking.setText("Currently tracking...");
+        trackStatusLabel.setText("Currently tracking...");
     }
 
     /**
