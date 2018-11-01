@@ -300,7 +300,12 @@ public class Main {
         chckbxConsolidatePrograms.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                setChecked();
+                // setChecked();
+                prefs.putBoolean(VALIDATE_STRINGS,
+                    chckbxConsolidatePrograms.isSelected());
+                updateTable(false);
+                secretLabel.setText("  ");
+                secretLabel.setText("");
             }
         });
         buttonPanel.add(chckbxConsolidatePrograms, "cell 0 5,growx");

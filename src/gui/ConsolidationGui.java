@@ -86,7 +86,7 @@ public class ConsolidationGui extends JDialog {
         getContentPane().add(panel2, "cell 0 0,grow");
         panel2.setLayout(new MigLayout("", "[][grow]", "[][][][]"));
 
-        lblNewLabel = new JLabel("Text exclusions");
+        lblNewLabel = new JLabel("Programs to combine");
         panel.add(lblNewLabel, "cell 1 0,growy");
 
         secretLabel = new JLabel("");
@@ -135,9 +135,6 @@ public class ConsolidationGui extends JDialog {
             getList();
             Main.toTrack = true;
         }
-
-        /*        System.out.println(list.size());
-        System.out.println(list);*/
 
         model = new DefaultTableModel(0, 1);
         String[] colHeadings = {"Program in list"};
