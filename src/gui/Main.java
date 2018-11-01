@@ -53,8 +53,6 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.Component;
 
 import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -67,38 +65,38 @@ import javax.swing.JTextField;
 
 public class Main {
 
-	// Gui fields
-	public static final int FRAME_SIZE = 300;
-	public static boolean toTrack = false;
-	private static Preferences prefs = Preferences.userRoot().node("Main");
 	private final static String VALIDATE_STRINGS = "validate";
 	private final static String DISPLAY_MODE = "mode";
-	public static JFrame frame;
-	JButton stopTimerBtn;
-	public static Main gui;
-	public static JLabel trackStatusLabel = new JLabel("Currently not tracking.");
-	static JPanel mainPanel = new JPanel();
+	
+	private static Preferences prefs = Preferences.userRoot().node("Main");
+	private static JFrame frame;
+	private static JLabel trackStatusLabel = new JLabel("Status: Currently not tracking.");
+	private static JPanel mainPanel = new JPanel();
 	private static Point windowLoc;
 	private static JScrollPane inclusionScrollPane = new JScrollPane((Component) null);
 	private static JScrollPane exclusionScrollPane = new JScrollPane((Component) null);
-
-	// Table fields
 	private static DefaultTableModel model;
-	static JTable table;
+	private static JTable table;
 	private static Set<String> keys;
 	private static JScrollPane sc;
 	private static JLabel secretLabel;
+	
 	private JTextField progTextField;
-
+	private JButton stopTimerBtn;
 	private JRadioButton trackAllRButton = new JRadioButton("Track all");
 	private JRadioButton trackInclusionsRButton = new JRadioButton("Track inclusions");
 	private JRadioButton trackExclusionsRButton = new JRadioButton("Track exclusions");
+	
+	public static boolean toTrack = false;
 
+
+	
 	/**
 	 * Main method that builds the GUI.
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		gui = new Main();
+		Main gui = new Main();
 	}
 
 	/**
@@ -425,7 +423,7 @@ public class Main {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				startTimer();
-				trackStatusLabel.setText("Currently tracking...");
+				trackStatusLabel.setText("Status: Currently tracking...");
 			}
 		});
 
@@ -622,14 +620,14 @@ public class Main {
 	 * Set the status label to the 'not tracking' state.
 	 */
 	public static void setStopLabel() {
-		trackStatusLabel.setText("Currently not tracking.");
+		trackStatusLabel.setText("Status: Currently not tracking.");
 	}
 
 	/**
 	 * Set the status label to the 'tracking' state.
 	 */
 	public static void setStartLabel() {
-		trackStatusLabel.setText("Currently tracking...");
+		trackStatusLabel.setText("Status: Currently tracking...");
 	}
 
 	/**
