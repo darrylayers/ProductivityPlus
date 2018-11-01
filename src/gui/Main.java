@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -46,9 +47,12 @@ import core.CloseToSystemTray;
 import core.DataHandling;
 import core.ProgramTimer;
 import core.SingletonTimer;
+import core.TableHelper;
 import core.TimeConvert;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Component;
+
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JRadioButton;
@@ -75,6 +79,8 @@ public class Main {
 	public static JLabel trackStatusLabel = new JLabel("Currently not tracking.");
 	static JPanel mainPanel = new JPanel();
 	private static Point windowLoc;
+	private static JScrollPane inclusionScrollPane = new JScrollPane((Component) null);
+	private static JScrollPane exclusionScrollPane = new JScrollPane((Component) null);
 
 	// Table fields
 	private static DefaultTableModel model;
@@ -236,50 +242,11 @@ public class Main {
 
 		JPanel controlPanel = new JPanel();
 		trackPanel.add(controlPanel, "cell 0 1,grow");
-		controlPanel.setLayout(new MigLayout("", "[132.00,grow]", "[][][][][][][][]"));
+		controlPanel.setLayout(new MigLayout("", "[132.00,grow]", "[][][][][][][][][][][][][][][]"));
 
 		JLabel modeLabel = new JLabel("Mode - What to track");
 		controlPanel.add(modeLabel, "cell 0 0,alignx center,aligny center");
 
-		trackAllRButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// Check to see status of the button
-				if (trackAllRButton.isSelected()) {
-					trackInclusionsRButton.setSelected(false);
-					trackExclusionsRButton.setSelected(false);
-				} else {
-					trackAllRButton.setSelected(true);
-				}
-				setMode();
-			}
-		});
-		trackInclusionsRButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// Check to see status of the button
-				if (trackInclusionsRButton.isSelected()) {
-					trackAllRButton.setSelected(false);
-					trackExclusionsRButton.setSelected(false);
-				} else {
-					trackInclusionsRButton.setSelected(true);
-				}
-				setMode();
-			}
-		});
-		trackExclusionsRButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// Check to see status of the button
-				if (trackExclusionsRButton.isSelected()) {
-					trackInclusionsRButton.setSelected(false);
-					trackAllRButton.setSelected(false);
-				} else {
-					trackExclusionsRButton.setSelected(true);
-				}
-				setMode();
-			}
-		});
 		trackAllRButton.setToolTipText("All programs will be tracked if this is chosen.");
 		controlPanel.add(trackAllRButton, "cell 0 1");
 
@@ -290,8 +257,13 @@ public class Main {
 		trackExclusionsRButton.setToolTipText(
 				"Everything will be tracked except the programs in the Exclusions table if this is selected. This is useful if you want to avoid tracking only a few programs.");
 		controlPanel.add(trackExclusionsRButton, "cell 0 3");
-		
-		if(getMode() == 1) {
+
+		ButtonGroup rbuttons = new ButtonGroup();
+		rbuttons.add(trackExclusionsRButton);
+		rbuttons.add(trackAllRButton);
+		rbuttons.add(trackInclusionsRButton);
+
+		if (getMode() == 1) {
 			trackAllRButton.setSelected(true);
 		} else if (getMode() == 2) {
 			trackInclusionsRButton.setSelected(true);
@@ -305,17 +277,128 @@ public class Main {
 		progTextField.setColumns(10);
 
 		JButton addProgramButton = new JButton("Add program");
+		addProgramButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+
+				if (getMode() == 1) {
+					JOptionPane.showMessageDialog(null, "Cannot add program. Track all is selected.");
+				}
+
+				else if (getMode() == 2 || getMode() == 3) {
+					List<String> inclusions = new ArrayList<>();
+					List<String> exclusions = new ArrayList<>();
+					trackPanel.remove(inclusionScrollPane);
+					trackPanel.remove(exclusionScrollPane);
+					inclusions = TableHelper.loadList("inclusion");
+					exclusions = TableHelper.loadList("exclusion");
+					if (getMode() == 2) {
+						inclusions.add(progTextField.getText());
+					} else {
+						exclusions.add(progTextField.getText());
+					}
+					TableHelper.saveList(inclusions, "inclusion");
+					TableHelper.saveList(exclusions, "exclusion");
+					inclusionScrollPane = TableHelper.loadTable(inclusions);
+					trackPanel.add(inclusionScrollPane, "cell 1 1,grow");
+					exclusionScrollPane = TableHelper.loadTable(exclusions);
+					trackPanel.add(exclusionScrollPane, "cell 2 1,grow");
+					progTextField.setText("");
+				}
+				secretLabel.setText("  ");
+				secretLabel.setText("");
+			}
+		});
+
+		trackExclusionsRButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (trackExclusionsRButton.isSelected()) {
+					trackInclusionsRButton.setSelected(false);
+					trackAllRButton.setSelected(false);
+				} else {
+					trackExclusionsRButton.setSelected(true);
+				}
+				setMode();
+			}
+		});
+
+		trackInclusionsRButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (trackInclusionsRButton.isSelected()) {
+					trackAllRButton.setSelected(false);
+					trackExclusionsRButton.setSelected(false);
+				} else {
+					trackInclusionsRButton.setSelected(true);
+				}
+				setMode();
+
+			}
+		});
+
+		trackAllRButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (trackAllRButton.isSelected()) {
+					trackInclusionsRButton.setSelected(false);
+					trackExclusionsRButton.setSelected(false);
+				} else {
+					trackAllRButton.setSelected(true);
+				}
+				setMode();
+
+			}
+		});
+
 		addProgramButton.setToolTipText("Add a program from whichever table is selected above.");
 		controlPanel.add(addProgramButton, "cell 0 6,grow");
 
 		JButton removeProgramButton = new JButton("Remove Program");
+		removeProgramButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				if (getMode() == 1) {
+					JOptionPane.showMessageDialog(null, "Cannot remove program. Track all is selected.");
+				}
+
+				else if (getMode() == 2 || getMode() == 3) {
+					List<String> inclusions = new ArrayList<>();
+					List<String> exclusions = new ArrayList<>();
+					trackPanel.remove(inclusionScrollPane);
+					trackPanel.remove(exclusionScrollPane);
+					inclusions = TableHelper.loadList("inclusion");
+					exclusions = TableHelper.loadList("exclusion");
+					if (getMode() == 2) {
+						inclusions.remove(progTextField.getText());
+						System.out.println(inclusions);
+					} else {
+						exclusions.remove(progTextField.getText());
+					}
+					TableHelper.saveList(inclusions, "inclusion");
+					TableHelper.saveList(exclusions, "exclusion");
+					inclusionScrollPane = TableHelper.loadTable(inclusions);
+					trackPanel.add(inclusionScrollPane, "cell 1 1,grow");
+					exclusionScrollPane = TableHelper.loadTable(exclusions);
+					trackPanel.add(exclusionScrollPane, "cell 2 1,grow");
+					progTextField.setText("");
+				}
+				secretLabel.setText("  ");
+				secretLabel.setText("");
+			}
+		});
 		removeProgramButton.setToolTipText("Remove a program from whichever table is selected above.");
 		controlPanel.add(removeProgramButton, "cell 0 7,grow");
 
-		JScrollPane inclusionScrollPane = new JScrollPane((Component) null);
+		List<String> inclusions = new ArrayList<>();
+		inclusions = TableHelper.loadList("inclusion");
+		List<String> exclusions = new ArrayList<>();
+		exclusions = TableHelper.loadList("exclusion");
+		exclusionScrollPane = TableHelper.loadTable(exclusions);
+		inclusionScrollPane = TableHelper.loadTable(inclusions);
 		trackPanel.add(inclusionScrollPane, "cell 1 1,grow");
-
-		JScrollPane exclusionScrollPane = new JScrollPane((Component) null);
 		trackPanel.add(exclusionScrollPane, "cell 2 1,grow");
 
 		// ************** Timer controls labels ************** //
