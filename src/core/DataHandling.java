@@ -20,8 +20,8 @@ import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
 
-import gui.ExploreDataGui;
 import gui.ConsolidationGui;
+import gui.ExploreDataGui;
 
 /**
  * This class stores, loads, and handles the saved data from the application. As
@@ -172,9 +172,11 @@ public class DataHandling {
         int days2_int = Integer.valueOf(days2);
         int dateCalc = (days2_int - days1_int);
         int year = Calendar.getInstance().get(Calendar.YEAR);
+        String strYear = Integer.toString(year);
 
         for (int i = 0; i <= dateCalc; i++) {
-            dates.add(String.valueOf((days1_int + i)) + "18");
+            dates.add(String.valueOf((days1_int + i))
+                + strYear.substring(2, strYear.length()));
         }
         return dates;
     }
@@ -295,7 +297,8 @@ public class DataHandling {
         int size = ConsolidationGui.getSavedList().size();
         ConsolidationGui.loadList();
         String[] itemstoHide =
-            ConsolidationGui.list.toArray(new String[ConsolidationGui.list.size()]);
+            ConsolidationGui.list
+                .toArray(new String[ConsolidationGui.list.size()]);
 
         // For each item in the input map...
         for (Entry<String, Long> entry : inputMap.entrySet()) {
