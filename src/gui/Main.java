@@ -306,10 +306,10 @@ public class Main {
                     inclusions = TableHelper.loadList("inclusion");
                     exclusions = TableHelper.loadList("exclusion");
                     if (getMode() == 2) {
-                        inclusions.add(progTextField.getText());
+                        inclusions.add("- " + progTextField.getText());
                     }
                     else {
-                        exclusions.add(progTextField.getText());
+                        exclusions.add("- " + progTextField.getText());
                     }
                     TableHelper.saveList(inclusions, "inclusion");
                     TableHelper.saveList(exclusions, "exclusion");
@@ -391,11 +391,11 @@ public class Main {
                     inclusions = TableHelper.loadList("inclusion");
                     exclusions = TableHelper.loadList("exclusion");
                     if (getMode() == 2) {
-                        inclusions.remove(progTextField.getText());
+                        inclusions.remove("- " + progTextField.getText());
                         System.out.println(inclusions);
                     }
                     else {
-                        exclusions.remove(progTextField.getText());
+                        exclusions.remove("- " + progTextField.getText());
                     }
                     TableHelper.saveList(inclusions, "inclusion");
                     TableHelper.saveList(exclusions, "exclusion");
