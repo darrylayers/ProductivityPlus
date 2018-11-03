@@ -715,7 +715,7 @@ public class Main {
             loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
             System.out.println("Just validated data " + loadedCurrentMap);
         }
-        if (Main.getMode() == 3) {
+        if (Main.getMode() == 3 || Main.getMode() == 2) {
             if (!getChecked()) {
                 loadedCurrentMap = ProgramTimer.appMap;
             }
@@ -724,8 +724,13 @@ public class Main {
                 DataHandling.validateWhatToDisplay(loadedCurrentMap);
         }
 
-        else if (Main.getMode() == 1) {
+        else if (Main.getMode() == 1 && getChecked()) {
+            System.out.println("(Main.getMode() == 1 && getChecked())");
             System.out.println("Main.getMode() ==  " + Main.getMode());
+            System.out.println(loadedCurrentMap);
+            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
+        }
+        else {
             loadedCurrentMap = ProgramTimer.appMap;
         }
 
