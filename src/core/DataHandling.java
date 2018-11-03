@@ -337,4 +337,40 @@ public class DataHandling {
         }
         return editedMap;
     }
+
+    public static Map<String, Long> validateWhatToDisplay(
+        Map<String, Long> inputMap) {
+
+        Map<String, Long> editedMap = new HashMap<String, Long>();
+        Map<String, Long> doNotAdd = new HashMap<String, Long>();
+        List<String> list = new ArrayList<String>();
+        list = TableHelper.loadList("exclusion");
+        System.out.println(list);
+        int size = list.size();
+        String[] itemstoHide = list.toArray(new String[list.size()]);
+
+        // For each item in the input map...
+        for (Entry<String, Long> entry : inputMap.entrySet()) {
+            // Save the current item's key-value pair
+            String key = "- " + entry.getKey(); // Current prog we are looking
+                                                // at
+            Long current = inputMap.get(key.substring(2, key.length())); // Current
+                                                                         // prog's
+                                                                         // time
+
+            // Check to see if the key needs to be combined or not
+            for (int i = 0; i < size; i++) {
+                if (key.contains(itemstoHide[i])
+                    || key.equals(itemstoHide[i])) {
+                    doNotAdd.put(key, (long) 1);
+                }
+            }
+
+            if (!doNotAdd.containsKey(key)) {
+                editedMap.put(key.substring(2, key.length()), current);
+            }
+        }
+        System.out.print("ret map " + editedMap);
+        return editedMap;
+    }
 }
