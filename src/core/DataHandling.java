@@ -283,9 +283,24 @@ public class DataHandling {
          * Need to put a check in here to know which map to load...
          */
 
-        Map<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
+        Map<String, Long> loadedCurrentMap = new HashMap<>();
+        if (Main.getChecked()) {
+            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
+        }
+        else {
+            loadedCurrentMap = ProgramTimer.appMap;
+        }
+        if (Main.getMode() == 3 || Main.getMode() == 2) {
+            loadedCurrentMap =
+                DataHandling.validateWhatToDisplay(loadedCurrentMap);
+        }
+
+        else if (Main.getMode() == 1 && Main.getChecked()) {
+            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
+        }
+
         Map<String, Double> finalMap =
-            TimeConvert.convertOutputTime(toDisplayMap);
+            TimeConvert.convertOutputTime(loadedCurrentMap);
         DataHandling.sortHashMapByValues(finalMap);
         return DataHandling.sortHashMapByValues(finalMap);
     }

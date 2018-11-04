@@ -16,7 +16,7 @@ import javax.swing.JTextPane;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 
-import core.ProgramTimer;
+import core.DataHandling;
 import graphs.PieChart;
 import net.miginfocom.swing.MigLayout;
 
@@ -151,7 +151,7 @@ public class GraphicalOutputGui extends JDialog {
     }
 
     public static int getNumProgs() {
-        int size = ProgramTimer.appMap.size();
+        int size = DataHandling.orderedMap().size();
         if (size >= 5) {
             return 5;
         }
