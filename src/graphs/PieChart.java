@@ -16,7 +16,6 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 
 import core.DataHandling;
-import core.ProgramTimer;
 import gui.GraphicalOutputGui;
 
 public class PieChart extends ApplicationFrame {
@@ -39,7 +38,7 @@ public class PieChart extends ApplicationFrame {
         orderedMap = DataHandling.orderedMap();
         DefaultPieDataset localDefaultPieDataset = new DefaultPieDataset();
 
-        if (ProgramTimer.appMap.size() == 0) {
+        if (orderedMap.size() == 0) {
             return localDefaultPieDataset;
         }
 
@@ -110,7 +109,7 @@ public class PieChart extends ApplicationFrame {
      * @return 5, or less if less values are in map.
      */
     public static int checkValues() {
-        int size = ProgramTimer.appMap.size();
+        int size = orderedMap.size();
         if (size < 5) {
             return size;
         }

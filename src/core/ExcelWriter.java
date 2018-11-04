@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import gui.ExploreDataGui;
+import gui.Main;
 import gui.PreferencesGui;
 
 /**
@@ -32,9 +33,32 @@ public class ExcelWriter {
         throws IOException {
         ExploreDataGui.updateBar(0);
 
-        Map<String, Long> toDisplayMap = new HashMap<>(combinedMaps);
+        Map<String, Long> loadedCurrentMap = new HashMap<>();
+        if (Main.getChecked()) {
+            loadedCurrentMap = DataHandling.validateData(combinedMaps);
+        }
+        else {
+            loadedCurrentMap = combinedMaps;
+        }
+        if (Main.getMode() == 3 || Main.getMode() == 2) {
+            loadedCurrentMap =
+                DataHandling.validateWhatToDisplay(loadedCurrentMap);
+        }
+
+        else if (Main.getMode() == 1 && Main.getChecked()) {
+            loadedCurrentMap = DataHandling.validateData(combinedMaps);
+        }
+        else {
+            loadedCurrentMap = combinedMaps;
+        }
+        System.out.println(combinedMaps);
+        System.out.println(loadedCurrentMap);
+        Map<String, Long> toDisplayMap = new HashMap<>(loadedCurrentMap);
+        System.out.println(toDisplayMap);
         Map<String, Double> finalMap =
-            TimeConvert.convertOutputTime(toDisplayMap);
+            // TimeConvert.convertOutputTime(toDisplayMap);
+            TimeConvert.convertTime(toDisplayMap);
+        System.out.println(finalMap);
 
         printedDate = date;
 

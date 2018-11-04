@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 
 import gui.ConsolidationGui;
 import gui.ExploreDataGui;
+import gui.Main;
 
 /**
  * This class stores, loads, and handles the saved data from the application. As
@@ -282,9 +283,24 @@ public class DataHandling {
          * Need to put a check in here to know which map to load...
          */
 
-        Map<String, Long> toDisplayMap = new HashMap<>(ProgramTimer.appMap);
+        Map<String, Long> loadedCurrentMap = new HashMap<>();
+        if (Main.getChecked()) {
+            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
+        }
+        else {
+            loadedCurrentMap = ProgramTimer.appMap;
+        }
+        if (Main.getMode() == 3 || Main.getMode() == 2) {
+            loadedCurrentMap =
+                DataHandling.validateWhatToDisplay(loadedCurrentMap);
+        }
+
+        else if (Main.getMode() == 1 && Main.getChecked()) {
+            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
+        }
+
         Map<String, Double> finalMap =
-            TimeConvert.convertOutputTime(toDisplayMap);
+            TimeConvert.convertOutputTime(loadedCurrentMap);
         DataHandling.sortHashMapByValues(finalMap);
         return DataHandling.sortHashMapByValues(finalMap);
     }
@@ -336,5 +352,71 @@ public class DataHandling {
             }
         }
         return editedMap;
+    }
+
+    public static Map<String, Long> validateWhatToDisplay(
+        Map<String, Long> inputMap) {
+
+        Map<String, Long> editedMap = new HashMap<String, Long>();
+        Map<String, Long> doNotAdd = new HashMap<String, Long>();
+        List<String> list = new ArrayList<String>();
+
+        if (Main.getMode() == 2) {
+            list = TableHelper.loadList("inclusion");
+            int size = list.size();
+            String[] itemsToShow = list.toArray(new String[list.size()]);
+            for (Entry<String, Long> entry : inputMap.entrySet()) {
+                // Save the current item's key-value pair
+                String key = "- " + entry.getKey(); // Current prog we are
+                                                    // looking
+                                                    // at
+                Long current = inputMap.get(key.substring(2, key.length())); // Current
+                                                                             // prog's
+                                                                             // time
+
+                // Check to see if the key needs to be combined or not
+                for (int i = 0; i < size; i++) {
+                    if (key.contains(itemsToShow[i])
+                        || key.equals(itemsToShow[i])) {
+                        editedMap.put(key.substring(2, key.length()), current);
+                    }
+                }
+
+            }
+
+        }
+        else if (Main.getMode() == 3) {
+
+            list = TableHelper.loadList("exclusion");
+            int size = list.size();
+            String[] itemstoHide = list.toArray(new String[list.size()]);
+
+            // For each item in the input map...
+            for (Entry<String, Long> entry : inputMap.entrySet()) {
+                // Save the current item's key-value pair
+                String key = "- " + entry.getKey(); // Current prog we are
+                                                    // looking
+                                                    // at
+                Long current = inputMap.get(key.substring(2, key.length())); // Current
+                                                                             // prog's
+                                                                             // time
+
+                // Check to see if the key needs to be combined or not
+                for (int i = 0; i < size; i++) {
+                    if (key.contains(itemstoHide[i])
+                        || key.equals(itemstoHide[i])) {
+                        doNotAdd.put(key, (long) 1);
+                    }
+                }
+
+                if (!doNotAdd.containsKey(key)) {
+                    editedMap.put(key.substring(2, key.length()), current);
+                }
+            }
+
+        }
+
+        return editedMap;
+
     }
 }

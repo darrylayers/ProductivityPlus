@@ -16,112 +16,139 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import gui.Main;
+
 public class TableHelper {
 
-	private static JTable table;
-	private static DefaultTableModel model;
-	private static JScrollPane sc;
-	private static Preferences prefs = Preferences.userRoot().node("TableHelper");
-	private final static String INCLUSION_LIST = "inclusion";
-	private final static String EXCLUSION_LIST = "exclusion";
+    private static JTable table;
+    private static DefaultTableModel model;
+    private static JScrollPane sc;
+    private static Preferences prefs =
+        Preferences.userRoot().node("TableHelper");
+    private final static String INCLUSION_LIST = "inclusion";
+    private final static String EXCLUSION_LIST = "exclusion";
 
-	public static JScrollPane loadTable(List<String> input) {
+    public static JScrollPane loadTable(List<String> input) {
 
-		model = new DefaultTableModel(0, 1);
-		String[] colHeadings = { "Programs in list" };
-		model.setColumnIdentifiers(colHeadings);
-		List<String> list = new ArrayList<String>(input);
-		table = new JTable(model);
+        model = new DefaultTableModel(0, 1);
+        String[] colHeadings = {"Programs in list"};
+        model.setColumnIdentifiers(colHeadings);
+        List<String> list = new ArrayList<String>(input);
+        table = new JTable(model);
 
-		// Load the able
-		for (String entry : list) {
-			model.addRow(new Object[] { entry.substring(2, entry.length()) });
-		}
+        // Load the able
+        for (String entry : list) {
+            model.addRow(new Object[] {entry.substring(2, entry.length())});
+        }
 
-		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-		table.setRowSorter(sorter);
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+        table.setRowSorter(sorter);
 
-		sc = new JScrollPane(table);
+        sc = new JScrollPane(table);
 
-		return sc;
+        return sc;
 
-	}
+    }
 
-	/*
-	 * Retrieve ArrayList from prefs and convert from byte[]
-	 */
-	public static List<String> loadList(String prefString) {
-		byte[] temp = { 0 };
-		byte[] bytes;
-		
-		if(prefString.equals("inclusions")) {
-			bytes = prefs.getByteArray(INCLUSION_LIST, temp);
-		} else if (prefString.equals("exclusions")) {
-			bytes = prefs.getByteArray(EXCLUSION_LIST, temp);
-		}
-		
-		ArrayList<String> retList = new ArrayList<String>();
-		bytes = prefs.getByteArray(prefString, temp);
-		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-		DataInputStream in = new DataInputStream(bais);
-		try {
-			while (in.available() > 0) {
-				String element = in.readUTF();
-				if (!inList(element, retList)) {
-					retList.add(element);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return retList;
-	}
+    /*
+     * Retrieve ArrayList from prefs and convert from byte[]
+     */
+    public static List<String> loadList(String prefString) {
+        byte[] temp = {0};
+        byte[] bytes;
 
-	/*
-	 * Save ArrayList in prefs and convert to byte[]
-	 */
-	public static void saveList(List<String> input, String prefsString) {
+        if (prefString.equals("inclusions")) {
+            bytes = prefs.getByteArray(INCLUSION_LIST, temp);
+        }
+        else if (prefString.equals("exclusions")) {
+            bytes = prefs.getByteArray(EXCLUSION_LIST, temp);
+        }
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(baos);
-		for (String element : input) {
-			try {
-				out.writeUTF(element);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		byte[] bytes = baos.toByteArray();
+        ArrayList<String> retList = new ArrayList<String>();
+        bytes = prefs.getByteArray(prefString, temp);
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        DataInputStream in = new DataInputStream(bais);
+        try {
+            while (in.available() > 0) {
+                String element = in.readUTF();
+                if (!inList(element, retList)) {
+                    retList.add(element);
+                }
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return retList;
+    }
 
-		prefs.putByteArray(prefsString, bytes);
+    /*
+     * Save ArrayList in prefs and convert to byte[]
+     */
+    public static void saveList(List<String> input, String prefsString) {
 
-	}
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(baos);
+        for (String element : input) {
+            try {
+                out.writeUTF(element);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        byte[] bytes = baos.toByteArray();
 
-	public static boolean inList(String item, ArrayList<String> list) {
-		if (list.contains("- " + item) || list.contains(item)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+        prefs.putByteArray(prefsString, bytes);
 
-	public byte[] getInclusions() {
-		byte[] temp = {0};
-		return prefs.getByteArray(INCLUSION_LIST, temp);
-	}
+    }
 
-	public void setInclusions(byte[] bytes) {
-		prefs.putByteArray(INCLUSION_LIST, bytes);
-	}
+    public static boolean inList(String item, ArrayList<String> list) {
+        if (list.contains("- " + item) || list.contains(item)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
-	public byte[] getExclusions() {
-		byte[] temp = {0};
-		return prefs.getByteArray(EXCLUSION_LIST, temp);
-	}
+    public byte[] getInclusions() {
+        byte[] temp = {0};
+        return prefs.getByteArray(INCLUSION_LIST, temp);
+    }
 
-	public void setExclusions(byte[] bytes) {
-		prefs.putByteArray(EXCLUSION_LIST, bytes);
-	}
-	
-	
+    public void setInclusions(byte[] bytes) {
+        prefs.putByteArray(INCLUSION_LIST, bytes);
+    }
+
+    public byte[] getExclusions() {
+        byte[] temp = {0};
+        return prefs.getByteArray(EXCLUSION_LIST, temp);
+    }
+
+    public void setExclusions(byte[] bytes) {
+        prefs.putByteArray(EXCLUSION_LIST, bytes);
+    }
+
+    public static List<String> getSavedList() {
+        List<String> list = new ArrayList<String>();
+        List<String> inclusions = new ArrayList<>();
+        inclusions = TableHelper.loadList("inclusion");
+        List<String> exclusions = new ArrayList<>();
+        exclusions = TableHelper.loadList("exclusion");
+
+        if (Main.getMode() == 2) {
+
+            return inclusions;
+        }
+        else if (Main.getMode() == 3) {
+
+            return exclusions;
+        }
+        else {
+
+            return list;
+        }
+    }
+
 }
