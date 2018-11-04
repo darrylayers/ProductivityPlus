@@ -1,6 +1,8 @@
 # ProductivityPlus
 Fall 2018 Capstone Project
+
 You can find the latest executable version of this program at http://austinayers.com/ProductivityPlus.zip
+
 Simply extract the contents (jar and resources folder) to any directory and run.
 
 Library - Desc
@@ -24,6 +26,10 @@ JNA - Used to access the WinAPI
 JNA-Platform - More tools and interfaces for JNA lib
 
 jGoodies - Form layout used for GUI building
+
+JFreeChart - Used for graphing data
+
+JCommon - Used to help JFreeChart graph data
 
 All resources can be found here: http://austinayers.com/ProductivityPlus_lib.zip
 
