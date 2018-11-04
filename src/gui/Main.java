@@ -392,7 +392,6 @@ public class Main {
                     exclusions = TableHelper.loadList("exclusion");
                     if (getMode() == 2) {
                         inclusions.remove("- " + progTextField.getText());
-                        System.out.println(inclusions);
                     }
                     else {
                         exclusions.remove("- " + progTextField.getText());
@@ -518,7 +517,6 @@ public class Main {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 updateTable(false);
-                System.out.println(TableHelper.getSavedList());
                 secretLabel.setText("  ");
                 secretLabel.setText("");
 
@@ -549,7 +547,6 @@ public class Main {
             @SuppressWarnings("unchecked")
             @Override
             public void mouseClicked(MouseEvent arg0) {
-
                 LocalDate date = datePicker.getDate();
                 LocalDate date2 = datePicker2.getDate();
 
@@ -558,8 +555,10 @@ public class Main {
                         "Please enter a start date.");
                 }
                 else {
+
                     String formattedString;
                     String formattedString2;
+                    // Pass the date(s) to DateHandling.java
                     @SuppressWarnings("unused")
                     SimpleDateFormat dateFormatter =
                         new SimpleDateFormat("Dyy");
@@ -568,48 +567,36 @@ public class Main {
                     formattedString = date.format(formatter);
                     if (date2 == null) {
 
-                        if (getChecked()) {
-                            try {
-
-                                DataHandling.validateData(DataHandling
-                                    .acceptDateTable(formattedString));
-                                loadTable(DataHandling.validateData(DataHandling
-                                    .acceptDateTable(formattedString)));
-                            }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
+                        try {
+                            loadTable(
+                                DataHandling.acceptDateTable(formattedString));
                         }
-                        else {
-                            try {
-                                DataHandling.acceptDateTable(formattedString);
-                                loadTable(DataHandling
-                                    .acceptDateTable(formattedString));
-                            }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                        catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
                         }
                     }
                     if (date2 != null) {
 
+                        // if (!(date2 == null)) {
                         formattedString2 = date2.format(formatter);
 
-                        List<String> dates = DataHandling
-                            .dateDiff(formattedString, formattedString2);
+                        List<String> dates =
+                            DataHandling.dateDiff(formattedString,
+                                formattedString2);
                         @SuppressWarnings("rawtypes")
                         List<Map> maps = DataHandling.loadMaps(dates);
 
+                        // }/*else {
+                        /*                         JOptionPane.showMessageDialog(null,
+                                        "No date was entered.");*/
+                        // }
                         Map<String, Long> combinedMaps = new HashMap<>();
 
-                        int i;
-                        if (maps.size() != 0) {
-                            i = 100 / maps.size();
-                        }
-                        i = 1;
+                        int i = 100 / maps.size();
 
                         for (Map<String, Long> map : maps) {
+
                             for (Map.Entry<String, Long> entry : map
                                 .entrySet()) {
                                 String key = entry.getKey();
@@ -618,16 +605,33 @@ public class Main {
                                     current == null ? entry.getValue()
                                         : entry.getValue() + current);
                             }
+
                             ExploreDataGui.updateBar(i);
                             i = 2 * i;
-                        }
 
-                        if (getChecked()) {
-                            loadTable(DataHandling.validateData(combinedMaps));
+                        }
+                        Map<String, Long> loadedCurrentMap = new HashMap<>();
+                        if (Main.getChecked()) {
+                            loadedCurrentMap =
+                                DataHandling.validateData(combinedMaps);
                         }
                         else {
-                            loadTable(combinedMaps);
+                            loadedCurrentMap = combinedMaps;
                         }
+                        if (Main.getMode() == 3 || Main.getMode() == 2) {
+                            loadedCurrentMap =
+                                DataHandling
+                                    .validateWhatToDisplay(loadedCurrentMap);
+                        }
+
+                        else if (Main.getMode() == 1 && Main.getChecked()) {
+                            loadedCurrentMap =
+                                DataHandling.validateData(combinedMaps);
+                        }
+                        else {
+                            loadedCurrentMap = combinedMaps;
+                        }
+                        loadTable(loadedCurrentMap);
                     }
                 }
             }
@@ -708,26 +712,19 @@ public class Main {
             mainPanel.remove(table);
         }
 
-        System.out.println(getChecked());
-
         Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
         if (getChecked()) {
             loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
-            System.out.println("Just validated data " + loadedCurrentMap);
         }
         if (Main.getMode() == 3 || Main.getMode() == 2) {
             if (!getChecked()) {
                 loadedCurrentMap = ProgramTimer.appMap;
             }
-            System.out.println("Main.getMode() ==  " + Main.getMode());
             loadedCurrentMap =
                 DataHandling.validateWhatToDisplay(loadedCurrentMap);
         }
 
         else if (Main.getMode() == 1 && getChecked()) {
-            System.out.println("(Main.getMode() == 1 && getChecked())");
-            System.out.println("Main.getMode() ==  " + Main.getMode());
-            System.out.println(loadedCurrentMap);
             loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
         }
         else {

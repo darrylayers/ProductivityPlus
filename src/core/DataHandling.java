@@ -347,9 +347,7 @@ public class DataHandling {
         List<String> list = new ArrayList<String>();
 
         if (Main.getMode() == 2) {
-            System.out.println("Main.getMode() == 2");
             list = TableHelper.loadList("inclusion");
-            System.out.println(list);
             int size = list.size();
             String[] itemsToShow = list.toArray(new String[list.size()]);
             for (Entry<String, Long> entry : inputMap.entrySet()) {
@@ -375,7 +373,6 @@ public class DataHandling {
         else if (Main.getMode() == 3) {
 
             list = TableHelper.loadList("exclusion");
-            System.out.println(list);
             int size = list.size();
             String[] itemstoHide = list.toArray(new String[list.size()]);
 
@@ -401,7 +398,6 @@ public class DataHandling {
                     editedMap.put(key.substring(2, key.length()), current);
                 }
             }
-            System.out.print("ret map " + editedMap);
 
         }
 
