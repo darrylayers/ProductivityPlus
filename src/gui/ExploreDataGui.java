@@ -261,6 +261,7 @@ public class ExploreDataGui extends JDialog {
         return progressBar.getValue();
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, Long> loadMapsFromMem() {
         Map<String, Long> map = new HashMap<String, Long>();
         LocalDate date;
@@ -317,15 +318,13 @@ public class ExploreDataGui extends JDialog {
                 dateR = dates.size();
 
                 @SuppressWarnings("rawtypes")
-                List<Map> maps = DataHandling.loadMaps(dates); // list of all
-                                                               // the maps we
-                                                               // need
-
+                List<Map> maps = DataHandling.loadMaps(dates);
                 for (Map<String, Long> currentMap : maps) {
                     for (Map.Entry<String, Long> entry : currentMap
                         .entrySet()) {
                         String key = entry.getKey();
                         Long current = comboMap.get(key);
+
                         if (current == null) {
                             comboMap.put(key, entry.getValue());
                         }
@@ -338,6 +337,7 @@ public class ExploreDataGui extends JDialog {
             }
             else {
                 dateR = 1;
+
                 try {
                     comboMap = DataHandling.acceptDate(formattedString, true);
                 }
@@ -376,7 +376,6 @@ public class ExploreDataGui extends JDialog {
                 + "\n \n"
                 + "Hint: This info is copy/pastable!");
         }
-
         return map;
     }
 }
