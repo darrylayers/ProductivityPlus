@@ -45,6 +45,7 @@ public class DataHandling {
 
     public static File savedMap =
         new File("./saved_data/" + getDate() + ".map");
+    private static int range = 0;
 
     /**
      * This method loads the appMap hash map in ProgramTimer.java
@@ -105,10 +106,12 @@ public class DataHandling {
      * program file and is passed to the ExcelWriter.java class.
      * 
      * @param date
+     * @return
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    public static void acceptDate(String date) throws IOException {
+    public static Map<String, Long> acceptDate(String date, boolean returnState)
+        throws IOException {
 
         Map<String, Long> loadedAppMap = new HashMap<>();
         try {
@@ -129,8 +132,14 @@ public class DataHandling {
             JOptionPane.showMessageDialog(null,
                 "Warning: Loaded map was empty.");
         }
+        if (returnState) {
+            return loadedAppMap;
+        }
+        else {
+            ExcelWriter.write(loadedAppMap, date);
+        }
+        return loadedAppMap;
 
-        ExcelWriter.write(loadedAppMap, date);
     }
 
     @SuppressWarnings("unchecked")
@@ -172,6 +181,7 @@ public class DataHandling {
         int days1_int = Integer.valueOf(days1);
         int days2_int = Integer.valueOf(days2);
         int dateCalc = (days2_int - days1_int);
+        setDateRange(dateCalc);
         int year = Calendar.getInstance().get(Calendar.YEAR);
         String strYear = Integer.toString(year);
 
@@ -418,5 +428,13 @@ public class DataHandling {
 
         return editedMap;
 
+    }
+
+    public static int getDateRange() {
+        return range;
+    }
+
+    public static void setDateRange(int date) {
+        range = date;
     }
 }
