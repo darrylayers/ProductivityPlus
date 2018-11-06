@@ -130,7 +130,7 @@ public class ConsolidationGui extends JDialog {
             panel2.remove(sc);
         }
         else {
-            getList();
+            loadTable();
             Main.toTrack = true;
         }
 
@@ -247,6 +247,7 @@ public class ConsolidationGui extends JDialog {
         }
         bytes = baos.toByteArray();
         prefs.putByteArray("PREF_LIST", bytes);
+<<<<<<< HEAD
     }
 
     /**
@@ -254,6 +255,8 @@ public class ConsolidationGui extends JDialog {
      */
     public void getList() {
         loadList();
+=======
+>>>>>>> 23964200f7ff06e925be4e1ce613bea945fded0d
     }
 
     /**
