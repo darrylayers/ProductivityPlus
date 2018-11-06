@@ -121,7 +121,8 @@ public class GraphicalOutputGui extends JDialog {
         txtpnListIndividualPrograms.setBackground(SystemColor.controlHighlight);
         txtpnListIndividualPrograms
             .setText(
-                "List individual programs you want to view. List them separated by commands like this: ProductivityPlus, Spotify, ...");
+                "List individual programs you want to view. List them separated by"
+                    + " commands like this: ProductivityPlus, Spotify, ...");
         controlPanel.add(txtpnListIndividualPrograms, "cell 1 4");
 
         JEditorPane editorPane = new JEditorPane();

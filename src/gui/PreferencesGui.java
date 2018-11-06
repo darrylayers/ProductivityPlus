@@ -145,7 +145,8 @@ public class PreferencesGui extends JDialog {
         // ************** Idle Check box ************** //
         idleTimerCheckBox = new JCheckBox("Idle Timer");
         idleTimerCheckBox.setToolTipText(
-            "If enabled, the program timer will stop timing when the mouse is enactive for the selected idle interval.");
+            "If enabled, the program timer will stop timing when the mouse "
+                + "is enactive for the selected idle interval.");
         prefTimerPanel.add(idleTimerCheckBox, "cell 0 0");
         idleTimerCheckBox.setSelected(getIdleChecked());
 
