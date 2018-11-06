@@ -34,18 +34,15 @@ public class PreferencesGui extends JDialog {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private final JPanel contentPanel = new JPanel();
+    private static final String IDLE_TIMER = "idleValue";
+    private static final String IDLE_CHECK = "idleCheck";
+    private static final String IDLE_AUTO_CHECK = "idleAutoCheck";
+    private static final String DISPLAY_INDEX = "displayIndex";
+    private static final String OUTPUT_INDEX = "outputIndex";
+    private static final String DEC_VAL = "decVal";
+
     private static Preferences prefs =
         Preferences.userRoot().node("PreferencesGui");
-    private final static String IDLE_TIMER = "idleValue";
-    private final static String IDLE_CHECK = "idleCheck";
-    private final static String IDLE_AUTO_CHECK = "idleAutoCheck";
-    private final static String DISPLAY_INDEX = "displayIndex";
-    private final static String OUTPUT_INDEX = "outputIndex";
-    private final static String DEC_VAL = "decVal";
-    private JCheckBox idleTimerCheckBox;
-    private JSpinner spinner = new JSpinner();
-    private JSpinner numDecimalSpinner = new JSpinner();
     private static String[] exportTypes = {"Hours (ex: 1.3 hours)",
         "Minutes (ex: 95.2 minutes)", "Seconds (ex: 138 seconds)"};
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -55,6 +52,12 @@ public class PreferencesGui extends JDialog {
         "Written (ex: 33 minutes 2 seconds)"};
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static JComboBox displayOptions = new JComboBox(displayTypes);
+
+    private final JPanel contentPanel = new JPanel();
+
+    private JCheckBox idleTimerCheckBox;
+    private JSpinner spinner = new JSpinner();
+    private JSpinner numDecimalSpinner = new JSpinner();
 
     /**
      * Launch the Preferences popup window.

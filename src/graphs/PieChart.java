@@ -24,6 +24,7 @@ public class PieChart extends ApplicationFrame {
      * 
      */
     private static final long serialVersionUID = 1L;
+
     public static Map<String, Double> orderedMap;
 
     public PieChart(String paramString) {

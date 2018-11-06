@@ -41,20 +41,10 @@ import net.miginfocom.swing.MigLayout;
 public class ExploreDataGui extends JDialog {
 
     private static final long serialVersionUID = 1L;
-    private final JPanel contentPanel = new JPanel();
-    private DatePickerSettings datePickerSettings = new DatePickerSettings();
-    private DatePicker datePicker = new DatePicker(datePickerSettings);
-    private DatePickerSettings datePickerSettings2 = new DatePickerSettings();
-    private DatePicker datePicker2 = new DatePicker(datePickerSettings2);
-    private String formattedString;
-    private String formattedString2;
-    private JRadioButton rdbtntxtExport = new JRadioButton(".txt export");
-    private JRadioButton rdbtnExcelExport = new JRadioButton("Excel export");
-    private JRadioButton rdbtnodsopenOffice =
-        new JRadioButton(".ods (Open Office)");
-    private final static JProgressBar progressBar = new JProgressBar();
+    private static final JProgressBar progressBar = new JProgressBar();
     private static int barMin = 0;
     private static int barMax = 100;
+    private final JPanel contentPanel = new JPanel();
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
     private final JPanel singleProgPanel = new JPanel();
     private final JPanel progInputPanel = new JPanel();
@@ -69,6 +59,16 @@ public class ExploreDataGui extends JDialog {
     private final JButton btnSubmitSearch = new JButton("Submit Search");
     private final JTextArea txtrTest = new JTextArea();
     private boolean singleData = false;
+    private DatePickerSettings datePickerSettings = new DatePickerSettings();
+    private DatePicker datePicker = new DatePicker(datePickerSettings);
+    private DatePickerSettings datePickerSettings2 = new DatePickerSettings();
+    private DatePicker datePicker2 = new DatePicker(datePickerSettings2);
+    private String formattedString;
+    private String formattedString2;
+    private JRadioButton rdbtntxtExport = new JRadioButton(".txt export");
+    private JRadioButton rdbtnExcelExport = new JRadioButton("Excel export");
+    private JRadioButton rdbtnodsopenOffice =
+        new JRadioButton(".ods (Open Office)");
 
     /**
      * Launch the About pop up window.

@@ -20,13 +20,14 @@ import gui.Main;
 
 public class TableHelper {
 
+    private final static String INCLUSION_LIST = "inclusion";
+    private final static String EXCLUSION_LIST = "exclusion";
+
     private static JTable table;
     private static DefaultTableModel model;
     private static JScrollPane sc;
     private static Preferences prefs =
         Preferences.userRoot().node("TableHelper");
-    private final static String INCLUSION_LIST = "inclusion";
-    private final static String EXCLUSION_LIST = "exclusion";
 
     public static JScrollPane loadTable(List<String> input) {
 

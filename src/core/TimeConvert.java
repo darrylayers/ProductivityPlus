@@ -17,9 +17,10 @@ import gui.PreferencesGui;
  */
 public class TimeConvert {
 
-    public static Map<String, Double> convertedMap = new HashMap<>();;
     private static String dataUnit = "";
     private static String dataUnitExport = "";
+
+    public static Map<String, Double> convertedMap = new HashMap<>();;
 
     /**
      * We need to be able to convert the given time in seconds to the desired

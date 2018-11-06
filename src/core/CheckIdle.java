@@ -22,14 +22,16 @@ public class CheckIdle {
     // their mouse or typing, so this option should be
     // optional and have a variable/customizable threshold for the time.
 
-    public static Point old_p;
-    public static Point new_p;
-    static int old_x;
+    private static Point old_p;
+    private static Point new_p;
+    private static int old_x;
     private static int old_y;
     private static int new_x;
     private static int new_y;
-    CheckIdle idle;
-    PreferencesGui prefs;
+    @SuppressWarnings("unused")
+    private CheckIdle idle;
+    @SuppressWarnings("unused")
+    private PreferencesGui prefs;
 
     /**
      * CheckIdle constructor: Simply saves the mouse on object creation.

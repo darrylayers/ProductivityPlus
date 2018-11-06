@@ -39,19 +39,21 @@ public class ConsolidationGui extends JDialog {
      * 
      */
     private static final long serialVersionUID = 1L;
-    public static List<String> list = new ArrayList<String>();
-    private JTextField txtInput;
+
     private static JTable table;
     private static DefaultTableModel model;
     private static JScrollPane sc;
     private static JPanel panel;
     private static JPanel panel2;
-    private JLabel secretLabel;
-    private JLabel lblNewLabel;
     private static byte[] bytes;
     private static Preferences prefs =
         Preferences.userRoot().node("WhatToTrackGui");
     private JButton btnPrintList;
+    private JLabel secretLabel;
+    private JLabel lblNewLabel;
+    private JTextField txtInput;
+
+    public static List<String> list = new ArrayList<String>();
 
     /**
      * Launch the About pop up window.
