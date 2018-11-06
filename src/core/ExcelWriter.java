@@ -20,7 +20,6 @@ import gui.PreferencesGui;
 /**
  * ExcelWriter.java writes a hashmap to an Excel spreadsheet using the Apache
  * POI library.
- * 
  */
 public class ExcelWriter {
 

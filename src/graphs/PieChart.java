@@ -18,6 +18,12 @@ import org.jfree.ui.ApplicationFrame;
 import core.DataHandling;
 import gui.GraphicalOutputGui;
 
+/**
+ * PieChart.java This class is used to create a pie chart of the top 5 entries
+ * from whatever data is being displayed in the table in the main GUI.
+ * 
+ * @author Austin Ayers
+ */
 public class PieChart extends ApplicationFrame {
 
     /**
@@ -26,6 +32,12 @@ public class PieChart extends ApplicationFrame {
     private static final long serialVersionUID = 1L;
     public static Map<String, Double> orderedMap;
 
+    /**
+     * Constuctor for the chart.
+     * 
+     * @param paramString,
+     *            the chart title.
+     */
     public PieChart(String paramString) {
         super(paramString);
         JPanel localJPanel = createDemoPanel();
@@ -33,24 +45,24 @@ public class PieChart extends ApplicationFrame {
         setContentPane(localJPanel);
     }
 
+    /**
+     * Create the data set for the pie chart by organizing the map.
+     * 
+     * @return the data set for the pie chart.
+     */
     private static PieDataset createDataset() {
-
         orderedMap = DataHandling.orderedMap();
         DefaultPieDataset localDefaultPieDataset = new DefaultPieDataset();
-
         if (orderedMap.size() == 0) {
             return localDefaultPieDataset;
         }
-
         String keyList[] = new String[GraphicalOutputGui.getNumProgs()];
         String lKeyLast = "";
         int k = 1;
         int counter = 0;
-
         for (String key : orderedMap.keySet()) {
             lKeyLast = key;
         }
-
         keyList[0] = lKeyLast;
         String oldKey = "";
 
@@ -64,15 +76,20 @@ public class PieChart extends ApplicationFrame {
                 oldKey = key;
             }
         }
-
         for (int i = 0; i < GraphicalOutputGui.getNumProgs(); i++) {
             localDefaultPieDataset.setValue(
                 keyList[i], orderedMap.get(keyList[i]));
         }
-
         return localDefaultPieDataset;
     }
 
+    /**
+     * Create and return the pie chart from the data.
+     * 
+     * @return returns the actual pie chart.
+     * @param the
+     *            pie chart's data set.
+     */
     private static JFreeChart createChart(PieDataset paramPieDataset) {
         JFreeChart localJFreeChart = ChartFactory.createPieChart(
             "Pie Chart for " + DataHandling.getDate() + ".map", paramPieDataset,
@@ -95,6 +112,11 @@ public class PieChart extends ApplicationFrame {
         return localJFreeChart;
     }
 
+    /**
+     * Create and return the panel the pie chart is in.
+     * 
+     * @return return the panel the pie chart is in.
+     */
     public static JPanel createDemoPanel() {
         JFreeChart localJFreeChart = createChart(createDataset());
         ChartPanel localChartPanel = new ChartPanel(localJFreeChart);

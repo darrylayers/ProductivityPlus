@@ -35,7 +35,6 @@ import net.miginfocom.swing.MigLayout;
  * Gui class for About window.
  * 
  * @author Austin Ayers
- * @version 9/28/18
  * 
  */
 public class ExploreDataGui extends JDialog {
@@ -200,6 +199,8 @@ public class ExploreDataGui extends JDialog {
         progressBar.setMinimum(barMin);
         progressBar.setMaximum(barMax);
 
+        // ************** Single Program Search ************** //
+
         tabbedPane.addTab("Single program search", null, singleProgPanel, null);
         singleProgPanel.setLayout(
             new MigLayout("", "[427.00,grow]", "[][][grow]"));
@@ -261,9 +262,12 @@ public class ExploreDataGui extends JDialog {
         return progressBar.getValue();
     }
 
+    /**
+     * Load the maps from memory given the dates. This is the method used for
+     * both features in Explore Data.
+     */
     @SuppressWarnings("unchecked")
-    public Map<String, Long> loadMapsFromMem() {
-        Map<String, Long> map = new HashMap<String, Long>();
+    public void loadMapsFromMem() {
         LocalDate date;
         LocalDate date2;
 
@@ -376,6 +380,5 @@ public class ExploreDataGui extends JDialog {
                 + "\n \n"
                 + "Hint: This info is copy/pastable!");
         }
-        return map;
     }
 }

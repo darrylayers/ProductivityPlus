@@ -38,7 +38,6 @@ import gui.Main;
  * 
  * 
  * @author Austin Ayers
- * @version 9/29/18
  * 
  */
 public class DataHandling {
@@ -95,6 +94,7 @@ public class DataHandling {
      * @return Today's date in form Dyy, ex: 093018 for 09/30/18
      */
     public static String getDate() {
+
         Date now = new Date();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("Dyy");
         return dateFormatter.format(now);
@@ -105,8 +105,9 @@ public class DataHandling {
      * of ExploreDataGui.java. The date is then used to load the correct date
      * program file and is passed to the ExcelWriter.java class.
      * 
-     * @param date
-     * @return
+     * @param date,
+     *            date we need to look up.
+     * @return returns the map filled with correct data.
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
@@ -125,9 +126,7 @@ public class DataHandling {
             ois.close();
         }
         catch (Exception e) {
-
         }
-
         if (loadedAppMap.size() == 0) {
             JOptionPane.showMessageDialog(null,
                 "Warning: Loaded map was empty.");
@@ -139,9 +138,16 @@ public class DataHandling {
             ExcelWriter.write(loadedAppMap, date);
         }
         return loadedAppMap;
-
     }
 
+    /**
+     * Writes a date range into a combined Map.
+     * 
+     * @param date,
+     *            date we need to look up.
+     * @return Combined map of data entries from a range.
+     * @throws IOException
+     */
     @SuppressWarnings("unchecked")
     public static Map<String, Long> acceptDateTable(String date)
         throws IOException {
@@ -158,9 +164,7 @@ public class DataHandling {
             ois.close();
         }
         catch (Exception e) {
-
         }
-
         return loadedAppMap;
     }
 
@@ -168,11 +172,12 @@ public class DataHandling {
      * This method returns an arraylist containing all of the dates that need to
      * be used to open the proper program history files.
      * 
-     * @param date1
-     * @param date2
+     * @param date1,
+     *            date picker1
+     * @param date2,
+     *            date picker 2
      * @return returns an arraylist of String dates
      */
-    @SuppressWarnings("unused")
     public static List<String> dateDiff(String date1, String date2) {
 
         List<String> dates = new ArrayList<String>();
@@ -196,14 +201,14 @@ public class DataHandling {
      * loadMaps() loads an arraylist full of the requested hash maps from the
      * date picker.
      * 
-     * @param dates
+     * @param dates,
+     *            list of dates
      * @return returns an arraylist of hashmaps used for program dates
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static List<Map> loadMaps(List<String> dates) {
 
         List<Map> maps = new ArrayList<Map>();
-
         for (int j = 0; j < dates.size(); j++) {
             Map<String, Long> loadedAppMap = new HashMap<>();
             try {
@@ -218,7 +223,6 @@ public class DataHandling {
                 ois.close();
             }
             catch (Exception e) {
-
             }
             maps.add(loadedAppMap);
         }
@@ -230,7 +234,7 @@ public class DataHandling {
      * map to an Excel file.
      * 
      * @param maps,
-     *            dates
+     *            list of maps dates list of string dates
      * @throws IOException
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -238,29 +242,31 @@ public class DataHandling {
         throws IOException {
 
         Map<String, Long> combinedMaps = new HashMap<>();
-
         int i = 100 / maps.size();
-
         for (Map<String, Long> map : maps) {
-
             for (Map.Entry<String, Long> entry : map.entrySet()) {
                 String key = entry.getKey();
                 Long current = combinedMaps.get(key);
                 combinedMaps.put(key, current == null ? entry.getValue()
                     : entry.getValue() + current);
             }
-
             ExploreDataGui.updateBar(i);
             i = 2 * i;
-
         }
         ExcelWriter.write(combinedMaps,
             "_date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
-
     }
 
+    /**
+     * Sort the input map and return the result. Sort the map by values.
+     * 
+     * @param finalMap,
+     *            the map to be sorted.
+     * @return a sorted map by values.
+     */
     public static Map<String, Double> sortHashMapByValues(
         Map<String, Double> finalMap) {
+
         List<String> mapKeys = new ArrayList<>(finalMap.keySet());
         List<Double> mapValues = new ArrayList<>(finalMap.values());
         Collections.sort(mapValues);
@@ -288,10 +294,12 @@ public class DataHandling {
         return sortedMap;
     }
 
+    /**
+     * Returned an ordered map of today's values.
+     * 
+     * @return Ordered map of today's values.
+     */
     public static Map<String, Double> orderedMap() {
-        /**
-         * Need to put a check in here to know which map to load...
-         */
 
         Map<String, Long> loadedCurrentMap = new HashMap<>();
         if (Main.getChecked()) {
@@ -310,11 +318,19 @@ public class DataHandling {
         }
 
         Map<String, Double> finalMap =
-            TimeConvert.convertOutputTime(loadedCurrentMap);
+            TimeConvert.convertTime(loadedCurrentMap);
         DataHandling.sortHashMapByValues(finalMap);
         return DataHandling.sortHashMapByValues(finalMap);
     }
 
+    /**
+     * Validate the data by checking the keys against programs in the
+     * consolidation list.
+     * 
+     * @param inputMap,
+     *            the map we are reviewing.
+     * @return a map of consolidated entries.
+     */
     public static Map<String, Long> validateData(Map<String, Long> inputMap) {
 
         Map<String, Long> editedMap = new HashMap<String, Long>();
@@ -364,6 +380,14 @@ public class DataHandling {
         return editedMap;
     }
 
+    /**
+     * Validate the data by checking the keys against programs in the
+     * include/exclude lists.
+     * 
+     * @param inputMap,
+     *            the map we are reviewing.
+     * @return a map of removed/included entries.
+     */
     public static Map<String, Long> validateWhatToDisplay(
         Map<String, Long> inputMap) {
 
@@ -377,63 +401,54 @@ public class DataHandling {
             String[] itemsToShow = list.toArray(new String[list.size()]);
             for (Entry<String, Long> entry : inputMap.entrySet()) {
                 // Save the current item's key-value pair
-                String key = "- " + entry.getKey(); // Current prog we are
-                                                    // looking
-                                                    // at
-                Long current = inputMap.get(key.substring(2, key.length())); // Current
-                                                                             // prog's
-                                                                             // time
-
-                // Check to see if the key needs to be combined or not
+                String key = "- " + entry.getKey();
+                Long current = inputMap.get(key.substring(2, key.length()));
                 for (int i = 0; i < size; i++) {
                     if (key.contains(itemsToShow[i])
                         || key.equals(itemsToShow[i])) {
                         editedMap.put(key.substring(2, key.length()), current);
                     }
                 }
-
             }
-
         }
         else if (Main.getMode() == 3) {
-
             list = TableHelper.loadList("exclusion");
             int size = list.size();
             String[] itemstoHide = list.toArray(new String[list.size()]);
-
             // For each item in the input map...
             for (Entry<String, Long> entry : inputMap.entrySet()) {
                 // Save the current item's key-value pair
-                String key = "- " + entry.getKey(); // Current prog we are
-                                                    // looking
-                                                    // at
-                Long current = inputMap.get(key.substring(2, key.length())); // Current
-                                                                             // prog's
-                                                                             // time
-
-                // Check to see if the key needs to be combined or not
+                String key = "- " + entry.getKey();
+                Long current = inputMap.get(key.substring(2, key.length()));
                 for (int i = 0; i < size; i++) {
                     if (key.contains(itemstoHide[i])
                         || key.equals(itemstoHide[i])) {
                         doNotAdd.put(key, (long) 1);
                     }
                 }
-
                 if (!doNotAdd.containsKey(key)) {
                     editedMap.put(key.substring(2, key.length()), current);
                 }
             }
-
         }
-
         return editedMap;
-
     }
 
+    /**
+     * Get the date range.
+     * 
+     * @return int value of date differences.
+     */
     public static int getDateRange() {
         return range;
     }
 
+    /**
+     * Set the range range.
+     * 
+     * @param date,
+     *            int value
+     */
     public static void setDateRange(int date) {
         range = date;
     }
