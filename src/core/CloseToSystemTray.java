@@ -20,7 +20,6 @@ import gui.Main;
  * maximize the program inside the tray.
  * 
  * @author Austin Ayers
- * @version 9/28/18
  */
 public class CloseToSystemTray {
 

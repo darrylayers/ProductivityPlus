@@ -25,7 +25,6 @@ import net.miginfocom.swing.MigLayout;
  * Gui class for Preferences window.
  * 
  * @author Austin Ayers
- * @version 9/25/18
  * 
  */
 public class PreferencesGui extends JDialog {
@@ -236,43 +235,61 @@ public class PreferencesGui extends JDialog {
         });
 
         // ************** Save Button ************** //
-        JButton saveButton = new JButton("Save");
-        saveButton.addMouseListener(new MouseAdapter() {
+        JButton btnSave = new JButton("Save");
+        btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 dispose();
             }
         });
-        saveButton.setActionCommand("Save");
-        buttonPane.add(saveButton);
-        getRootPane().setDefaultButton(saveButton);
+        btnSave.setActionCommand("Save");
+        buttonPane.add(btnSave);
+        getRootPane().setDefaultButton(btnSave);
 
         // ************** Cancel Button ************** //
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.addMouseListener(new MouseAdapter() {
+        JButton btnCancel = new JButton("Cancel");
+        btnCancel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 dispose();
             }
         });
-        cancelButton.setActionCommand("Cancel");
-        buttonPane.add(cancelButton);
+        btnCancel.setActionCommand("Cancel");
+        buttonPane.add(btnCancel);
     }
 
+    /**
+     * Save the display index to memory, this method saves the current selected
+     * index.
+     */
     public void setDisplayIndex() {
         int indexVal = displayOptions.getSelectedIndex();
         prefs.putInt(DISPLAY_INDEX, indexVal);
     }
 
+    /**
+     * Save the export index to memory, this method saves the current selected
+     * index.
+     */
     public void setExportIndex() {
         int indexVal = exportOptions.getSelectedIndex();
         prefs.putInt(OUTPUT_INDEX, indexVal);
     }
 
+    /**
+     * Get the display index from memory, if nothing is saved return 3.
+     * 
+     * @return returns saved value, if nothing is saved return 3.
+     */
     public static int getDisplayIndex() {
         return prefs.getInt(DISPLAY_INDEX, 3);
     }
 
+    /**
+     * Get the export index from memory.
+     * 
+     * @return returns saved value, if nothing is saved return 2.
+     */
     public static int getExportIndex() {
         return prefs.getInt(OUTPUT_INDEX, 2);
     }

@@ -13,7 +13,6 @@ import net.miginfocom.swing.MigLayout;
  * Gui class for About window.
  * 
  * @author Austin Ayers
- * @version 9/28/18
  * 
  */
 public class AboutGui extends JDialog {
