@@ -24,7 +24,6 @@ import net.miginfocom.swing.MigLayout;
  * Gui class for Graphical Output window.
  * 
  * @author Austin Ayers
- * @version 10/10/18
  * 
  */
 public class GraphicalOutputGui extends JDialog {
@@ -33,13 +32,11 @@ public class GraphicalOutputGui extends JDialog {
      * 
      */
     private static final long serialVersionUID = 1L;
-
+    public static JSpinner spinner = new JSpinner();
     @SuppressWarnings("unused")
     private static String[] displayTypes = {"Pie Chart",
         "Chart 2", "Chart 3",
         "Chart 4"};
-
-    public static JSpinner spinner = new JSpinner();
 
     /**
      * Launch the graphical output pop up window.
@@ -65,6 +62,8 @@ public class GraphicalOutputGui extends JDialog {
         setAlwaysOnTop(true);
         setTitle("Graphs");
         setBounds(100, 100, 1084, 582);
+
+        // ************** Frame panels and panes ************** //
         getContentPane().setLayout(
             new MigLayout("", "[156.00,grow][817.00,grow]", "[][503.00,grow]"));
 
@@ -92,35 +91,6 @@ public class GraphicalOutputGui extends JDialog {
         spinner.setModel(
             new SpinnerNumberModel(new Integer(5), null, null, new Integer(1)));
 
-        JLabel lblChooseADay = new JLabel("Choose a day to load");
-        controlPanel.add(lblChooseADay, "cell 1 2");
-
-        JSpinner spinner_1 = new JSpinner();
-        spinner_1.setModel(new SpinnerDateModel(new Date(1539230400000L),
-            new Date(1539230400000L), null, Calendar.DAY_OF_YEAR));
-        controlPanel.add(spinner_1, "cell 1 3");
-
-        JTextPane txtpnListIndividualPrograms = new JTextPane();
-        txtpnListIndividualPrograms.setEditable(false);
-        txtpnListIndividualPrograms.setBackground(SystemColor.controlHighlight);
-        txtpnListIndividualPrograms
-            .setText(
-                "List individual programs you want to view. List them separated by commands like this: ProductivityPlus, Spotify, ...");
-        controlPanel.add(txtpnListIndividualPrograms, "cell 1 4");
-
-        JEditorPane editorPane = new JEditorPane();
-        controlPanel.add(editorPane, "cell 1 5,grow");
-
-        JButton btnRefreshGraphs = new JButton("Refresh graphs");
-        controlPanel.add(btnRefreshGraphs, "cell 1 17");
-
-        JTextPane txtpnnoticeHitSave_1 = new JTextPane();
-        txtpnnoticeHitSave_1.setEditable(false);
-        txtpnnoticeHitSave_1.setText(
-            "(Notice: Hit save input if any changes are made, otherwise today's data is loaded.");
-        txtpnnoticeHitSave_1.setBackground(SystemColor.controlHighlight);
-        controlPanel.add(txtpnnoticeHitSave_1, "cell 1 18,grow");
-
         JPanel graphPanel = new JPanel();
         getContentPane().add(graphPanel, "cell 1 1,grow");
         graphPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
@@ -135,29 +105,52 @@ public class GraphicalOutputGui extends JDialog {
         JPanel panel_1 = new JPanel();
         tabbedPane.addTab("New tab", null, panel_1, null);
 
-        JPanel panel_2 = new JPanel();
-        tabbedPane.addTab("New tab", null, panel_2, null);
+        // ************** Label ************** //
+        JLabel lblChooseADay = new JLabel("Choose a day to load");
+        controlPanel.add(lblChooseADay, "cell 1 2");
 
-        JPanel panel_3 = new JPanel();
-        tabbedPane.addTab("New tab", null, panel_3, null);
+        // ************** Spinner ************** //
+        JSpinner spinner_1 = new JSpinner();
+        spinner_1.setModel(new SpinnerDateModel(new Date(1539230400000L),
+            new Date(1539230400000L), null, Calendar.DAY_OF_YEAR));
+        controlPanel.add(spinner_1, "cell 1 3");
 
-        JPanel panel_4 = new JPanel();
-        tabbedPane.addTab("New tab", null, panel_4, null);
+        // ************** Text panes ************** //
+        JTextPane txtpnListIndividualPrograms = new JTextPane();
+        txtpnListIndividualPrograms.setEditable(false);
+        txtpnListIndividualPrograms.setBackground(SystemColor.controlHighlight);
+        txtpnListIndividualPrograms
+            .setText(
+                "List individual programs you want to view. List them separated by"
+                    + " commands like this: ProductivityPlus, Spotify, ...");
+        controlPanel.add(txtpnListIndividualPrograms, "cell 1 4");
 
-        JPanel panel_5 = new JPanel();
-        tabbedPane.addTab("New tab", null, panel_5, null);
+        JEditorPane editorPane = new JEditorPane();
+        controlPanel.add(editorPane, "cell 1 5,grow");
 
-        JPanel panel_6 = new JPanel();
-        tabbedPane.addTab("New tab", null, panel_6, null);
+        JTextPane txtpnnoticeHitSave_1 = new JTextPane();
+        txtpnnoticeHitSave_1.setEditable(false);
+        txtpnnoticeHitSave_1.setText(
+            "(Notice: Hit save input if any changes are made, otherwise today's data is loaded.");
+        txtpnnoticeHitSave_1.setBackground(SystemColor.controlHighlight);
+        controlPanel.add(txtpnnoticeHitSave_1, "cell 1 18,grow");
+
+        // ************** Buttons ************** //
+        JButton btnRefreshGraphs = new JButton("Refresh graphs");
+        controlPanel.add(btnRefreshGraphs, "cell 1 17");
 
     }
 
+    /**
+     * Get the number of progs to display in the graph.
+     * 
+     * @return 5, or the size of the ordered map.
+     */
     public static int getNumProgs() {
         int size = DataHandling.orderedMap().size();
         if (size >= 5) {
             return 5;
         }
-
         return size;
     }
 }

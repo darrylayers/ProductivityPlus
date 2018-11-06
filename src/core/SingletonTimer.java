@@ -5,7 +5,6 @@ package core;
  * important because it insures only one tracker can be created at a time.
  * 
  * @author Austin Ayers
- * @version 9/29/18
  */
 public class SingletonTimer {
 

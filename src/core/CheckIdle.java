@@ -11,7 +11,6 @@ import gui.PreferencesGui;
  * data being recorded should be recorded and used in the output.
  * 
  * @author Austin Ayers
- * @version 9/20/18
  *
  */
 public class CheckIdle {
@@ -22,16 +21,14 @@ public class CheckIdle {
     // their mouse or typing, so this option should be
     // optional and have a variable/customizable threshold for the time.
 
-    private static Point old_p;
-    private static Point new_p;
-    private static int old_x;
+    public static Point old_p;
+    public static Point new_p;
+    static int old_x;
     private static int old_y;
     private static int new_x;
     private static int new_y;
-    @SuppressWarnings("unused")
-    private CheckIdle idle;
-    @SuppressWarnings("unused")
-    private PreferencesGui prefs;
+    CheckIdle idle;
+    PreferencesGui prefs;
 
     /**
      * CheckIdle constructor: Simply saves the mouse on object creation.

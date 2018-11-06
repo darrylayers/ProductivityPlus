@@ -15,11 +15,11 @@ import gui.PreferencesGui;
  * ProgramTimer class that performs the timing feature and records all the data.
  * 
  * @author Austin Ayers
- * @version 9/11/18
  */
 
 public class ProgramTimer implements Runnable {
 
+    public static Map<String, Long> appMap = new HashMap<>();
     private static char[] buffer = new char[4096];
     private static HWND hwnd;
     private static String prog = "";
@@ -28,11 +28,9 @@ public class ProgramTimer implements Runnable {
     private static long oldTime;
     private static long start;
     private static long end;
+    public static boolean trackIfTrue;
     private static boolean leftApp = false;
     private static CheckIdle idle;
-
-    public static Map<String, Long> appMap = new HashMap<>();
-    public static boolean trackIfTrue;
 
     /**
      * Overridden run method to run the timer on a new thread. Tracks to see

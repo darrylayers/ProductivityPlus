@@ -12,15 +12,13 @@ import gui.PreferencesGui;
  * specified unit. If the user wants their data presented in hours, this class
  * will convert the data from seconds to hours.
  * 
- * @author Austin
- * @version 10/8/18
+ * @author Austin Ayers
  */
 public class TimeConvert {
 
+    public static Map<String, Double> convertedMap = new HashMap<>();;
     private static String dataUnit = "";
     private static String dataUnitExport = "";
-
-    public static Map<String, Double> convertedMap = new HashMap<>();;
 
     /**
      * We need to be able to convert the given time in seconds to the desired
@@ -37,6 +35,7 @@ public class TimeConvert {
      * @param appMap
      *            either the current data, or the current iteration of a saved
      *            value.
+     * @return returns a properly formatted Map<String, Double>.
      */
     public static Map<String, Double> convertTime(
         Map<String, Long> toDisplayMap) {
@@ -75,43 +74,17 @@ public class TimeConvert {
         return convertedMap;
     }
 
-    public static Map<String, Double> convertOutputTime(
-        Map<String, Long> map) {
-
-        DecimalFormat df = new DecimalFormat("#.####");
-        df.setRoundingMode(RoundingMode.FLOOR);
-
-        if (PreferencesGui.getExportIndex() == 0) {
-
-            for (String name : map.keySet()) {
-                Double convertedTime = (map.get(name) / 3600.0);
-                Double modTime = Double.valueOf(df.format(convertedTime));
-                convertedMap.put(name, modTime);
-                dataUnitExport = "Time (Hours)";
-            }
-        }
-        else if (PreferencesGui.getExportIndex() == 1) {
-            for (String name : map.keySet()) {
-                Double convertedTime = (map.get(name) / 60.0);
-                Double modTime = Double.valueOf(df.format(convertedTime));
-                convertedMap.put(name, modTime);
-                dataUnitExport = "Time (Minutes)";
-            }
-        }
-        else {
-            for (String name : map.keySet()) {
-                Double convertedTime = (map.get(name) / 1.0);
-                Double modTime = Double.valueOf(df.format(convertedTime));
-                convertedMap.put(name, modTime);
-                dataUnitExport = "Time (Seconds)";
-            }
-        }
-        return convertedMap;
-    }
-
-    public static Map<String, String> convertWritten(
-
-        Map<String, Long> map) {
+    /**
+     * This method converts the times in the given hashmap and returns a
+     * properly converted hashmap, this method exists so we can convert to the
+     * written format.
+     * 
+     * @param appMap
+     *            either the current data, or the current iteration of a saved
+     *            value.
+     * @return returns a properly formatted Map<String, Double>.
+     */
+    public static Map<String, String> convertWritten(Map<String, Long> map) {
         Map<String, String> stringMap = new HashMap<>();
         for (String name : map.keySet()) {
             String output = "";
@@ -147,9 +120,14 @@ public class TimeConvert {
             dataUnit = "Time (Written)";
         }
         return stringMap;
-
     }
 
+    /**
+     * This method returns whichever time unit the user has currently selected
+     * for the display table.
+     * 
+     * @return string of proper time unit.
+     */
     public static String getUnit() {
         if (PreferencesGui.getDisplayIndex() == 0) {
             dataUnit = "Time (Hours)";
@@ -167,6 +145,12 @@ public class TimeConvert {
         return dataUnit;
     }
 
+    /**
+     * This method returns whichever time unit the user has currently selected
+     * for exporting.
+     * 
+     * @return string of proper time unit.
+     */
     public static String getDataUnitExport() {
         return dataUnitExport;
     }

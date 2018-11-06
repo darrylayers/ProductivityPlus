@@ -12,7 +12,6 @@ import net.miginfocom.swing.MigLayout;
  * FAQ class for About window.
  * 
  * @author Austin Ayers
- * @version 10/10/18
  * 
  */
 public class FaqGui extends JDialog {

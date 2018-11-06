@@ -35,16 +35,25 @@ import net.miginfocom.swing.MigLayout;
  * Gui class for About window.
  * 
  * @author Austin Ayers
- * @version 9/28/18
  * 
  */
 public class ExploreDataGui extends JDialog {
 
     private static final long serialVersionUID = 1L;
-    private static final JProgressBar progressBar = new JProgressBar();
+    private final JPanel contentPanel = new JPanel();
+    private DatePickerSettings datePickerSettings = new DatePickerSettings();
+    private DatePicker datePicker = new DatePicker(datePickerSettings);
+    private DatePickerSettings datePickerSettings2 = new DatePickerSettings();
+    private DatePicker datePicker2 = new DatePicker(datePickerSettings2);
+    private String formattedString;
+    private String formattedString2;
+    private JRadioButton rdbtntxtExport = new JRadioButton(".txt export");
+    private JRadioButton rdbtnExcelExport = new JRadioButton("Excel export");
+    private JRadioButton rdbtnodsopenOffice =
+        new JRadioButton(".ods (Open Office)");
+    private final static JProgressBar progressBar = new JProgressBar();
     private static int barMin = 0;
     private static int barMax = 100;
-    private final JPanel contentPanel = new JPanel();
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
     private final JPanel singleProgPanel = new JPanel();
     private final JPanel progInputPanel = new JPanel();
@@ -59,16 +68,6 @@ public class ExploreDataGui extends JDialog {
     private final JButton btnSubmitSearch = new JButton("Submit Search");
     private final JTextArea txtrTest = new JTextArea();
     private boolean singleData = false;
-    private DatePickerSettings datePickerSettings = new DatePickerSettings();
-    private DatePicker datePicker = new DatePicker(datePickerSettings);
-    private DatePickerSettings datePickerSettings2 = new DatePickerSettings();
-    private DatePicker datePicker2 = new DatePicker(datePickerSettings2);
-    private String formattedString;
-    private String formattedString2;
-    private JRadioButton rdbtntxtExport = new JRadioButton(".txt export");
-    private JRadioButton rdbtnExcelExport = new JRadioButton("Excel export");
-    private JRadioButton rdbtnodsopenOffice =
-        new JRadioButton(".ods (Open Office)");
 
     /**
      * Launch the About pop up window.
@@ -200,6 +199,8 @@ public class ExploreDataGui extends JDialog {
         progressBar.setMinimum(barMin);
         progressBar.setMaximum(barMax);
 
+        // ************** Single Program Search ************** //
+
         tabbedPane.addTab("Single program search", null, singleProgPanel, null);
         singleProgPanel.setLayout(
             new MigLayout("", "[427.00,grow]", "[][][grow]"));
@@ -261,9 +262,12 @@ public class ExploreDataGui extends JDialog {
         return progressBar.getValue();
     }
 
+    /**
+     * Load the maps from memory given the dates. This is the method used for
+     * both features in Explore Data.
+     */
     @SuppressWarnings("unchecked")
-    public Map<String, Long> loadMapsFromMem() {
-        Map<String, Long> map = new HashMap<String, Long>();
+    public void loadMapsFromMem() {
         LocalDate date;
         LocalDate date2;
 
@@ -376,6 +380,5 @@ public class ExploreDataGui extends JDialog {
                 + "\n \n"
                 + "Hint: This info is copy/pastable!");
         }
-        return map;
     }
 }

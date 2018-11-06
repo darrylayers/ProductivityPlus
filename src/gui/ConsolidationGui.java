@@ -30,7 +30,6 @@ import net.miginfocom.swing.MigLayout;
  * Gui class for What To Track window.
  * 
  * @author Austin Ayers
- * @version 10/29/18
  * 
  */
 public class ConsolidationGui extends JDialog {
@@ -39,21 +38,18 @@ public class ConsolidationGui extends JDialog {
      * 
      */
     private static final long serialVersionUID = 1L;
-
+    public static List<String> list = new ArrayList<String>();
+    private JTextField txtInput;
     private static JTable table;
     private static DefaultTableModel model;
     private static JScrollPane sc;
     private static JPanel panel;
     private static JPanel panel2;
+    private JLabel secretLabel;
+    private JLabel lblNewLabel;
     private static byte[] bytes;
     private static Preferences prefs =
         Preferences.userRoot().node("WhatToTrackGui");
-    private JButton btnPrintList;
-    private JLabel secretLabel;
-    private JLabel lblNewLabel;
-    private JTextField txtInput;
-
-    public static List<String> list = new ArrayList<String>();
 
     /**
      * Launch the About pop up window.
@@ -77,6 +73,9 @@ public class ConsolidationGui extends JDialog {
     public ConsolidationGui() {
         setTitle("What to Track");
         setBounds(100, 100, 528, 399);
+
+        // ************** Frame panels and panes ************** //
+
         getContentPane()
             .setLayout(new MigLayout("", "[grow]", "[305.00,grow]"));
 
@@ -94,6 +93,8 @@ public class ConsolidationGui extends JDialog {
         secretLabel = new JLabel("");
         panel.add(secretLabel, "cell 2 1");
 
+        // ************** Buttons ************** //
+
         JButton btnPrintArraylist = new JButton("Remove Program");
         btnPrintArraylist.addMouseListener(new MouseAdapter() {
             @Override
@@ -101,6 +102,7 @@ public class ConsolidationGui extends JDialog {
                 removeRow("- " + txtInput.getText());
             }
         });
+        panel.add(btnPrintArraylist, "cell 1 4,growx");
 
         JButton btnEnterProgram = new JButton("Enter Program");
         btnEnterProgram.addMouseListener(new MouseAdapter() {
@@ -109,27 +111,21 @@ public class ConsolidationGui extends JDialog {
                 addRow("- " + txtInput.getText());
             }
         });
+        panel.add(btnEnterProgram, "cell 1 3,growx");
+
+        // ************** Text input box ************** //
 
         txtInput = new JTextField();
         panel.add(txtInput, "cell 1 2,growx");
         txtInput.setColumns(10);
-        panel.add(btnEnterProgram, "cell 1 3,growx");
-        panel.add(btnPrintArraylist, "cell 1 4,growx");
 
-        btnPrintList = new JButton("Print list");
-        btnPrintList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                System.out.println(list);
-            }
-        });
-        // panel.add(btnPrintList, "cell 1 5,growx");
-
-        // ************** Frame panels and panes ************** //
-        loadTable(true);
+        loadTable();
     }
 
-    public void loadTable(boolean init) {
+    /**
+     * Load the table in the consolidation GUI.
+     */
+    public void loadTable() {
         if (Main.toTrack) {
             panel2.remove(sc);
         }
@@ -159,6 +155,12 @@ public class ConsolidationGui extends JDialog {
         secretLabel.setText("");
     }
 
+    /**
+     * Add a row to the table.
+     * 
+     * @param item,
+     *            the item to add.
+     */
     public void addRow(String item) {
         if (inList(item)) {
             JOptionPane.showMessageDialog(null,
@@ -167,11 +169,17 @@ public class ConsolidationGui extends JDialog {
         else {
             list.add(item);
             txtInput.setText("");
-            loadTable(false);
+            loadTable();
             saveList();
         }
     }
 
+    /**
+     * Remove a row to the table.
+     * 
+     * @param item,
+     *            the item to remove.
+     */
     public void removeRow(String item) {
         if (!inList(item)) {
             JOptionPane.showMessageDialog(null,
@@ -180,11 +188,18 @@ public class ConsolidationGui extends JDialog {
         else {
             list.remove(item);
             txtInput.setText("");
-            loadTable(false);
+            loadTable();
             saveList();
         }
     }
 
+    /**
+     * Check to see if the local list contains the item.
+     * 
+     * @param item,
+     *            the item to check the list for.
+     * @return returns true if the list contains the item.
+     */
     public static boolean inList(String item) {
         if (list.contains("- " + item) || list.contains(item)) {
             return true;
@@ -194,10 +209,9 @@ public class ConsolidationGui extends JDialog {
         }
     }
 
-    public void getList() {
-        loadList();
-    }
-
+    /**
+     * Load the local list with the preferences.
+     */
     public static void loadList() {
         byte[] temp = {0};
         bytes = prefs.getByteArray("PREF_LIST", temp);
@@ -216,6 +230,9 @@ public class ConsolidationGui extends JDialog {
         }
     }
 
+    /**
+     * Save the local list to the preferences.
+     */
     public void saveList() {
         System.out.print("Saving list: " + list + "\n");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -229,11 +246,21 @@ public class ConsolidationGui extends JDialog {
             }
         }
         bytes = baos.toByteArray();
-
         prefs.putByteArray("PREF_LIST", bytes);
-
     }
 
+    /**
+     * Helper method to display the GUI.
+     */
+    public void getList() {
+        loadList();
+    }
+
+    /**
+     * Getter for list.
+     * 
+     * @return the local list.
+     */
     public static List<String> getSavedList() {
         return list;
     }

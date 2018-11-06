@@ -25,7 +25,6 @@ import net.miginfocom.swing.MigLayout;
  * Gui class for Preferences window.
  * 
  * @author Austin Ayers
- * @version 9/25/18
  * 
  */
 public class PreferencesGui extends JDialog {
@@ -34,15 +33,18 @@ public class PreferencesGui extends JDialog {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private static final String IDLE_TIMER = "idleValue";
-    private static final String IDLE_CHECK = "idleCheck";
-    private static final String IDLE_AUTO_CHECK = "idleAutoCheck";
-    private static final String DISPLAY_INDEX = "displayIndex";
-    private static final String OUTPUT_INDEX = "outputIndex";
-    private static final String DEC_VAL = "decVal";
-
+    private final JPanel contentPanel = new JPanel();
     private static Preferences prefs =
         Preferences.userRoot().node("PreferencesGui");
+    private final static String IDLE_TIMER = "idleValue";
+    private final static String IDLE_CHECK = "idleCheck";
+    private final static String IDLE_AUTO_CHECK = "idleAutoCheck";
+    private final static String DISPLAY_INDEX = "displayIndex";
+    private final static String OUTPUT_INDEX = "outputIndex";
+    private final static String DEC_VAL = "decVal";
+    private JCheckBox idleTimerCheckBox;
+    private JSpinner spinner = new JSpinner();
+    private JSpinner numDecimalSpinner = new JSpinner();
     private static String[] exportTypes = {"Hours (ex: 1.3 hours)",
         "Minutes (ex: 95.2 minutes)", "Seconds (ex: 138 seconds)"};
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -52,12 +54,6 @@ public class PreferencesGui extends JDialog {
         "Written (ex: 33 minutes 2 seconds)"};
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static JComboBox displayOptions = new JComboBox(displayTypes);
-
-    private final JPanel contentPanel = new JPanel();
-
-    private JCheckBox idleTimerCheckBox;
-    private JSpinner spinner = new JSpinner();
-    private JSpinner numDecimalSpinner = new JSpinner();
 
     /**
      * Launch the Preferences popup window.
@@ -149,7 +145,8 @@ public class PreferencesGui extends JDialog {
         // ************** Idle Check box ************** //
         idleTimerCheckBox = new JCheckBox("Idle Timer");
         idleTimerCheckBox.setToolTipText(
-            "If enabled, the program timer will stop timing when the mouse is enactive for the selected idle interval.");
+            "If enabled, the program timer will stop timing when the mouse "
+                + "is enactive for the selected idle interval.");
         prefTimerPanel.add(idleTimerCheckBox, "cell 0 0");
         idleTimerCheckBox.setSelected(getIdleChecked());
 
@@ -239,43 +236,61 @@ public class PreferencesGui extends JDialog {
         });
 
         // ************** Save Button ************** //
-        JButton saveButton = new JButton("Save");
-        saveButton.addMouseListener(new MouseAdapter() {
+        JButton btnSave = new JButton("Save");
+        btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 dispose();
             }
         });
-        saveButton.setActionCommand("Save");
-        buttonPane.add(saveButton);
-        getRootPane().setDefaultButton(saveButton);
+        btnSave.setActionCommand("Save");
+        buttonPane.add(btnSave);
+        getRootPane().setDefaultButton(btnSave);
 
         // ************** Cancel Button ************** //
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.addMouseListener(new MouseAdapter() {
+        JButton btnCancel = new JButton("Cancel");
+        btnCancel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 dispose();
             }
         });
-        cancelButton.setActionCommand("Cancel");
-        buttonPane.add(cancelButton);
+        btnCancel.setActionCommand("Cancel");
+        buttonPane.add(btnCancel);
     }
 
+    /**
+     * Save the display index to memory, this method saves the current selected
+     * index.
+     */
     public void setDisplayIndex() {
         int indexVal = displayOptions.getSelectedIndex();
         prefs.putInt(DISPLAY_INDEX, indexVal);
     }
 
+    /**
+     * Save the export index to memory, this method saves the current selected
+     * index.
+     */
     public void setExportIndex() {
         int indexVal = exportOptions.getSelectedIndex();
         prefs.putInt(OUTPUT_INDEX, indexVal);
     }
 
+    /**
+     * Get the display index from memory, if nothing is saved return 3.
+     * 
+     * @return returns saved value, if nothing is saved return 3.
+     */
     public static int getDisplayIndex() {
         return prefs.getInt(DISPLAY_INDEX, 3);
     }
 
+    /**
+     * Get the export index from memory.
+     * 
+     * @return returns saved value, if nothing is saved return 2.
+     */
     public static int getExportIndex() {
         return prefs.getInt(OUTPUT_INDEX, 2);
     }
