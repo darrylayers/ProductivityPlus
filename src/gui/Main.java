@@ -125,6 +125,7 @@ public class Main {
         frame.setVisible(true);
 
         // ************** Menu Bar ************** //
+
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
 
@@ -215,11 +216,15 @@ public class Main {
         mnHelp.add(faqItem);
 
         // ************** Panel creations ************** //
+
         frame.getContentPane()
             .setLayout(new MigLayout("", "[1061.00px]", "[482.00px]"));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setLayout(
             new MigLayout("", "[110.00][224.00,grow]", "[35.00][414.00,grow]"));
+
+        // ************** Tab pane ************** //
+
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         frame.getContentPane().add(tabbedPane, "cell 0 0,growx,aligny top");
         tabbedPane.addTab("Program Timer", null, mainPanel, null);
@@ -229,34 +234,39 @@ public class Main {
         displayPanel.setLayout(new MigLayout("",
             "[310.00px,grow][450,grow][501.00,grow]", "[75][457.00px,grow]"));
 
+        JLabel controlsLabel = new JLabel("Controls");
+        displayPanel.add(controlsLabel, "cell 0 0,alignx center,aligny center");
+
+        JLabel inclusionsLabel = new JLabel("Inclusions");
+        inclusionsLabel.setToolTipText(
+            "These are the ONLY programs that will be tracked if the \"Track inclusions\" button is selected. This is useful if you only want to track a few programs.");
+        displayPanel.add(inclusionsLabel,
+            "cell 1 0,alignx center,aligny center");
+
+        JLabel exclusionsLabel = new JLabel("Exclusions");
+        exclusionsLabel.setToolTipText(
+            "These are the programs that will be excluded from tracking if the \"Track exclusions\" button is selected. This is useful if you want to avoid tracking only a few programs.");
+        displayPanel.add(exclusionsLabel,
+            "cell 2 0,alignx center,aligny center");
+
         JPanel controlPanel = new JPanel();
         displayPanel.add(controlPanel, "cell 0 1,grow");
         controlPanel.setLayout(new MigLayout("", "[132.00,grow]",
             "[][][][][][][][][][][][][][][]"));
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setToolTipText("Program data for today");
-        buttonPanel.setBackground(Color.WHITE);
-        mainPanel.add(buttonPanel, "cell 0 1,grow");
-        buttonPanel.setLayout(new MigLayout("", "[100,grow]",
-            "[25][][][][][][][][38.00,grow][][][][][]"));
-
-        // ************** Buttons ************** //
-        JButton btnAddProgram = new JButton("Add program");
+        JLabel modeLabel = new JLabel("Mode - What to display");
+        controlPanel.add(modeLabel, "cell 0 0,alignx center,aligny center");
 
         trackAllRButton
             .setToolTipText("All programs will be tracked if this is chosen.");
         controlPanel.add(trackAllRButton, "cell 0 1");
 
         trackInclusionsRButton.setToolTipText(
-            "Only the programs inside the Inclusions table will be tracked. This is useful if you "
-                + "only want to track a few programs.");
+            "Only the programs inside the Inclusions table will be tracked. This is useful if you only want to track a few programs.");
         controlPanel.add(trackInclusionsRButton, "cell 0 2");
 
         trackExclusionsRButton.setToolTipText(
-            "Everything will be tracked except the programs in the"
-                + " Exclusions table if this is selected. "
-                + "This is useful if you want to avoid tracking only a few programs.");
+            "Everything will be tracked except the programs in the Exclusions table if this is selected. This is useful if you want to avoid tracking only a few programs.");
         controlPanel.add(trackExclusionsRButton, "cell 0 3");
 
         ButtonGroup rbuttons = new ButtonGroup();
@@ -274,81 +284,12 @@ public class Main {
             trackExclusionsRButton.setSelected(true);
         }
 
-        btnAddProgram.setToolTipText(
-            "Add a program from whichever table is selected above.");
-        controlPanel.add(btnAddProgram, "cell 0 6,grow");
+        progTextField = new JTextField();
+        progTextField.setToolTipText("Put the program name here");
+        controlPanel.add(progTextField, "cell 0 5,growx");
+        progTextField.setColumns(10);
 
-        JButton btnRemoveProgram = new JButton("Remove Program");
-
-        btnRemoveProgram.setToolTipText(
-            "Remove a program from whichever table is selected above.");
-        controlPanel.add(btnRemoveProgram, "cell 0 7,grow");
-
-        btnStopTimer = new JButton("Stop Timer");
-        buttonPanel.add(btnStopTimer, "cell 0 1,growx");
-        JButton btnStartTimer = new JButton("Start Timer");
-        buttonPanel.add(btnStartTimer, "cell 0 0,growx");
-        JButton btnGraphOutput = new JButton("Graphical Output");
-        buttonPanel.add(btnGraphOutput, "cell 0 2,growx");
-        JButton btnExploreData = new JButton("Explore Data");
-        buttonPanel.add(btnExploreData, "cell 0 3,growx");
-        JButton btnRefreshTable = new JButton("Refresh Table");
-        buttonPanel.add(btnRefreshTable, "cell 0 4,growx");
-
-        // ************** Date pickers ************** //
-        DatePicker datePicker = new DatePicker((DatePickerSettings) null);
-        buttonPanel.add(datePicker, "cell 0 10,grow");
-        DatePicker datePicker2 = new DatePicker((DatePickerSettings) null);
-        buttonPanel.add(datePicker2, "cell 0 12,grow");
-
-        // ************** Labels ************** //
-        JLabel controlsLabel = new JLabel("Controls");
-        displayPanel.add(controlsLabel, "cell 0 0,alignx center,aligny center");
-
-        JLabel inclusionsLabel = new JLabel("Inclusions");
-        inclusionsLabel.setToolTipText(
-            "These are the ONLY programs that will be tracked if the "
-                + "\"Track inclusions\" button is selected. "
-                + "This is useful if you only want to track a few programs.");
-        displayPanel.add(inclusionsLabel,
-            "cell 1 0,alignx center,aligny center");
-
-        JLabel exclusionsLabel = new JLabel("Exclusions");
-        exclusionsLabel.setToolTipText(
-            "These are the programs that will be excluded from tracking "
-                + "if the \"Track exclusions\" button is selected. "
-                + "This is useful if you want to avoid tracking only a few programs.");
-        displayPanel.add(exclusionsLabel,
-            "cell 2 0,alignx center,aligny center");
-
-        JLabel modeLabel = new JLabel("Mode - What to display");
-        controlPanel.add(modeLabel, "cell 0 0,alignx center,aligny center");
-
-        secretLabel = new JLabel("");
-        buttonPanel.add(secretLabel, "cell 0 7,alignx center");
-
-        JLabel lblLoadTable = new JLabel("Load Table");
-        lblLoadTable.setFont(new Font("Tahoma", Font.BOLD, 12));
-        buttonPanel.add(lblLoadTable, "cell 0 8,alignx center,aligny bottom");
-
-        JLabel lblStartDate = new JLabel("Start Date");
-        buttonPanel.add(lblStartDate, "cell 0 9");
-
-        JLabel lblEndDate = new JLabel("End Date");
-        lblEndDate
-            .setToolTipText("Leave end date blank if only viewing one day");
-        buttonPanel.add(lblEndDate, "cell 0 11");
-
-        JButton btnLoadData = new JButton("Load Data");
-        buttonPanel.add(btnLoadData, "cell 0 13,growx");
-
-        // ************** Check box ************** //
-        JCheckBox chckbxConsolidatePrograms =
-            new JCheckBox("Consolidate Programs");
-        chckbxConsolidatePrograms.setSelected(getChecked());
-        buttonPanel.add(chckbxConsolidatePrograms, "cell 0 5,growx");
-
-        // ************** Listeners ************** //
+        JButton btnAddProgram = new JButton("Add program");
         btnAddProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -429,6 +370,11 @@ public class Main {
             }
         });
 
+        btnAddProgram.setToolTipText(
+            "Add a program from whichever table is selected above.");
+        controlPanel.add(btnAddProgram, "cell 0 6,grow");
+
+        JButton btnRemoveProgram = new JButton("Remove Program");
         btnRemoveProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -463,7 +409,52 @@ public class Main {
                 secretLabel.setText("");
             }
         });
+        btnRemoveProgram.setToolTipText(
+            "Remove a program from whichever table is selected above.");
+        controlPanel.add(btnRemoveProgram, "cell 0 7,grow");
 
+        List<String> inclusions = new ArrayList<>();
+        inclusions = TableHelper.loadList("inclusion");
+        List<String> exclusions = new ArrayList<>();
+        exclusions = TableHelper.loadList("exclusion");
+        exclusionScrollPane = TableHelper.loadTable(exclusions);
+        inclusionScrollPane = TableHelper.loadTable(inclusions);
+        displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
+        displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
+
+        // ************** Timer controls labels ************** //
+
+        JLabel timerControlsLabel = new JLabel("     Timer Controls");
+        timerControlsLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+        mainPanel.add(timerControlsLabel, "cell 0 0,alignx left");
+        trackStatusLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+        mainPanel.add(trackStatusLabel, "cell 1 0");
+
+        // ************** Button panel ************** //
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setToolTipText("Program data for today");
+        buttonPanel.setBackground(Color.WHITE);
+        mainPanel.add(buttonPanel, "cell 0 1,grow");
+        buttonPanel.setLayout(new MigLayout("", "[100,grow]",
+            "[25][][][][][][][][38.00,grow][][][][][]"));
+
+        // ************** Start button ************** //
+
+        JButton btnStartTimer = new JButton("Start Timer");
+        buttonPanel.add(btnStartTimer, "cell 0 0,growx");
+        btnStartTimer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                startTimer();
+                trackStatusLabel.setText("Status: Currently tracking...");
+            }
+        });
+
+        // ************** Stop button ************** //
+
+        btnStopTimer = new JButton("Stop Timer");
+        buttonPanel.add(btnStopTimer, "cell 0 1,growx");
         btnStopTimer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -481,28 +472,31 @@ public class Main {
             }
         });
 
+        // ************** Graphical output button ************** //
+
+        JButton btnGraphOutput = new JButton("Graphical Output");
         btnGraphOutput.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 GraphicalOutputGui.newWindow();
             }
         });
+        buttonPanel.add(btnGraphOutput, "cell 0 2,growx");
 
+        // ************** Explore data button ************** //
+
+        JButton btnExploreData = new JButton("Explore Data");
         btnExploreData.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 ExploreDataGui.newWindow();
             }
         });
+        buttonPanel.add(btnExploreData, "cell 0 3,growx");
 
-        btnStartTimer.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                startTimer();
-                trackStatusLabel.setText("Status: Currently tracking...");
-            }
-        });
-
+        JCheckBox chckbxConsolidatePrograms =
+            new JCheckBox("Consolidate Programs");
+        chckbxConsolidatePrograms.setSelected(getChecked());
         chckbxConsolidatePrograms.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -514,7 +508,12 @@ public class Main {
                 secretLabel.setText("");
             }
         });
+        buttonPanel.add(chckbxConsolidatePrograms, "cell 0 5,growx");
 
+        secretLabel = new JLabel("");
+        buttonPanel.add(secretLabel, "cell 0 7,alignx center");
+
+        JButton btnRefreshTable = new JButton("Refresh Table");
         btnRefreshTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -523,7 +522,27 @@ public class Main {
                 secretLabel.setText("");
             }
         });
+        buttonPanel.add(btnRefreshTable, "cell 0 4,growx");
 
+        JLabel lblLoadTable = new JLabel("Load Table");
+        lblLoadTable.setFont(new Font("Tahoma", Font.BOLD, 12));
+        buttonPanel.add(lblLoadTable, "cell 0 8,alignx center,aligny bottom");
+
+        JLabel lblStartDate = new JLabel("Start Date");
+        buttonPanel.add(lblStartDate, "cell 0 9");
+
+        DatePicker datePicker = new DatePicker((DatePickerSettings) null);
+        buttonPanel.add(datePicker, "cell 0 10,grow");
+
+        JLabel lblEndDate = new JLabel("End Date");
+        lblEndDate
+            .setToolTipText("Leave end date blank if only viewing one day");
+        buttonPanel.add(lblEndDate, "cell 0 11");
+
+        DatePicker datePicker2 = new DatePicker((DatePickerSettings) null);
+        buttonPanel.add(datePicker2, "cell 0 12,grow");
+
+        JButton btnLoadData = new JButton("Load Data");
         btnLoadData.addMouseListener(new MouseAdapter() {
             @SuppressWarnings("unchecked")
             @Override
@@ -602,30 +621,10 @@ public class Main {
 
         });
 
-        // ************** Text fields ************** //
-        progTextField = new JTextField();
-        progTextField.setToolTipText("Put the program name here");
-        controlPanel.add(progTextField, "cell 0 5,growx");
-        progTextField.setColumns(10);
-
-        // ************** Loading and displaying arraylists ************** //
-        List<String> inclusions = new ArrayList<>();
-        inclusions = TableHelper.loadList("inclusion");
-        List<String> exclusions = new ArrayList<>();
-        exclusions = TableHelper.loadList("exclusion");
-        exclusionScrollPane = TableHelper.loadTable(exclusions);
-        inclusionScrollPane = TableHelper.loadTable(inclusions);
-        displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
-        displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
-
-        // ************** Timer controls labels ************** //
-        JLabel timerControlsLabel = new JLabel("     Timer Controls");
-        timerControlsLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-        mainPanel.add(timerControlsLabel, "cell 0 0,alignx left");
-        trackStatusLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-        mainPanel.add(trackStatusLabel, "cell 1 0");
+        buttonPanel.add(btnLoadData, "cell 0 13,growx");
 
         // ************** Table ************** //
+
         updateTable(true);
         updateTable(false);
         secretLabel.setText("  ");
