@@ -103,7 +103,7 @@ public class ExploreDataGui extends JDialog {
         tabbedPane.addTab("Explore large data", null, contentPanel, null);
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPanel.setLayout(
-            new MigLayout("", "[304.00,grow,left][-37.00]",
+            new MigLayout("", "[304.00,left][-37.00][]",
                 "[grow][70.00,grow][215.00,grow]"));
 
         // ************** Dates ************** //
@@ -116,14 +116,14 @@ public class ExploreDataGui extends JDialog {
             new MigLayout("", "[83.00,grow][][]", "[][][55.00,grow][grow]"));
         datePanel.add(datePicker, "");
         datePicker.setDateToToday();
-        datePanel.add(datePicker2, "");
+        datePanel.add(datePicker2, "cell 1 0");
 
         // ************** Exports ************** //
 
         JPanel exportPanel = new JPanel();
         contentPanel.add(exportPanel, "cell 0 2,grow");
         exportPanel
-            .setLayout(new MigLayout("", "[][][]", "[][][33.00]"));
+            .setLayout(new MigLayout("", "[142.00][142.00][]", "[][][33.00]"));
         rdbtnExcelExport.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -133,7 +133,7 @@ public class ExploreDataGui extends JDialog {
         });
 
         rdbtnExcelExport.setSelected(true);
-        exportPanel.add(rdbtnExcelExport, "cell 0 0");
+        // exportPanel.add(rdbtnExcelExport, "cell 0 0");
 
         JButton btnOpenOutput = new JButton("Open Output");
         JButton btnCreateExportFile = new JButton("Create export file");
@@ -156,7 +156,7 @@ public class ExploreDataGui extends JDialog {
 
             }
         });
-        exportPanel.add(rdbtnodsopenOffice, "cell 1 0");
+        // exportPanel.add(rdbtnodsopenOffice, "cell 1 0");
         rdbtntxtExport.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -166,11 +166,11 @@ public class ExploreDataGui extends JDialog {
             }
         });
 
-        exportPanel.add(rdbtntxtExport, "cell 2 0");
+        // exportPanel.add(rdbtntxtExport, "cell 2 0");
 
         btnCreateExportFile.setToolTipText(
-            "File is exported to Productivity Plus installation directory");
-        exportPanel.add(btnCreateExportFile, "cell 0 1");
+            "File is exported to Excel format (.xlsx)");
+        exportPanel.add(btnCreateExportFile, "cell 0 1,grow");
 
         btnOpenOutput.addMouseListener(new MouseAdapter() {
             @Override
@@ -186,7 +186,7 @@ public class ExploreDataGui extends JDialog {
             }
         });
         btnOpenOutput.setEnabled(false);
-        exportPanel.add(btnOpenOutput, "cell 1 1");
+        exportPanel.add(btnOpenOutput, "cell 1 1,grow");
         progressBar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
