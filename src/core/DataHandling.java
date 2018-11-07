@@ -452,4 +452,18 @@ public class DataHandling {
     public static void setDateRange(int date) {
         range = date;
     }
+
+    /**
+     * Check to see if input string is empty.
+     * 
+     * @param str
+     *            input string.
+     * @return true if the input string is empty.
+     */
+    public static boolean checkEmpty(String str) {
+        if (str != null && !str.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import core.DataHandling;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -100,7 +101,7 @@ public class ConsolidationGui extends JDialog {
             @Override
             public void mouseClicked(MouseEvent arg0) {
 
-                if (checkEmpty(txtInput.getText())) {
+                if (DataHandling.checkEmpty(txtInput.getText())) {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
                 }
@@ -119,7 +120,7 @@ public class ConsolidationGui extends JDialog {
                 System.out.println("inside enter");
                 System.out.println(txtInput.getText());
 
-                if (checkEmpty(txtInput.getText())) {
+                if (DataHandling.checkEmpty(txtInput.getText())) {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
                 }
@@ -273,21 +274,6 @@ public class ConsolidationGui extends JDialog {
      */
     public static List<String> getSavedList() {
         return list;
-    }
-
-    /**
-     * Check to see if input string is empty.
-     * 
-     * @param str
-     *            input string.
-     * @return true if the input string is empty.
-     */
-    public boolean checkEmpty(String str) {
-        System.out.print(str);
-        if (str != null && !str.isEmpty()) {
-            return false;
-        }
-        return true;
     }
 
 }

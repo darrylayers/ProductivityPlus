@@ -293,34 +293,39 @@ public class Main {
             @Override
             public void mouseClicked(MouseEvent arg0) {
 
-                if (getMode() == 1) {
+                if (DataHandling.checkEmpty(progTextField.getText())) {
                     JOptionPane.showMessageDialog(null,
-                        "Cannot add program. Track all is selected.");
+                        "Input string empty.");
                 }
-
-                else if (getMode() == 2 || getMode() == 3) {
-                    List<String> inclusions = new ArrayList<>();
-                    List<String> exclusions = new ArrayList<>();
-                    displayPanel.remove(inclusionScrollPane);
-                    displayPanel.remove(exclusionScrollPane);
-                    inclusions = TableHelper.loadList("inclusion");
-                    exclusions = TableHelper.loadList("exclusion");
-                    if (getMode() == 2) {
-                        inclusions.add("- " + progTextField.getText());
+                else {
+                    if (getMode() == 1) {
+                        JOptionPane.showMessageDialog(null,
+                            "Cannot add program. Track all is selected.");
                     }
-                    else {
-                        exclusions.add("- " + progTextField.getText());
+                    else if (getMode() == 2 || getMode() == 3) {
+                        List<String> inclusions = new ArrayList<>();
+                        List<String> exclusions = new ArrayList<>();
+                        displayPanel.remove(inclusionScrollPane);
+                        displayPanel.remove(exclusionScrollPane);
+                        inclusions = TableHelper.loadList("inclusion");
+                        exclusions = TableHelper.loadList("exclusion");
+                        if (getMode() == 2) {
+                            inclusions.add("- " + progTextField.getText());
+                        }
+                        else {
+                            exclusions.add("- " + progTextField.getText());
+                        }
+                        TableHelper.saveList(inclusions, "inclusion");
+                        TableHelper.saveList(exclusions, "exclusion");
+                        inclusionScrollPane = TableHelper.loadTable(inclusions);
+                        displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
+                        exclusionScrollPane = TableHelper.loadTable(exclusions);
+                        displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
+                        progTextField.setText("");
                     }
-                    TableHelper.saveList(inclusions, "inclusion");
-                    TableHelper.saveList(exclusions, "exclusion");
-                    inclusionScrollPane = TableHelper.loadTable(inclusions);
-                    displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
-                    exclusionScrollPane = TableHelper.loadTable(exclusions);
-                    displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
-                    progTextField.setText("");
+                    secretLabel.setText("  ");
+                    secretLabel.setText("");
                 }
-                secretLabel.setText("  ");
-                secretLabel.setText("");
             }
         });
 
@@ -378,34 +383,42 @@ public class Main {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                if (getMode() == 1) {
+                if (DataHandling.checkEmpty(progTextField.getText())) {
                     JOptionPane.showMessageDialog(null,
-                        "Cannot remove program. Track all is selected.");
+                        "Input string empty.");
+                }
+                else {
+
+                    if (getMode() == 1) {
+                        JOptionPane.showMessageDialog(null,
+                            "Cannot remove program. Track all is selected.");
+                    }
+
+                    else if (getMode() == 2 || getMode() == 3) {
+                        List<String> inclusions = new ArrayList<>();
+                        List<String> exclusions = new ArrayList<>();
+                        displayPanel.remove(inclusionScrollPane);
+                        displayPanel.remove(exclusionScrollPane);
+                        inclusions = TableHelper.loadList("inclusion");
+                        exclusions = TableHelper.loadList("exclusion");
+                        if (getMode() == 2) {
+                            inclusions.remove("- " + progTextField.getText());
+                        }
+                        else {
+                            exclusions.remove("- " + progTextField.getText());
+                        }
+                        TableHelper.saveList(inclusions, "inclusion");
+                        TableHelper.saveList(exclusions, "exclusion");
+                        inclusionScrollPane = TableHelper.loadTable(inclusions);
+                        displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
+                        exclusionScrollPane = TableHelper.loadTable(exclusions);
+                        displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
+                        progTextField.setText("");
+                    }
+                    secretLabel.setText("  ");
+                    secretLabel.setText("");
                 }
 
-                else if (getMode() == 2 || getMode() == 3) {
-                    List<String> inclusions = new ArrayList<>();
-                    List<String> exclusions = new ArrayList<>();
-                    displayPanel.remove(inclusionScrollPane);
-                    displayPanel.remove(exclusionScrollPane);
-                    inclusions = TableHelper.loadList("inclusion");
-                    exclusions = TableHelper.loadList("exclusion");
-                    if (getMode() == 2) {
-                        inclusions.remove("- " + progTextField.getText());
-                    }
-                    else {
-                        exclusions.remove("- " + progTextField.getText());
-                    }
-                    TableHelper.saveList(inclusions, "inclusion");
-                    TableHelper.saveList(exclusions, "exclusion");
-                    inclusionScrollPane = TableHelper.loadTable(inclusions);
-                    displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
-                    exclusionScrollPane = TableHelper.loadTable(exclusions);
-                    displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
-                    progTextField.setText("");
-                }
-                secretLabel.setText("  ");
-                secretLabel.setText("");
             }
         });
         btnRemoveProgram.setToolTipText(
