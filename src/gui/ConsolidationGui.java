@@ -157,12 +157,9 @@ public class ConsolidationGui extends JDialog {
         model.setColumnIdentifiers(colHeadings);
 
         table = new JTable(model);
-        if (list.contains("")) {
-            list.remove("");
-        }
+
         // Load the able
         for (String entry : list) {
-
             model.addRow(new Object[] {entry.substring(2, entry.length())});
         }
 
@@ -234,7 +231,7 @@ public class ConsolidationGui extends JDialog {
      * Load the local list with the preferences.
      */
     public static void loadList() {
-        byte[] temp = new byte[1014];
+        byte[] temp = {0};
         bytes = prefs.getByteArray("PREF_LIST", temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         DataInputStream in = new DataInputStream(bais);
