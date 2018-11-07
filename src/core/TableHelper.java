@@ -44,14 +44,23 @@ public class TableHelper {
      */
     public static JScrollPane loadTable(List<String> input) {
 
+        if (input.size() <= 1) {
+            return sc = new JScrollPane();
+        }
+
         model = new DefaultTableModel(0, 1);
         String[] colHeadings = {"Programs in list"};
         model.setColumnIdentifiers(colHeadings);
-        List<String> list = new ArrayList<String>(input);
         table = new JTable(model);
 
         // Load the able
-        for (String entry : list) {
+        for (String entry : input) {
+            if (entry.length() == 0) {
+                continue;
+            }
+            System.out.println(input);
+            System.out.println(entry);
+            System.out.println(entry.substring(2, entry.length()));
             model.addRow(new Object[] {entry.substring(2, entry.length())});
         }
 
@@ -74,7 +83,8 @@ public class TableHelper {
      * 
      */
     public static List<String> loadList(String prefString) {
-        byte[] temp = {0};
+        byte[] temp = new byte[1024];
+        // byte[] temp = {0};
         byte[] bytes;
 
         if (prefString.equals("inclusions")) {
