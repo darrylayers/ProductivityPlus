@@ -27,24 +27,15 @@ import net.miginfocom.swing.MigLayout;
  * @author Austin Ayers
  * 
  */
+@SuppressWarnings("serial")
 public class PreferencesGui extends JDialog {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    private final JPanel contentPanel = new JPanel();
-    private static Preferences prefs =
-        Preferences.userRoot().node("PreferencesGui");
-    private final static String IDLE_TIMER = "idleValue";
-    private final static String IDLE_CHECK = "idleCheck";
-    private final static String IDLE_AUTO_CHECK = "idleAutoCheck";
-    private final static String DISPLAY_INDEX = "displayIndex";
-    private final static String OUTPUT_INDEX = "outputIndex";
-    private final static String DEC_VAL = "decVal";
-    private JCheckBox idleTimerCheckBox;
-    private JSpinner spinner = new JSpinner();
-    private JSpinner numDecimalSpinner = new JSpinner();
+    private static final String IDLE_TIMER = "idleValue";
+    private static final String IDLE_CHECK = "idleCheck";
+    private static final String IDLE_AUTO_CHECK = "idleAutoCheck";
+    private static final String DISPLAY_INDEX = "displayIndex";
+    private static final String OUTPUT_INDEX = "outputIndex";
+
     private static String[] exportTypes = {"Hours (ex: 1.3 hours)",
         "Minutes (ex: 95.2 minutes)", "Seconds (ex: 138 seconds)"};
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -54,6 +45,18 @@ public class PreferencesGui extends JDialog {
         "Written (ex: 33 minutes 2 seconds)"};
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static JComboBox displayOptions = new JComboBox(displayTypes);
+    private static int export;
+    private static int display;
+    private static Long idle;
+    private static boolean idleStatus;
+    private static boolean idleAutoStatus;
+    private static Preferences prefs =
+        Preferences.userRoot().node("PreferencesGui");
+
+    private final JPanel contentPanel = new JPanel();
+
+    private JCheckBox idleTimerCheckBox;
+    private JSpinner spinner = new JSpinner();
 
     /**
      * Launch the Preferences popup window.
@@ -65,10 +68,57 @@ public class PreferencesGui extends JDialog {
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
+            bundle();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Save all of the current settings at launch to fields.
+     */
+    private static void bundle() {
+        export = getExportIndex();
+        display = getDisplayIndex();
+        idle = getIdleTimer();
+        idleStatus = getIdleChecked();
+        idleAutoStatus = getIdleAutoChecked();
+    }
+
+    /**
+     * Used when the user cancels any changes made. This method restores the
+     * saved prefences to the original state before the user changed them.
+     */
+    private static void saveBundle() {
+        prefs.putInt(OUTPUT_INDEX, getExport());
+        prefs.putInt(DISPLAY_INDEX, getDisplay());
+        prefs.putLong(IDLE_TIMER, getIdle());
+        prefs.putBoolean(IDLE_CHECK, isIdleStatus());
+        prefs.putBoolean(IDLE_AUTO_CHECK, isIdleAutoStatus());
+    }
+
+    // Simple getters for fields for each saved preference
+    // these are used to restore old saves when the user
+    // decides to cancel any saved changes made.
+    public static int getExport() {
+        return export;
+    }
+
+    public static int getDisplay() {
+        return display;
+    }
+
+    public static Long getIdle() {
+        return idle;
+    }
+
+    public static boolean isIdleStatus() {
+        return idleStatus;
+    }
+
+    public static boolean isIdleAutoStatus() {
+        return idleAutoStatus;
     }
 
     /**
@@ -119,6 +169,8 @@ public class PreferencesGui extends JDialog {
         JLabel lblIdleInterval = new JLabel("Idle Interval");
         prefTimerPanel.add(lblIdleInterval, "cell 0 1");
         lblIdleInterval.setEnabled(getIdleChecked());
+        spinner.setToolTipText(
+            "the number is how long the program idles before turning off in minutes.");
 
         // ************** Idle Spinner ************** //
         prefTimerPanel.add(spinner, "cell 1 1");
@@ -153,7 +205,8 @@ public class PreferencesGui extends JDialog {
         // ************** Auto Restart Text ************** //
         JLabel lblAutorestartTimerOn =
             new JLabel("Auto-Restart Timer on movement");
-        lblAutorestartTimerOn.setToolTipText("This doesn't work.");
+        lblAutorestartTimerOn.setToolTipText("Automatically restart the "
+            + "timer when movement is detected again.");
         lblAutorestartTimerOn.setEnabled(getIdleChecked());
         autoRestartPanel.add(lblAutorestartTimerOn,
             "cell 0 0,alignx left,aligny center");
@@ -169,14 +222,18 @@ public class PreferencesGui extends JDialog {
         autoRestartCheckBox.setSelected(getIdleAutoChecked());
         autoRestartCheckBox.setEnabled(getIdleChecked());
         autoRestartCheckBox.setToolTipText(
-            "If enabled, the timer restarts tracking when it detects mouse movement again");
+            "If enabled, the timer restarts tracking when it detects "
+                + "mouse movement again");
         autoRestartPanel.add(autoRestartCheckBox,
             "cell 1 0,alignx left,aligny top");
 
         // ************** Display Table Preferences Label ************** //
         JLabel lblProgramDisplayTable = new JLabel(
-            "Program display table settings (this refers to the table in main window)");
+            "Program display table settings (this refers to the "
+                + "table in main window)");
         contentPanel.add(lblProgramDisplayTable, "cell 0 5");
+        exportOptions.setToolTipText("This changes the unit of time that "
+            + "exported data is displayed in.");
 
         // ************** Export Options listener ************** //
         exportOptions.addActionListener(new ActionListener() {
@@ -187,6 +244,8 @@ public class PreferencesGui extends JDialog {
         });
         exportOptions.setSelectedIndex(getExportIndex());
         prefOutputPanel.add(exportOptions, "cell 0 0,grow");
+        displayOptions.setToolTipText(
+            "This changes the unit of time that displayed in-app data is displayed in.");
 
         // ************** Display options listener ************** //
         displayOptions.addActionListener(new ActionListener() {
@@ -197,21 +256,6 @@ public class PreferencesGui extends JDialog {
         });
         displayOptions.setSelectedIndex(getDisplayIndex());
         displayPanel.add(displayOptions, "cell 0 0,grow");
-
-        JLabel lblNumberOfDecimal = new JLabel("Number of decimal places");
-        lblNumberOfDecimal.setEnabled(false);
-        displayPanel.add(lblNumberOfDecimal, "cell 3 0");
-        numDecimalSpinner.setEnabled(false);
-
-        // ************** Decimal Spinner ************** //
-        displayPanel.add(numDecimalSpinner, "cell 4 0");
-        numDecimalSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent arg0) {
-                setNumberSpinner();
-            }
-        });
-        numDecimalSpinner.setValue(getNumberSpinner());
 
         // ************** Idle Check Box Listener ************** //
         idleTimerCheckBox.addMouseListener(new MouseAdapter() {
@@ -237,6 +281,7 @@ public class PreferencesGui extends JDialog {
 
         // ************** Save Button ************** //
         JButton btnSave = new JButton("Save");
+        btnSave.setToolTipText("Save changes");
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -249,9 +294,11 @@ public class PreferencesGui extends JDialog {
 
         // ************** Cancel Button ************** //
         JButton btnCancel = new JButton("Cancel");
+        btnCancel.setToolTipText("Revert changes");
         btnCancel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
+                saveBundle();
                 dispose();
             }
         });
@@ -293,24 +340,6 @@ public class PreferencesGui extends JDialog {
      */
     public static int getExportIndex() {
         return prefs.getInt(OUTPUT_INDEX, 2);
-    }
-
-    /**
-     * Set the Idle value from its spinner value.
-     */
-    public void setNumberSpinner() {
-        int numSpinner = (int) numDecimalSpinner.getValue();
-        prefs.putInt(DEC_VAL, numSpinner);
-    }
-
-    /**
-     * Returns the Idle timer value from its saved preference, if never saved
-     * then set to 1 by default.
-     * 
-     * @return returns long idle value, 1 if nothing is saved.
-     */
-    public static int getNumberSpinner() {
-        return prefs.getInt(DEC_VAL, 2);
     }
 
     /**
