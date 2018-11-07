@@ -32,24 +32,23 @@ import net.miginfocom.swing.MigLayout;
  * @author Austin Ayers
  * 
  */
+@SuppressWarnings("serial")
 public class ConsolidationGui extends JDialog {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    public static List<String> list = new ArrayList<String>();
-    private JTextField txtInput;
     private static JTable table;
     private static DefaultTableModel model;
     private static JScrollPane sc;
-    private static JPanel panel;
-    private static JPanel panel2;
-    private JLabel secretLabel;
-    private JLabel lblNewLabel;
+    private static JPanel mainPanel;
+    private static JPanel tablePanel;
     private static byte[] bytes;
     private static Preferences prefs =
         Preferences.userRoot().node("WhatToTrackGui");
+
+    private JTextField txtInput;
+    private JLabel secretLabel;
+    private JLabel lblProgsToCombine;
+
+    public static List<String> list = new ArrayList<String>();
 
     /**
      * Launch the About pop up window.
@@ -79,44 +78,62 @@ public class ConsolidationGui extends JDialog {
         getContentPane()
             .setLayout(new MigLayout("", "[grow]", "[305.00,grow]"));
 
-        panel = new JPanel();
-        panel2 = new JPanel();
-        getContentPane().add(panel, "cell 0 0,grow");
-        panel.setLayout(new MigLayout("", "[][grow][]", "[][fill][][][][]"));
+        mainPanel = new JPanel();
+        tablePanel = new JPanel();
+        getContentPane().add(mainPanel, "cell 0 0,grow");
+        mainPanel
+            .setLayout(new MigLayout("", "[][grow][]", "[][fill][][][][]"));
 
-        getContentPane().add(panel2, "cell 0 0,grow");
-        panel2.setLayout(new MigLayout("", "[][grow]", "[][][][]"));
+        getContentPane().add(tablePanel, "cell 0 0,grow");
+        tablePanel.setLayout(new MigLayout("", "[][grow]", "[][][][]"));
 
-        lblNewLabel = new JLabel("Programs to combine");
-        panel.add(lblNewLabel, "cell 1 0,growy");
+        lblProgsToCombine = new JLabel("Programs to combine");
+        mainPanel.add(lblProgsToCombine, "cell 1 0,growy");
 
         secretLabel = new JLabel("");
-        panel.add(secretLabel, "cell 2 1");
+        mainPanel.add(secretLabel, "cell 2 1");
 
         // ************** Buttons ************** //
 
-        JButton btnPrintArraylist = new JButton("Remove Program");
-        btnPrintArraylist.addMouseListener(new MouseAdapter() {
+        JButton btnRemove = new JButton("Remove Program");
+        btnRemove.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                removeRow("- " + txtInput.getText());
+
+                if (checkEmpty(txtInput.getText())) {
+                    JOptionPane.showMessageDialog(null,
+                        "Input string empty.");
+                }
+                else {
+                    removeRow("- " + txtInput.getText());
+                }
             }
         });
-        panel.add(btnPrintArraylist, "cell 1 4,growx");
+        mainPanel.add(btnRemove, "cell 1 4,growx");
 
         JButton btnEnterProgram = new JButton("Enter Program");
         btnEnterProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                addRow("- " + txtInput.getText());
+
+                System.out.println("inside enter");
+                System.out.println(txtInput.getText());
+
+                if (checkEmpty(txtInput.getText())) {
+                    JOptionPane.showMessageDialog(null,
+                        "Input string empty.");
+                }
+                else {
+                    addRow("- " + txtInput.getText());
+                }
             }
         });
-        panel.add(btnEnterProgram, "cell 1 3,growx");
+        mainPanel.add(btnEnterProgram, "cell 1 3,growx");
 
         // ************** Text input box ************** //
 
         txtInput = new JTextField();
-        panel.add(txtInput, "cell 1 2,growx");
+        mainPanel.add(txtInput, "cell 1 2,growx");
         txtInput.setColumns(10);
 
         loadTable();
@@ -127,10 +144,10 @@ public class ConsolidationGui extends JDialog {
      */
     public void loadTable() {
         if (Main.toTrack) {
-            panel2.remove(sc);
+            tablePanel.remove(sc);
         }
         else {
-            loadTable();
+            loadList();
             Main.toTrack = true;
         }
 
@@ -150,7 +167,7 @@ public class ConsolidationGui extends JDialog {
         table.setRowSorter(sorter);
 
         sc = new JScrollPane(table);
-        panel2.add(sc, "cell 2 3");
+        tablePanel.add(sc, "cell 2 3");
         secretLabel.setText("  ");
         secretLabel.setText("");
     }
@@ -250,13 +267,6 @@ public class ConsolidationGui extends JDialog {
     }
 
     /**
-     * Helper method to display the GUI.
-     */
-    public void getList() {
-        loadList();
-    }
-
-    /**
      * Getter for list.
      * 
      * @return the local list.
@@ -264,4 +274,20 @@ public class ConsolidationGui extends JDialog {
     public static List<String> getSavedList() {
         return list;
     }
+
+    /**
+     * Check to see if input string is empty.
+     * 
+     * @param str
+     *            input string.
+     * @return true if the input string is empty.
+     */
+    public boolean checkEmpty(String str) {
+        System.out.print(str);
+        if (str != null && !str.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
 }
