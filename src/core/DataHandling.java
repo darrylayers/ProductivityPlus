@@ -348,30 +348,34 @@ public class DataHandling {
             // Save the current item's key-value pair
             String key = entry.getKey(); // Current prog we are looking at
             Long current = inputMap.get(key); // Current prog's time
-
-            // Check to see if the key needs to be combined or not
-            for (int i = 0; i < size; i++) {
-                // for (String element : itemstoHide) {
-                if (key.contains(itemstoHide[i])) {
-                    if (editedMap
-                        .get(itemstoHide[i].substring(2,
-                            itemstoHide[i].length())) == null) {
-                        editedMap.put(
-                            itemstoHide[i].substring(2,
-                                itemstoHide[i].length()),
-                            current);
-                    }
-                    else {
-                        Long old = editedMap
+            try {
+                // Check to see if the key needs to be combined or not
+                for (int i = 0; i < size; i++) {
+                    // for (String element : itemstoHide) {
+                    if (key.contains(itemstoHide[i])) {
+                        if (editedMap
                             .get(itemstoHide[i].substring(2,
-                                itemstoHide[i].length()));
-                        editedMap.put(
-                            itemstoHide[i].substring(2,
-                                itemstoHide[i].length()),
-                            current + old);
+                                itemstoHide[i].length())) == null) {
+                            editedMap.put(
+                                itemstoHide[i].substring(2,
+                                    itemstoHide[i].length()),
+                                current);
+                        }
+                        else {
+                            Long old = editedMap
+                                .get(itemstoHide[i].substring(2,
+                                    itemstoHide[i].length()));
+                            editedMap.put(
+                                itemstoHide[i].substring(2,
+                                    itemstoHide[i].length()),
+                                current + old);
+                        }
+                        doNotAdd.put(key, (long) 1);
                     }
-                    doNotAdd.put(key, (long) 1);
                 }
+            }
+            catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Error with retrieving consolidation list.");
             }
             if (!doNotAdd.containsKey(key)) {
                 editedMap.put(key, current);

@@ -47,11 +47,11 @@ public class TableHelper {
         model = new DefaultTableModel(0, 1);
         String[] colHeadings = {"Programs in list"};
         model.setColumnIdentifiers(colHeadings);
-        List<String> list = new ArrayList<String>(input);
         table = new JTable(model);
+        input.remove("");
 
         // Load the able
-        for (String entry : list) {
+        for (String entry : input) {
             model.addRow(new Object[] {entry.substring(2, entry.length())});
         }
 
@@ -74,7 +74,7 @@ public class TableHelper {
      * 
      */
     public static List<String> loadList(String prefString) {
-        byte[] temp = {0};
+        byte[] temp = new byte[1024];
         byte[] bytes;
 
         if (prefString.equals("inclusions")) {
