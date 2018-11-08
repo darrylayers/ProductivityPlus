@@ -44,10 +44,9 @@ public class ProgramTimer implements Runnable {
         trackIfTrue = true;
         leftApp = false;
 
+        
         while (trackIfTrue) {
-            if (PreferencesGui.getIdleChecked()) {
-                idle.run();
-            }
+
             // Grab the current in-focus window
             hwnd = User32.INSTANCE.GetForegroundWindow();
             User32.INSTANCE.GetWindowText(hwnd, buffer, buffer.length);
@@ -88,8 +87,9 @@ public class ProgramTimer implements Runnable {
             }
         }
         printMap();
-        if (PreferencesGui.getIdleAutoChecked()) {
-            // startIdleCheck();
+        if (PreferencesGui.getIdleAutoChecked() && Main.idleHalted) {
+            startIdleCheck();
+            Main.idleHalted = false;
         }
     }
 

@@ -78,7 +78,6 @@ public class CheckIdle {
             //Thread.sleep(PreferencesGui.getIdleTimer() * 1000 * 60);
         	Thread.sleep(PreferencesGui.getIdleTimer() * 1000);
         	if (this.checkMouse()) {
-        		System.out.println("Simulating click");
                 Main.simulateClick();
             }
         }
@@ -96,9 +95,7 @@ public class CheckIdle {
      */
     public boolean checkWhileNotTracking() {
         try {
-            // Thread.sleep(30000);
             Thread.sleep(1000);
-
             if (this.checkMouse()) {
                 return false;
             }
