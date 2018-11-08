@@ -32,7 +32,8 @@ public class ExcelWriter {
         throws IOException {
         ExploreDataGui.updateBar(0);
 
-        Map<String, Long> loadedCurrentMap = new HashMap<>();
+        Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
+
         if (Main.getChecked()) {
             loadedCurrentMap = DataHandling.validateData(combinedMaps);
         }
@@ -56,7 +57,7 @@ public class ExcelWriter {
         System.out.println(toDisplayMap);
         Map<String, Double> finalMap =
             // TimeConvert.convertOutputTime(toDisplayMap);
-            TimeConvert.convertTime(toDisplayMap);
+            TimeConvert.convertExportTime(toDisplayMap);
         System.out.println(finalMap);
 
         printedDate = date;

@@ -401,6 +401,8 @@ public class DataHandling {
 
         if (Main.getMode() == 2) {
             list = TableHelper.loadList("inclusion");
+            list.remove("");
+            System.out.println("list 2 " + list);
             int size = list.size();
             String[] itemsToShow = list.toArray(new String[list.size()]);
             for (Entry<String, Long> entry : inputMap.entrySet()) {
@@ -417,6 +419,8 @@ public class DataHandling {
         }
         else if (Main.getMode() == 3) {
             list = TableHelper.loadList("exclusion");
+            list.remove("");
+            System.out.println("list 3 " + list);
             int size = list.size();
             String[] itemstoHide = list.toArray(new String[list.size()]);
             // For each item in the input map...
@@ -435,6 +439,7 @@ public class DataHandling {
                 }
             }
         }
+        System.out.println("What to display filter " + editedMap);
         return editedMap;
     }
 
@@ -469,5 +474,39 @@ public class DataHandling {
             return false;
         }
         return true;
+    }
+
+    public static String convertToWritten(double secs) {
+        String output = "";
+        String pluralHour = " hour ";
+        String pluralMin = " minute ";
+        String pluralSec = " seconds ";
+        int seconds = (int) secs;
+
+        if (seconds > 3600) {
+            if (seconds >= 3600 * 2) {
+                pluralHour = " hours ";
+            }
+            output = seconds / 3600 + pluralHour
+                + Integer.valueOf(
+                    (int) Math.floor(((seconds / 3600.0) - 1) * 60))
+                + " minutes "
+                + seconds % 60 + pluralSec;
+        }
+        else if (seconds >= 60) {
+            if (seconds >= 120) {
+                pluralMin = " minutes ";
+            }
+            output = seconds / 60 + pluralMin
+                + seconds % 60 + pluralSec;
+        }
+        else {
+            if (seconds % 60 == 1) {
+                pluralSec = " second ";
+            }
+            output = seconds + pluralSec;
+        }
+        return output;
+
     }
 }

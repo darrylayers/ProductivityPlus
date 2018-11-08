@@ -371,8 +371,17 @@ public class ExploreDataGui extends JDialog {
 
             Double time = displayMap.get(textInput);
 
+            String strTime;
+
+            if (TimeConvert.getUnit().equals("Time (Written)")) {
+                strTime = DataHandling.convertToWritten(time);
+            }
+            else {
+                strTime = time.toString();
+            }
+
             txtrTest.setText("Program name: " + textInput + "\n"
-                + "Total time over the range: " + time
+                + "Total time over the range: " + strTime
                 + TimeConvert.getUnit().substring(4,
                     TimeConvert.getUnit().length())
                 + "\n"
