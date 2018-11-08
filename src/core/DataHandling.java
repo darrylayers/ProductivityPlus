@@ -21,7 +21,6 @@ import java.util.Map.Entry;
 import javax.swing.JOptionPane;
 
 import gui.ConsolidationGui;
-import gui.ExploreDataGui;
 import gui.Main;
 
 /**
@@ -135,6 +134,7 @@ public class DataHandling {
             return loadedAppMap;
         }
         else {
+
             ExcelWriter.write(loadedAppMap, date);
         }
         return loadedAppMap;
@@ -194,6 +194,7 @@ public class DataHandling {
             dates.add(String.valueOf((days1_int + i))
                 + strYear.substring(2, strYear.length()));
         }
+
         return dates;
     }
 
@@ -242,7 +243,6 @@ public class DataHandling {
         throws IOException {
 
         Map<String, Long> combinedMaps = new HashMap<>();
-        int i = 100 / maps.size();
         for (Map<String, Long> map : maps) {
             for (Map.Entry<String, Long> entry : map.entrySet()) {
                 String key = entry.getKey();
@@ -250,9 +250,8 @@ public class DataHandling {
                 combinedMaps.put(key, current == null ? entry.getValue()
                     : entry.getValue() + current);
             }
-            ExploreDataGui.updateBar(i);
-            i = 2 * i;
         }
+
         ExcelWriter.write(combinedMaps,
             "_date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
     }
@@ -348,30 +347,34 @@ public class DataHandling {
             // Save the current item's key-value pair
             String key = entry.getKey(); // Current prog we are looking at
             Long current = inputMap.get(key); // Current prog's time
-
-            // Check to see if the key needs to be combined or not
-            for (int i = 0; i < size; i++) {
-                // for (String element : itemstoHide) {
-                if (key.contains(itemstoHide[i])) {
-                    if (editedMap
-                        .get(itemstoHide[i].substring(2,
-                            itemstoHide[i].length())) == null) {
-                        editedMap.put(
-                            itemstoHide[i].substring(2,
-                                itemstoHide[i].length()),
-                            current);
-                    }
-                    else {
-                        Long old = editedMap
+            try {
+                // Check to see if the key needs to be combined or not
+                for (int i = 0; i < size; i++) {
+                    // for (String element : itemstoHide) {
+                    if (key.contains(itemstoHide[i])) {
+                        if (editedMap
                             .get(itemstoHide[i].substring(2,
-                                itemstoHide[i].length()));
-                        editedMap.put(
-                            itemstoHide[i].substring(2,
-                                itemstoHide[i].length()),
-                            current + old);
+                                itemstoHide[i].length())) == null) {
+                            editedMap.put(
+                                itemstoHide[i].substring(2,
+                                    itemstoHide[i].length()),
+                                current);
+                        }
+                        else {
+                            Long old = editedMap
+                                .get(itemstoHide[i].substring(2,
+                                    itemstoHide[i].length()));
+                            editedMap.put(
+                                itemstoHide[i].substring(2,
+                                    itemstoHide[i].length()),
+                                current + old);
+                        }
+                        doNotAdd.put(key, (long) 1);
                     }
-                    doNotAdd.put(key, (long) 1);
                 }
+            }
+            catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Error with retrieving consolidation list.");
             }
             if (!doNotAdd.containsKey(key)) {
                 editedMap.put(key, current);
@@ -397,6 +400,8 @@ public class DataHandling {
 
         if (Main.getMode() == 2) {
             list = TableHelper.loadList("inclusion");
+            list.remove("");
+            System.out.println("list 2 " + list);
             int size = list.size();
             String[] itemsToShow = list.toArray(new String[list.size()]);
             for (Entry<String, Long> entry : inputMap.entrySet()) {
@@ -413,6 +418,8 @@ public class DataHandling {
         }
         else if (Main.getMode() == 3) {
             list = TableHelper.loadList("exclusion");
+            list.remove("");
+            System.out.println("list 3 " + list);
             int size = list.size();
             String[] itemstoHide = list.toArray(new String[list.size()]);
             // For each item in the input map...
@@ -431,6 +438,7 @@ public class DataHandling {
                 }
             }
         }
+        System.out.println("What to display filter " + editedMap);
         return editedMap;
     }
 
@@ -451,5 +459,53 @@ public class DataHandling {
      */
     public static void setDateRange(int date) {
         range = date;
+    }
+
+    /**
+     * Check to see if input string is empty.
+     * 
+     * @param str
+     *            input string.
+     * @return true if the input string is empty.
+     */
+    public static boolean checkEmpty(String str) {
+        if (str != null && !str.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public static String convertToWritten(double secs) {
+        String output = "";
+        String pluralHour = " hour ";
+        String pluralMin = " minute ";
+        String pluralSec = " seconds ";
+        int seconds = (int) secs;
+
+        if (seconds > 3600) {
+            if (seconds >= 3600 * 2) {
+                pluralHour = " hours ";
+            }
+            output = seconds / 3600 + pluralHour
+                + Integer.valueOf(
+                    (int) Math.floor(((seconds / 3600.0) - 1) * 60))
+                + " minutes "
+                + seconds % 60 + pluralSec;
+        }
+        else if (seconds >= 60) {
+            if (seconds >= 120) {
+                pluralMin = " minutes ";
+            }
+            output = seconds / 60 + pluralMin
+                + seconds % 60 + pluralSec;
+        }
+        else {
+            if (seconds % 60 == 1) {
+                pluralSec = " second ";
+            }
+            output = seconds + pluralSec;
+        }
+        return output;
+
     }
 }
