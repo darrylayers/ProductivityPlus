@@ -90,7 +90,6 @@ public class Main {
         new JRadioButton("Track inclusions");
     private JRadioButton trackExclusionsRButton =
         new JRadioButton("Track exclusions");
-    public static boolean idleHalted = false;
 
     public static boolean toTrack = false;
 
@@ -693,10 +692,10 @@ public class Main {
      * @throws IOException
      */
     public static void simulateClick() {
-    	idleHalted = true;
         SingletonTimer.setBeenCalled();
         ProgramTimer.stop();
         setStopLabel();
+
     }
 
     /**
