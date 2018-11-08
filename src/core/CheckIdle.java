@@ -15,12 +15,6 @@ import gui.PreferencesGui;
  */
 public class CheckIdle {
 
-    // TODO: What determines a user is idle?
-    // Lack of keystrokes and lack of mouse movement.
-    // Sometimes the user will be "active" but not moving
-    // their mouse or typing, so this option should be
-    // optional and have a variable/customizable threshold for the time.
-
     public static Point old_p;
     public static Point new_p;
     static int old_x;
@@ -76,7 +70,8 @@ public class CheckIdle {
     public void run() {
         try {
             Thread.sleep(PreferencesGui.getIdleTimer() * 1000 * 60);
-            if (this.checkMouse()) {
+        	if (this.checkMouse()) {
+        		System.out.println("Simulating click");
                 Main.simulateClick();
             }
         }
@@ -85,25 +80,4 @@ public class CheckIdle {
         }
     }
 
-    /**
-     * This method is used to check if the mouse has moved while the program
-     * timer was turned off, this is used to resume tracking when the user
-     * returns to the computer and restarts their use.
-     * 
-     * @return boolean, true if mouse has moved
-     */
-    public boolean checkWhileNotTracking() {
-        try {
-            // Thread.sleep(30000);
-            Thread.sleep(1000);
-
-            if (this.checkMouse()) {
-                return false;
-            }
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
 }

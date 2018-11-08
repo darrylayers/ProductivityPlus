@@ -79,15 +79,15 @@ public class ProgramTimer implements Runnable {
             endTime();
             try {
                 mapTime();
+                Main.updateTable(false);
+                Main.secretLabel.setText("  ");
+                Main.secretLabel.setText("");
             }
             catch (IOException e) {
                 e.printStackTrace();
             }
         }
         printMap();
-        if (PreferencesGui.getIdleAutoChecked()) {
-            // startIdleCheck();
-        }
     }
 
     /**
@@ -156,20 +156,4 @@ public class ProgramTimer implements Runnable {
         System.out.println("=====================\n");
     }
 
-    /**
-     * Start the mouse idle check when the program is exited.
-     */
-    public void startIdleCheck() {
-        CheckIdle idle = new CheckIdle();
-        while (!idle.checkWhileNotTracking()) {
-            try {
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        Main.setStartLabel();
-        Main.startTimer();
-    }
 }

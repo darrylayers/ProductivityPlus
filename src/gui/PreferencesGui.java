@@ -32,7 +32,6 @@ public class PreferencesGui extends JDialog {
 
     private static final String IDLE_TIMER = "idleValue";
     private static final String IDLE_CHECK = "idleCheck";
-    private static final String IDLE_AUTO_CHECK = "idleAutoCheck";
     private static final String DISPLAY_INDEX = "displayIndex";
     private static final String OUTPUT_INDEX = "outputIndex";
 
@@ -49,13 +48,12 @@ public class PreferencesGui extends JDialog {
     private static int display;
     private static Long idle;
     private static boolean idleStatus;
-    private static boolean idleAutoStatus;
     private static Preferences prefs =
         Preferences.userRoot().node("PreferencesGui");
 
     private final JPanel contentPanel = new JPanel();
 
-    private JCheckBox idleTimerCheckBox;
+    private static JCheckBox idleTimerChkBx;
     private JSpinner spinner = new JSpinner();
 
     /**
@@ -83,7 +81,6 @@ public class PreferencesGui extends JDialog {
         display = getDisplayIndex();
         idle = getIdleTimer();
         idleStatus = getIdleChecked();
-        idleAutoStatus = getIdleAutoChecked();
     }
 
     /**
@@ -95,7 +92,6 @@ public class PreferencesGui extends JDialog {
         prefs.putInt(DISPLAY_INDEX, getDisplay());
         prefs.putLong(IDLE_TIMER, getIdle());
         prefs.putBoolean(IDLE_CHECK, isIdleStatus());
-        prefs.putBoolean(IDLE_AUTO_CHECK, isIdleAutoStatus());
     }
 
     // Simple getters for fields for each saved preference
@@ -117,22 +113,17 @@ public class PreferencesGui extends JDialog {
         return idleStatus;
     }
 
-    public static boolean isIdleAutoStatus() {
-        return idleAutoStatus;
-    }
-
     /**
      * Create the dialog.
      */
-    @SuppressWarnings("deprecation")
     public PreferencesGui() {
         setAlwaysOnTop(true);
         setTitle("Preferences");
-        setBounds(100, 100, 502, 411);
+        setBounds(100, 100, 502, 349);
 
         // ************** Frame panels and panes ************** //
         getContentPane()
-            .setLayout(new MigLayout("", "[434px]", "[290.00px][33px]"));
+            .setLayout(new MigLayout("", "[434px]", "[233.00px][33px]"));
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, "cell 0 0,grow");
         contentPanel.setLayout(
@@ -146,11 +137,6 @@ public class PreferencesGui extends JDialog {
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, "cell 0 1,growx,aligny top");
-
-        JPanel autoRestartPanel = new JPanel();
-        contentPanel.add(autoRestartPanel, "cell 0 2");
-        autoRestartPanel
-            .setLayout(new MigLayout("", "[160px][21px]", "[21px]"));
 
         JPanel prefOutputPanel = new JPanel();
         contentPanel.add(prefOutputPanel, "cell 0 4,grow");
@@ -195,37 +181,12 @@ public class PreferencesGui extends JDialog {
         contentPanel.add(lblProgramOutputPreferences, "cell 0 3");
 
         // ************** Idle Check box ************** //
-        idleTimerCheckBox = new JCheckBox("Idle Timer");
-        idleTimerCheckBox.setToolTipText(
+        idleTimerChkBx = new JCheckBox("Idle Timer");
+        idleTimerChkBx.setToolTipText(
             "If enabled, the program timer will stop timing when the mouse "
                 + "is enactive for the selected idle interval.");
-        prefTimerPanel.add(idleTimerCheckBox, "cell 0 0");
-        idleTimerCheckBox.setSelected(getIdleChecked());
-
-        // ************** Auto Restart Text ************** //
-        JLabel lblAutorestartTimerOn =
-            new JLabel("Auto-Restart Timer on movement");
-        lblAutorestartTimerOn.setToolTipText("Automatically restart the "
-            + "timer when movement is detected again.");
-        lblAutorestartTimerOn.setEnabled(getIdleChecked());
-        autoRestartPanel.add(lblAutorestartTimerOn,
-            "cell 0 0,alignx left,aligny center");
-
-        // ************** Auto Restart Check Button ************** //
-        JCheckBox autoRestartCheckBox = new JCheckBox("");
-        autoRestartCheckBox.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                setIdleAutoChecked();
-            }
-        });
-        autoRestartCheckBox.setSelected(getIdleAutoChecked());
-        autoRestartCheckBox.setEnabled(getIdleChecked());
-        autoRestartCheckBox.setToolTipText(
-            "If enabled, the timer restarts tracking when it detects "
-                + "mouse movement again");
-        autoRestartPanel.add(autoRestartCheckBox,
-            "cell 1 0,alignx left,aligny top");
+        prefTimerPanel.add(idleTimerChkBx, "cell 0 0");
+        idleTimerChkBx.setSelected(getIdleChecked());
 
         // ************** Display Table Preferences Label ************** //
         JLabel lblProgramDisplayTable = new JLabel(
@@ -258,23 +219,20 @@ public class PreferencesGui extends JDialog {
         displayPanel.add(displayOptions, "cell 0 0,grow");
 
         // ************** Idle Check Box Listener ************** //
-        idleTimerCheckBox.addMouseListener(new MouseAdapter() {
+        idleTimerChkBx.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                setIdleChecked();
-                if (!getIdleChecked()) {
+            	boolean bool = prefs.getBoolean(IDLE_CHECK, false);
+                prefs.putBoolean(IDLE_CHECK, !bool);
+                if (!idleTimerChkBx.isSelected()) {
                     lblIdleInterval.setEnabled(false);
                     lblMinutes.setEnabled(false);
                     spinner.setEnabled(false);
-                    autoRestartCheckBox.setEnabled(false);
-                    lblAutorestartTimerOn.setEnabled(false);
                 }
                 else {
                     lblIdleInterval.setEnabled(true);
                     lblMinutes.setEnabled(true);
                     spinner.setEnabled(true);
-                    autoRestartCheckBox.setEnabled(true);
-                    lblAutorestartTimerOn.setEnabled(true);
                 }
             }
         });
@@ -365,7 +323,7 @@ public class PreferencesGui extends JDialog {
      * to false by default.
      */
     public void setIdleChecked() {
-        if (getIdleChecked()) {
+        if (idleTimerChkBx.isSelected()) {
             prefs.putBoolean(IDLE_CHECK, false);
         }
         else {
@@ -383,26 +341,5 @@ public class PreferencesGui extends JDialog {
         return prefs.getBoolean(IDLE_CHECK, false);
     }
 
-    /**
-     * Set the Idle Auto Restart check box from its saved preference, if never
-     * saved then set to false by default.
-     */
-    public void setIdleAutoChecked() {
-        if (getIdleAutoChecked()) {
-            prefs.putBoolean(IDLE_AUTO_CHECK, false);
-        }
-        else {
-            prefs.putBoolean(IDLE_AUTO_CHECK, true);
-        }
-    }
 
-    /**
-     * Returns the status of the Idle Auto Restart check box, if the box does
-     * not have a save preference it returns false by default.
-     * 
-     * @return returns boolean, false if never saved.
-     */
-    public static boolean getIdleAutoChecked() {
-        return prefs.getBoolean(IDLE_AUTO_CHECK, false);
-    }
 }

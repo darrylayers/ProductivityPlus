@@ -80,7 +80,7 @@ public class Main {
     private static JTable table;
     private static Set<String> keys;
     private static JScrollPane sc;
-    private static JLabel secretLabel;
+    public static JLabel secretLabel;
     private static JCheckBox chckbxConsolidatePrograms;
 
     private JTextField progTextField;
@@ -521,6 +521,15 @@ public class Main {
             }
         });
         buttonPanel.add(chckbxConsolidatePrograms, "cell 0 5,growx");
+        
+        JButton btnPrintMap = new JButton("print map");
+        btnPrintMap.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		System.out.println(ProgramTimer.appMap);
+        	}
+        });
+        buttonPanel.add(btnPrintMap, "cell 0 6");
 
         JLabel lblLoadTable = new JLabel("Load Table");
         lblLoadTable.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -686,6 +695,7 @@ public class Main {
         SingletonTimer.setBeenCalled();
         ProgramTimer.stop();
         setStopLabel();
+
     }
 
     /**
