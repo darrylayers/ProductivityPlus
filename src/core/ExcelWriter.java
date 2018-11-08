@@ -13,7 +13,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import gui.ExploreDataGui;
 import gui.Main;
 import gui.PreferencesGui;
 
@@ -30,7 +29,6 @@ public class ExcelWriter {
      */
     public static void write(Map<String, Long> combinedMaps, String date)
         throws IOException {
-        ExploreDataGui.updateBar(0);
 
         Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
 
@@ -103,8 +101,6 @@ public class ExcelWriter {
 
             int j = 100 / combinedMaps.size();
             for (String name : finalMap.keySet()) {
-                ExploreDataGui.updateBar(j);
-                ExploreDataGui.updateBar(j);
                 j = 2 * j;
                 Row row = sheet.createRow(rowNum++);
                 row.createCell(0).setCellValue(name);
@@ -115,9 +111,6 @@ public class ExcelWriter {
             for (int i = 0; i < finalMap.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
-
-            ExploreDataGui.updateBar(100);
-
         }
 
         // Write the output to a file
@@ -129,6 +122,7 @@ public class ExcelWriter {
 
         // Close the workbook
         workbook.close();
+
     }
 
     /**

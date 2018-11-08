@@ -29,6 +29,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import core.DataHandling;
 import core.ExcelWriter;
 import core.TimeConvert;
+import core.UpdateBar;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -51,9 +52,9 @@ public class ExploreDataGui extends JDialog {
     private JRadioButton rdbtnExcelExport = new JRadioButton("Excel export");
     private JRadioButton rdbtnodsopenOffice =
         new JRadioButton(".ods (Open Office)");
-    private final static JProgressBar progressBar = new JProgressBar();
+    public final static JProgressBar progressBar = new JProgressBar();
     private static int barMin = 0;
-    private static int barMax = 100;
+    private static int barMax = 10;
     private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
     private final JPanel singleProgPanel = new JPanel();
     private final JPanel progInputPanel = new JPanel();
@@ -69,11 +70,22 @@ public class ExploreDataGui extends JDialog {
     private final JTextArea txtrTest = new JTextArea();
     private boolean singleData = false;
 
+    public static int inc = 0;
+
+    public static void setInc(int inc) {
+        ExploreDataGui.inc = inc;
+    }
+
+    public static int getInc() {
+        return inc;
+    }
+
     /**
      * Launch the About pop up window.
      */
     public static void newWindow() {
         try {
+            progressBar.setValue(0);
             ExploreDataGui dialog = new ExploreDataGui();
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             Main.setWindowLoc();
@@ -140,10 +152,11 @@ public class ExploreDataGui extends JDialog {
         btnCreateExportFile.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-
-                ExploreDataGui.updateBar(0);
+                progressBar.setValue(0);
+                ExploreDataGui.updateBar();
                 btnOpenOutput.setEnabled(true);
                 loadMapsFromMem();
+
             }
         });
 
@@ -245,12 +258,15 @@ public class ExploreDataGui extends JDialog {
     }
 
     /**
-     * Method that updates the current progression the progress bar is at.
+     * Method that returns what value the progress bar is at.
      * 
-     * @param newValue
+     * @return int value of progress bar.
      */
-    public static void updateBar(int newValue) {
-        progressBar.setValue(newValue);
+    public static void updateBar() {
+        UpdateBar update = new UpdateBar();
+        Thread t = new Thread(update);
+        t.start();
+
     }
 
     /**
@@ -270,7 +286,7 @@ public class ExploreDataGui extends JDialog {
     public void loadMapsFromMem() {
         LocalDate date;
         LocalDate date2;
-
+        updateBar();
         if (!singleData) {
             date = datePicker.getDate();
             date2 = datePicker2.getDate();
@@ -278,6 +294,8 @@ public class ExploreDataGui extends JDialog {
             formattedString = date.format(formatter);
 
             if (date2 != null) {
+                updateBar();
+                updateBar();
                 formattedString2 = date2.format(formatter);
                 List<String> dates =
                     DataHandling.dateDiff(formattedString, formattedString2);
@@ -289,8 +307,11 @@ public class ExploreDataGui extends JDialog {
                 catch (IOException e1) {
                     e1.printStackTrace();
                 }
+
             }
             else {
+                updateBar();
+                updateBar();
                 try {
                     DataHandling.acceptDate(formattedString, false);
                 }
