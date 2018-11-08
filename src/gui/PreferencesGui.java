@@ -55,7 +55,7 @@ public class PreferencesGui extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
 
-    private JCheckBox idleTimerCheckBox;
+    private static JCheckBox idleTimerChkBx;
     private JSpinner spinner = new JSpinner();
 
     /**
@@ -124,7 +124,6 @@ public class PreferencesGui extends JDialog {
     /**
      * Create the dialog.
      */
-    @SuppressWarnings("deprecation")
     public PreferencesGui() {
         setAlwaysOnTop(true);
         setTitle("Preferences");
@@ -195,12 +194,12 @@ public class PreferencesGui extends JDialog {
         contentPanel.add(lblProgramOutputPreferences, "cell 0 3");
 
         // ************** Idle Check box ************** //
-        idleTimerCheckBox = new JCheckBox("Idle Timer");
-        idleTimerCheckBox.setToolTipText(
+        idleTimerChkBx = new JCheckBox("Idle Timer");
+        idleTimerChkBx.setToolTipText(
             "If enabled, the program timer will stop timing when the mouse "
                 + "is enactive for the selected idle interval.");
-        prefTimerPanel.add(idleTimerCheckBox, "cell 0 0");
-        idleTimerCheckBox.setSelected(getIdleChecked());
+        prefTimerPanel.add(idleTimerChkBx, "cell 0 0");
+        idleTimerChkBx.setSelected(getIdleChecked());
 
         // ************** Auto Restart Text ************** //
         JLabel lblAutorestartTimerOn =
@@ -258,11 +257,12 @@ public class PreferencesGui extends JDialog {
         displayPanel.add(displayOptions, "cell 0 0,grow");
 
         // ************** Idle Check Box Listener ************** //
-        idleTimerCheckBox.addMouseListener(new MouseAdapter() {
+        idleTimerChkBx.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                setIdleChecked();
-                if (!getIdleChecked()) {
+            	boolean bool = prefs.getBoolean(IDLE_CHECK, false);
+                prefs.putBoolean(IDLE_CHECK, !bool);
+                if (!idleTimerChkBx.isSelected()) {
                     lblIdleInterval.setEnabled(false);
                     lblMinutes.setEnabled(false);
                     spinner.setEnabled(false);
@@ -365,7 +365,7 @@ public class PreferencesGui extends JDialog {
      * to false by default.
      */
     public void setIdleChecked() {
-        if (getIdleChecked()) {
+        if (idleTimerChkBx.isSelected()) {
             prefs.putBoolean(IDLE_CHECK, false);
         }
         else {

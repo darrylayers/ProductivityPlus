@@ -57,7 +57,6 @@ public class GraphicalOutputGui extends JDialog {
     /**
      * Create the dialog.
      */
-    @SuppressWarnings("deprecation")
     public GraphicalOutputGui() {
         setAlwaysOnTop(true);
         setTitle("Graphs");
