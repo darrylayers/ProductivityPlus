@@ -79,6 +79,9 @@ public class ProgramTimer implements Runnable {
             endTime();
             try {
                 mapTime();
+                Main.updateTable(false);
+                Main.secretLabel.setText("  ");
+                Main.secretLabel.setText("");
             }
             catch (IOException e) {
                 e.printStackTrace();
