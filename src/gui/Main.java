@@ -601,6 +601,7 @@ public class Main {
                         @SuppressWarnings("rawtypes")
                         List<Map> maps = DataHandling.loadMaps(dates);
                         Map<String, Long> combinedMaps = new HashMap<>();
+                        int i = 100 / maps.size();
                         for (Map<String, Long> map : maps) {
                             for (Map.Entry<String, Long> entry : map
                                 .entrySet()) {
@@ -610,6 +611,8 @@ public class Main {
                                     current == null ? entry.getValue()
                                         : entry.getValue() + current);
                             }
+                            ExploreDataGui.updateBar(i);
+                            i = 2 * i;
                         }
                         Map<String, Long> loadedCurrentMap = new HashMap<>();
                         if (chckbxConsolidatePrograms.isSelected()) {

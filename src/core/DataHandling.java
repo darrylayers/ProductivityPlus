@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 import javax.swing.JOptionPane;
 
 import gui.ConsolidationGui;
+import gui.ExploreDataGui;
 import gui.Main;
 
 /**
@@ -134,7 +135,6 @@ public class DataHandling {
             return loadedAppMap;
         }
         else {
-
             ExcelWriter.write(loadedAppMap, date);
         }
         return loadedAppMap;
@@ -194,7 +194,6 @@ public class DataHandling {
             dates.add(String.valueOf((days1_int + i))
                 + strYear.substring(2, strYear.length()));
         }
-
         return dates;
     }
 
@@ -243,6 +242,7 @@ public class DataHandling {
         throws IOException {
 
         Map<String, Long> combinedMaps = new HashMap<>();
+        int i = 100 / maps.size();
         for (Map<String, Long> map : maps) {
             for (Map.Entry<String, Long> entry : map.entrySet()) {
                 String key = entry.getKey();
@@ -250,8 +250,9 @@ public class DataHandling {
                 combinedMaps.put(key, current == null ? entry.getValue()
                     : entry.getValue() + current);
             }
+            ExploreDataGui.updateBar(i);
+            i = 2 * i;
         }
-
         ExcelWriter.write(combinedMaps,
             "_date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
     }
