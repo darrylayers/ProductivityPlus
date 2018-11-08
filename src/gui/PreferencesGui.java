@@ -190,8 +190,7 @@ public class PreferencesGui extends JDialog {
 
         // ************** Display Table Preferences Label ************** //
         JLabel lblProgramDisplayTable = new JLabel(
-            "Program display table settings (this refers to the "
-                + "table in main window)");
+            "Program Display Preferences (this refers to the table in main window)");
         contentPanel.add(lblProgramDisplayTable, "cell 0 5");
         exportOptions.setToolTipText("This changes the unit of time that "
             + "exported data is displayed in.");

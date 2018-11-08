@@ -206,15 +206,6 @@ public class Main {
         });
         mnHelp.add(aboutItem);
 
-        JMenuItem faqItem = new JMenuItem("FAQ");
-        faqItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                FaqGui.newWindow();
-            }
-        });
-        mnHelp.add(faqItem);
-
         // ************** Panel creations ************** //
 
         frame.getContentPane()
@@ -521,15 +512,6 @@ public class Main {
             }
         });
         buttonPanel.add(chckbxConsolidatePrograms, "cell 0 5,growx");
-        
-        JButton btnPrintMap = new JButton("print map");
-        btnPrintMap.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		System.out.println(ProgramTimer.appMap);
-        	}
-        });
-        buttonPanel.add(btnPrintMap, "cell 0 6");
 
         JLabel lblLoadTable = new JLabel("Load Table");
         lblLoadTable.setFont(new Font("Tahoma", Font.BOLD, 12));

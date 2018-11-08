@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
@@ -368,16 +369,25 @@ public class ExploreDataGui extends JDialog {
 
             Map<String, Double> displayMap =
                 TimeConvert.convertTime(loadedCurrentMap);
+            
+            System.out.println(loadedCurrentMap);
+            System.out.println(displayMap);
 
             Double time = displayMap.get(textInput);
 
-            String strTime;
+            String strTime = "";
+            
+            if (time == null) {
+            	JOptionPane.showMessageDialog(null,
+                        "No time found, check input or display mode!");
+            } else {
+                if (TimeConvert.getUnit().equals("Time (Written)")) {
+                    strTime = DataHandling.convertToWritten(time);
+                }
+                else {
+                    strTime = time.toString();
+                }
 
-            if (TimeConvert.getUnit().equals("Time (Written)")) {
-                strTime = DataHandling.convertToWritten(time);
-            }
-            else {
-                strTime = time.toString();
             }
 
             txtrTest.setText("Program name: " + textInput + "\n"
