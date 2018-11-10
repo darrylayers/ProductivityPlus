@@ -303,18 +303,21 @@ public class DataHandling {
 
         Map<String, Long> loadedCurrentMap = new HashMap<>();
         if (Main.getChecked()) {
-            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
+            loadedCurrentMap =
+                DataHandling.validateData(convertMapToLong(Main.globalMap));
         }
         else {
-            loadedCurrentMap = ProgramTimer.appMap;
+            loadedCurrentMap = convertMapToLong(Main.globalMap);
         }
         if (Main.getMode() == 3 || Main.getMode() == 2) {
             loadedCurrentMap =
-                DataHandling.validateWhatToDisplay(loadedCurrentMap);
+                DataHandling
+                    .validateWhatToDisplay(convertMapToLong(Main.globalMap));
         }
 
         else if (Main.getMode() == 1 && Main.getChecked()) {
-            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
+            loadedCurrentMap =
+                DataHandling.validateData(convertMapToLong(Main.globalMap));
         }
 
         Map<String, Double> finalMap =
@@ -508,5 +511,28 @@ public class DataHandling {
         }
         return output;
 
+    }
+
+    public static Map<String, Double> convertMap(Map<String, Long> input) {
+        Map<String, Double> map = new HashMap<String, Double>();
+
+        Iterator<Entry<String, Long>> it = input.entrySet().iterator();
+        while (it.hasNext()) {
+            Entry<String, Long> pair = it.next();
+            map.put(pair.getKey(), pair.getValue().doubleValue());
+        }
+        return map;
+    }
+
+    public static Map<String, Long> convertMapToLong(
+        Map<String, Double> input) {
+        Map<String, Long> map = new HashMap<String, Long>();
+
+        Iterator<Entry<String, Double>> it = input.entrySet().iterator();
+        while (it.hasNext()) {
+            Entry<String, Double> pair = it.next();
+            map.put(pair.getKey(), pair.getValue().longValue());
+        }
+        return map;
     }
 }

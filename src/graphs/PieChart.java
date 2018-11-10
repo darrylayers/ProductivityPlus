@@ -17,6 +17,7 @@ import org.jfree.ui.ApplicationFrame;
 
 import core.DataHandling;
 import gui.GraphicalOutputGui;
+import gui.Main;
 
 /**
  * PieChart.java This class is used to create a pie chart of the top 5 entries
@@ -39,6 +40,7 @@ public class PieChart extends ApplicationFrame {
      *            the chart title.
      */
     public PieChart(String paramString) {
+
         super(paramString);
         JPanel localJPanel = createDemoPanel();
         localJPanel.setPreferredSize(new Dimension(1800, 1670));
@@ -51,7 +53,10 @@ public class PieChart extends ApplicationFrame {
      * @return the data set for the pie chart.
      */
     private static PieDataset createDataset() {
+
         orderedMap = DataHandling.orderedMap();
+        // orderedMap = Main.globalMap;
+        System.out.println("Printing: " + Main.globalMap);
         DefaultPieDataset localDefaultPieDataset = new DefaultPieDataset();
         if (orderedMap.size() == 0) {
             return localDefaultPieDataset;
@@ -91,6 +96,7 @@ public class PieChart extends ApplicationFrame {
      *            pie chart's data set.
      */
     private static JFreeChart createChart(PieDataset paramPieDataset) {
+
         JFreeChart localJFreeChart = ChartFactory.createPieChart(
             "Pie Chart for " + DataHandling.getDate() + ".map", paramPieDataset,
             true, true, false);
@@ -118,6 +124,7 @@ public class PieChart extends ApplicationFrame {
      * @return return the panel the pie chart is in.
      */
     public static JPanel createDemoPanel() {
+
         JFreeChart localJFreeChart = createChart(createDataset());
         ChartPanel localChartPanel = new ChartPanel(localJFreeChart);
         localChartPanel.setMouseWheelEnabled(true);
@@ -131,6 +138,7 @@ public class PieChart extends ApplicationFrame {
      * @return 5, or less if less values are in map.
      */
     public static int checkValues() {
+
         int size = orderedMap.size();
         if (size < 5) {
             return size;

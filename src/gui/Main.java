@@ -92,6 +92,7 @@ public class Main {
         new JRadioButton("Track exclusions");
 
     public static boolean toTrack = false;
+    public static Map<String, Double> globalMap = new HashMap<String, Double>();
 
     /**
      * Main method that builds the GUI.
@@ -636,7 +637,13 @@ public class Main {
                         else {
                             loadedCurrentMap = combinedMaps;
                         }
-                        loadTable(loadedCurrentMap);
+
+                        System.out
+                            .println(
+                                "loadedCurrentMap map " + loadedCurrentMap);
+                        globalMap = DataHandling.convertMap(loadedCurrentMap);
+                        System.out.println("global map " + globalMap);
+                        loadTable(DataHandling.convertMapToLong(globalMap));
                     }
                 }
             }
@@ -750,6 +757,9 @@ public class Main {
         }
         // All the keys we need are loaded from the map
         setKeys(loadedCurrentMap.keySet());
+
+        globalMap = DataHandling.convertMap(loadedCurrentMap);
+
         String columns[] = {"Program", TimeConvert.getUnit()};
         if (loadedCurrentMap.size() == 0) {
             model = new DefaultTableModel(1, 2);
