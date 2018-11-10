@@ -43,13 +43,15 @@ public class ConsolidationGui extends JDialog {
     private static JPanel tablePanel;
     private static byte[] bytes;
     private static Preferences prefs =
-        Preferences.userRoot().node("WhatToTrackGui");
+        Preferences.userRoot().node("ConsolidateGui");
+    private final static String PREF_LIST = "pref";
 
     private JTextField txtInput;
     private JLabel secretLabel;
     private JLabel lblProgsToCombine;
 
     public static List<String> list = new ArrayList<String>();
+    private JButton btnClearList;
 
     /**
      * Launch the About pop up window.
@@ -96,7 +98,7 @@ public class ConsolidationGui extends JDialog {
 
         // ************** Buttons ************** //
 
-        JButton btnRemove = new JButton("Remove Program");
+        JButton btnRemove = new JButton("Remove program");
         btnRemove.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -112,7 +114,7 @@ public class ConsolidationGui extends JDialog {
         });
         mainPanel.add(btnRemove, "cell 1 4,growx");
 
-        JButton btnEnterProgram = new JButton("Enter Program");
+        JButton btnEnterProgram = new JButton("Enter program");
         btnEnterProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -136,6 +138,17 @@ public class ConsolidationGui extends JDialog {
         txtInput = new JTextField();
         mainPanel.add(txtInput, "cell 1 2,growx");
         txtInput.setColumns(10);
+
+        btnClearList = new JButton("Clear list");
+        btnClearList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                list = new ArrayList<String>();
+                saveList();
+                loadTable();
+            }
+        });
+        mainPanel.add(btnClearList, "cell 1 5,grow");
 
         loadTable();
     }
@@ -235,7 +248,7 @@ public class ConsolidationGui extends JDialog {
      */
     public static void loadList() {
         byte[] temp = new byte[1014];
-        bytes = prefs.getByteArray("PREF_LIST", temp);
+        bytes = prefs.getByteArray(PREF_LIST, temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         DataInputStream in = new DataInputStream(bais);
         try {
@@ -267,7 +280,7 @@ public class ConsolidationGui extends JDialog {
             }
         }
         bytes = baos.toByteArray();
-        prefs.putByteArray("PREF_LIST", bytes);
+        prefs.putByteArray(PREF_LIST, bytes);
     }
 
     /**
