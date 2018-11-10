@@ -11,11 +11,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+
 import core.DataHandling;
+import graphs.BarChart;
+import graphs.LineChart;
 import graphs.PieChart;
 import net.miginfocom.swing.MigLayout;
 
@@ -29,14 +35,21 @@ public class GraphicalOutputGui extends JDialog {
 
     private static final long serialVersionUID = 3774721756310500262L;
     private JPanel pie = new JPanel();
-    private JPanel panel = new JPanel();
+    private JPanel bar = new JPanel();
+    private JPanel line = new JPanel();
+    private JPanel scatter = new JPanel();
+    private JPanel piechartPanel = new JPanel();
+    private JPanel bargraphPanel = new JPanel();
+    private JPanel linechartPanel = new JPanel();
+    private JPanel scatterplotPanel = new JPanel();
+    private JTabbedPane tabbedPane;
     public static JSpinner spinner = new JSpinner();
     private static Preferences prefs =
         Preferences.userRoot().node("GraphGui");
     private static final String NUM_DISPLAY = "display";
     @SuppressWarnings("unused")
     private static String[] displayTypes = {"Pie Chart",
-        "Chart 2", "Chart 3",
+        "Bar Graph", "Chart 3",
         "Chart 4"};
 
     /**
@@ -61,36 +74,60 @@ public class GraphicalOutputGui extends JDialog {
     public GraphicalOutputGui() {
         setAlwaysOnTop(true);
         setTitle("Graphs");
-        setBounds(100, 100, 1084, 582);
+        setBounds(100, 100, 1030, 634);
 
         // ************** Frame panels and panes ************** //
         getContentPane().setLayout(
-            new MigLayout("", "[156.00,grow][817.00,grow]", "[][503.00,grow]"));
+            new MigLayout("", "[184.00][817.00,grow]", "[][503.00,grow]"));
 
         JLabel lblGraphSettings = new JLabel("Graph Settings and controls");
         getContentPane().add(lblGraphSettings, "cell 0 0,alignx center");
         lblGraphSettings.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         JPanel controlPanel = new JPanel();
-        getContentPane().add(controlPanel, "cell 0 1,grow");
+        getContentPane().add(controlPanel, "cell 0 1,growy");
         controlPanel
             .setLayout(
-                new MigLayout("", "[94.00][231.00,grow,left][-163.00][-64.00]",
-                    "[18.00][][][][32.00][][][][][][][][][][][][][][]"));
+                new MigLayout("", "[204.00,grow][-58.00][-84.00][71.00]",
+                    "[18.00][][8.00][][][][][][][]"));
 
-        JLabel secretLabel = new JLabel("");
-        controlPanel.add(secretLabel, "cell 1 16");
+        JTextPane txtpnDatePickerFor = new JTextPane();
+        txtpnDatePickerFor.setText("Date picker for range to use ");
+        controlPanel.add(txtpnDatePickerFor, "cell 0 2");
 
-        JPanel panel_7 = new JPanel();
-        controlPanel.add(panel_7, "cell 1 0,alignx left,growy");
+        JLabel lblStartDate = new JLabel("Start date:");
+        controlPanel.add(lblStartDate, "cell 0 3");
+
+        DatePicker datePicker = new DatePicker((DatePickerSettings) null);
+        controlPanel.add(datePicker, "cell 0 4,growx");
+
+        JLabel lblEndDate = new JLabel("End date:");
+        controlPanel.add(lblEndDate, "cell 0 5");
+
+        DatePicker datePicker_1 = new DatePicker((DatePickerSettings) null);
+        controlPanel.add(datePicker_1, "cell 0 6,growx");
+
+        JLabel lblclickRefreshTo =
+            new JLabel("(Click refresh to update with new dates)");
+        controlPanel.add(lblclickRefreshTo, "cell 0 7");
+
+        JTextPane txtpnHelpfulTipYou = new JTextPane();
+        txtpnHelpfulTipYou.setText(
+            "Helpful tip: You can use the scroll wheel on the graphs to rotate. \n\n"
+                + "You can also right-click the graphs for more options, including the option to save them.");
+        txtpnHelpfulTipYou.setEditable(false);
+        controlPanel.add(txtpnHelpfulTipYou, "cell 0 8,grow");
+
+        JPanel spinnerPanel = new JPanel();
+        controlPanel.add(spinnerPanel, "cell 0 0,alignx left,growy");
 
         JLabel lblNumberOfItmes = new JLabel("Number of items");
-        panel_7.add(lblNumberOfItmes);
+        spinnerPanel.add(lblNumberOfItmes);
         lblNumberOfItmes.setToolTipText(
             "This is the number of items that will be plotted.");
         lblNumberOfItmes.setFont(new Font("Verdana", Font.PLAIN, 11));
 
-        panel_7.add(spinner);
+        spinnerPanel.add(spinner);
         spinner.setModel(
             new SpinnerNumberModel(getNumProgs(), new Integer(1), null,
                 new Integer(1)));
@@ -99,24 +136,22 @@ public class GraphicalOutputGui extends JDialog {
         btnRefreshGraphs.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-
-                panel.remove(pie);
-                pie = PieChart.createDemoPanel();
-                panel.add(pie);
-                secretLabel.setText("  ");
-                secretLabel.setText("");
+                tabbedPane.removeAll();
+                buildGraphs();
 
             }
         });
-        controlPanel.add(btnRefreshGraphs, "cell 1 1,grow");
+        controlPanel.add(btnRefreshGraphs, "cell 0 1,grow");
+
+        JLabel secretLabel = new JLabel("");
+        controlPanel.add(secretLabel, "cell 0 9");
 
         spinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent arg0) {
                 setProgCount();
-                panel.remove(pie);
-                pie = PieChart.createDemoPanel();
-                panel.add(pie);
+                tabbedPane.removeAll();
+                buildGraphs();
                 secretLabel.setText("  ");
                 secretLabel.setText("");
             }
@@ -126,15 +161,10 @@ public class GraphicalOutputGui extends JDialog {
         getContentPane().add(graphPanel, "cell 1 1,grow");
         graphPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
 
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         graphPanel.add(tabbedPane, "cell 0 0,grow");
 
-        tabbedPane.addTab("Pie Chart", null, panel, null);
-        pie = PieChart.createDemoPanel();
-        panel.add(pie);
-
-        JPanel panel_1 = new JPanel();
-        tabbedPane.addTab("New tab", null, panel_1, null);
+        buildGraphs();
 
     }
 
@@ -167,5 +197,22 @@ public class GraphicalOutputGui extends JDialog {
      */
     public static int getProgCount() {
         return prefs.getInt(NUM_DISPLAY, 1);
+    }
+
+    public void buildGraphs() {
+        JPanel piechartPanel = new JPanel();
+        pie = PieChart.createDemoPanel();
+        piechartPanel.add(pie);
+        tabbedPane.addTab("Pie Chart", null, piechartPanel, null);
+
+        JPanel bargraphPanel = new JPanel();
+        tabbedPane.addTab("Bar Graph", null, bargraphPanel, null);
+        bar = BarChart.createDemoPanel();
+        bargraphPanel.add(bar);
+
+        JPanel linechartPanel = new JPanel();
+        tabbedPane.addTab("Line Chart", null, linechartPanel, null);
+        line = LineChart.createDemoPanel();
+        linechartPanel.add(line);
     }
 }
