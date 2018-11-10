@@ -209,4 +209,13 @@ public class TableHelper {
             return list;
         }
     }
+
+    public static void clearList() {
+        if (Main.getMode() == 2) {
+            prefs.remove(INCLUSION_LIST);
+        }
+        else if (Main.getMode() == 3) {
+            prefs.remove(EXCLUSION_LIST);
+        }
+    }
 }
