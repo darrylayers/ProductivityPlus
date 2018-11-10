@@ -92,6 +92,7 @@ public class Main {
         new JRadioButton("Track exclusions");
 
     public static boolean toTrack = false;
+    public static Map<String, Double> globalMap = new HashMap<String, Double>();
 
     /**
      * Main method that builds the GUI.
@@ -370,7 +371,7 @@ public class Main {
             "Add a program from whichever table is selected above.");
         controlPanel.add(btnAddProgram, "cell 0 6,grow");
 
-        JButton btnRemoveProgram = new JButton("Remove Program");
+        JButton btnRemoveProgram = new JButton("Remove program");
         btnRemoveProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -417,14 +418,24 @@ public class Main {
             "Remove a program from whichever table is selected above.");
         controlPanel.add(btnRemoveProgram, "cell 0 7,grow");
 
-        List<String> inclusions = new ArrayList<>();
-        inclusions = TableHelper.loadList("inclusion");
-        List<String> exclusions = new ArrayList<>();
-        exclusions = TableHelper.loadList("exclusion");
-        exclusionScrollPane = TableHelper.loadTable(exclusions);
-        inclusionScrollPane = TableHelper.loadTable(inclusions);
-        displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
-        displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
+        JLabel secret_label = new JLabel("");
+        controlPanel.add(secret_label, "cell 0 14");
+
+        JButton btnClearList = new JButton("Clear list");
+        btnClearList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                TableHelper.clearList();
+                displayPanel.remove(inclusionScrollPane);
+                displayPanel.remove(exclusionScrollPane);
+                refreshDisplayTable(displayPanel);
+                secret_label.setText("  ");
+                secret_label.setText("");
+            }
+        });
+        controlPanel.add(btnClearList, "cell 0 8,grow");
+
+        refreshDisplayTable(displayPanel);
 
         // ************** Timer controls labels ************** //
 
@@ -626,7 +637,13 @@ public class Main {
                         else {
                             loadedCurrentMap = combinedMaps;
                         }
-                        loadTable(loadedCurrentMap);
+
+                        System.out
+                            .println(
+                                "loadedCurrentMap map " + loadedCurrentMap);
+                        globalMap = DataHandling.convertMap(loadedCurrentMap);
+                        System.out.println("global map " + globalMap);
+                        loadTable(DataHandling.convertMapToLong(globalMap));
                     }
                 }
             }
@@ -643,6 +660,23 @@ public class Main {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * This method refreshes the table for inclusions and exclusions.
+     * 
+     * @param displayPanel,
+     *            the panel the tables are attached to.
+     */
+    private void refreshDisplayTable(JPanel displayPanel) {
+        List<String> inclusions = new ArrayList<>();
+        inclusions = TableHelper.loadList("inclusion");
+        List<String> exclusions = new ArrayList<>();
+        exclusions = TableHelper.loadList("exclusion");
+        exclusionScrollPane = TableHelper.loadTable(exclusions);
+        inclusionScrollPane = TableHelper.loadTable(inclusions);
+        displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
+        displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
     }
 
     /**
@@ -723,6 +757,9 @@ public class Main {
         }
         // All the keys we need are loaded from the map
         setKeys(loadedCurrentMap.keySet());
+
+        globalMap = DataHandling.convertMap(loadedCurrentMap);
+
         String columns[] = {"Program", TimeConvert.getUnit()};
         if (loadedCurrentMap.size() == 0) {
             model = new DefaultTableModel(1, 2);

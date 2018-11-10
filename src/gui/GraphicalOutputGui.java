@@ -1,19 +1,12 @@
 package gui;
 
 import java.awt.Font;
-import java.awt.SystemColor;
-import java.util.Calendar;
-import java.util.Date;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextPane;
-import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 
 import core.DataHandling;
@@ -103,40 +96,6 @@ public class GraphicalOutputGui extends JDialog {
 
         JPanel panel_1 = new JPanel();
         tabbedPane.addTab("New tab", null, panel_1, null);
-
-        // ************** Label ************** //
-        JLabel lblChooseADay = new JLabel("Choose a day to load");
-        controlPanel.add(lblChooseADay, "cell 1 2");
-
-        // ************** Spinner ************** //
-        JSpinner spinner_1 = new JSpinner();
-        spinner_1.setModel(new SpinnerDateModel(new Date(1539230400000L),
-            new Date(1539230400000L), null, Calendar.DAY_OF_YEAR));
-        controlPanel.add(spinner_1, "cell 1 3");
-
-        // ************** Text panes ************** //
-        JTextPane txtpnListIndividualPrograms = new JTextPane();
-        txtpnListIndividualPrograms.setEditable(false);
-        txtpnListIndividualPrograms.setBackground(SystemColor.controlHighlight);
-        txtpnListIndividualPrograms
-            .setText(
-                "List individual programs you want to view. List them separated by"
-                    + " commands like this: ProductivityPlus, Spotify, ...");
-        controlPanel.add(txtpnListIndividualPrograms, "cell 1 4");
-
-        JEditorPane editorPane = new JEditorPane();
-        controlPanel.add(editorPane, "cell 1 5,grow");
-
-        JTextPane txtpnnoticeHitSave_1 = new JTextPane();
-        txtpnnoticeHitSave_1.setEditable(false);
-        txtpnnoticeHitSave_1.setText(
-            "(Notice: Hit save input if any changes are made, otherwise today's data is loaded.");
-        txtpnnoticeHitSave_1.setBackground(SystemColor.controlHighlight);
-        controlPanel.add(txtpnnoticeHitSave_1, "cell 1 18,grow");
-
-        // ************** Buttons ************** //
-        JButton btnRefreshGraphs = new JButton("Refresh graphs");
-        controlPanel.add(btnRefreshGraphs, "cell 1 17");
 
     }
 
