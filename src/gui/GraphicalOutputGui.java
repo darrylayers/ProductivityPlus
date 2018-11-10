@@ -1,13 +1,19 @@
 package gui;
 
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.prefs.Preferences;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import core.DataHandling;
 import graphs.PieChart;
@@ -21,11 +27,13 @@ import net.miginfocom.swing.MigLayout;
  */
 public class GraphicalOutputGui extends JDialog {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3774721756310500262L;
+    private JPanel pie = new JPanel();
+    private JPanel panel = new JPanel();
     public static JSpinner spinner = new JSpinner();
+    private static Preferences prefs =
+        Preferences.userRoot().node("GraphGui");
+    private static final String NUM_DISPLAY = "display";
     @SuppressWarnings("unused")
     private static String[] displayTypes = {"Pie Chart",
         "Chart 2", "Chart 3",
@@ -70,6 +78,9 @@ public class GraphicalOutputGui extends JDialog {
                 new MigLayout("", "[94.00][231.00,grow,left][-163.00][-64.00]",
                     "[18.00][][][][32.00][][][][][][][][][][][][][][]"));
 
+        JLabel secretLabel = new JLabel("");
+        controlPanel.add(secretLabel, "cell 1 16");
+
         JPanel panel_7 = new JPanel();
         controlPanel.add(panel_7, "cell 1 0,alignx left,growy");
 
@@ -81,7 +92,35 @@ public class GraphicalOutputGui extends JDialog {
 
         panel_7.add(spinner);
         spinner.setModel(
-            new SpinnerNumberModel(new Integer(5), null, null, new Integer(1)));
+            new SpinnerNumberModel(getNumProgs(), new Integer(1), null,
+                new Integer(1)));
+
+        JButton btnRefreshGraphs = new JButton("Refresh graphs");
+        btnRefreshGraphs.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+
+                panel.remove(pie);
+                pie = PieChart.createDemoPanel();
+                panel.add(pie);
+                secretLabel.setText("  ");
+                secretLabel.setText("");
+
+            }
+        });
+        controlPanel.add(btnRefreshGraphs, "cell 1 1,grow");
+
+        spinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                setProgCount();
+                panel.remove(pie);
+                pie = PieChart.createDemoPanel();
+                panel.add(pie);
+                secretLabel.setText("  ");
+                secretLabel.setText("");
+            }
+        });
 
         JPanel graphPanel = new JPanel();
         getContentPane().add(graphPanel, "cell 1 1,grow");
@@ -90,9 +129,9 @@ public class GraphicalOutputGui extends JDialog {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         graphPanel.add(tabbedPane, "cell 0 0,grow");
 
-        JPanel panel = new JPanel();
         tabbedPane.addTab("Pie Chart", null, panel, null);
-        panel.add(PieChart.createDemoPanel());
+        pie = PieChart.createDemoPanel();
+        panel.add(pie);
 
         JPanel panel_1 = new JPanel();
         tabbedPane.addTab("New tab", null, panel_1, null);
@@ -106,9 +145,27 @@ public class GraphicalOutputGui extends JDialog {
      */
     public static int getNumProgs() {
         int size = DataHandling.orderedMap().size();
-        if (size >= 5) {
-            return 5;
+        if (size >= getProgCount()) {
+            return getProgCount();
         }
         return size;
+    }
+
+    /**
+     * Set the Idle value from its spinner value.
+     */
+    public void setProgCount() {
+        int displayCount = (int) spinner.getValue();
+        prefs.putInt(NUM_DISPLAY, displayCount);
+    }
+
+    /**
+     * Returns the Idle timer value from its saved preference, if never saved
+     * then set to 1 by default.
+     * 
+     * @return returns long idle value, 1 if nothing is saved.
+     */
+    public static int getProgCount() {
+        return prefs.getInt(NUM_DISPLAY, 1);
     }
 }
