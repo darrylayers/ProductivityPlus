@@ -8,16 +8,11 @@ import java.awt.event.MouseEvent;
 import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -30,8 +25,6 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class PreferencesGui extends JDialog {
 
-    private static final String IDLE_TIMER = "idleValue";
-    private static final String IDLE_CHECK = "idleCheck";
     private static final String DISPLAY_INDEX = "displayIndex";
     private static final String OUTPUT_INDEX = "outputIndex";
 
@@ -46,15 +39,10 @@ public class PreferencesGui extends JDialog {
     private static JComboBox displayOptions = new JComboBox(displayTypes);
     private static int export;
     private static int display;
-    private static Long idle;
-    private static boolean idleStatus;
     private static Preferences prefs =
         Preferences.userRoot().node("PreferencesGui");
 
     private final JPanel contentPanel = new JPanel();
-
-    private static JCheckBox idleTimerChkBx;
-    private JSpinner spinner = new JSpinner();
 
     /**
      * Launch the Preferences popup window.
@@ -79,8 +67,6 @@ public class PreferencesGui extends JDialog {
     private static void bundle() {
         export = getExportIndex();
         display = getDisplayIndex();
-        idle = getIdleTimer();
-        idleStatus = getIdleChecked();
     }
 
     /**
@@ -90,8 +76,6 @@ public class PreferencesGui extends JDialog {
     private static void saveBundle() {
         prefs.putInt(OUTPUT_INDEX, getExport());
         prefs.putInt(DISPLAY_INDEX, getDisplay());
-        prefs.putLong(IDLE_TIMER, getIdle());
-        prefs.putBoolean(IDLE_CHECK, isIdleStatus());
     }
 
     // Simple getters for fields for each saved preference
@@ -105,93 +89,43 @@ public class PreferencesGui extends JDialog {
         return display;
     }
 
-    public static Long getIdle() {
-        return idle;
-    }
-
-    public static boolean isIdleStatus() {
-        return idleStatus;
-    }
-
     /**
      * Create the dialog.
      */
     public PreferencesGui() {
         setAlwaysOnTop(true);
         setTitle("Preferences");
-        setBounds(100, 100, 502, 349);
+        setBounds(100, 100, 502, 254);
 
         // ************** Frame panels and panes ************** //
         getContentPane()
-            .setLayout(new MigLayout("", "[434px]", "[233.00px][33px]"));
+            .setLayout(new MigLayout("", "[434px]", "[159.00px][33px]"));
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, "cell 0 0,grow");
         contentPanel.setLayout(
-            new MigLayout("", "[217.00,grow][][]",
-                "[][63.00][33.00,grow][][40.00,grow][][40.00,grow][]"));
-
-        JPanel prefTimerPanel = new JPanel();
-        contentPanel.add(prefTimerPanel, "cell 0 1,grow");
-        prefTimerPanel.setLayout(new MigLayout("", "[][][]", "[][][]"));
+            new MigLayout("", "[217.00,grow][][]", "[][40.00][][40.00]"));
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, "cell 0 1,growx,aligny top");
 
         JPanel prefOutputPanel = new JPanel();
-        contentPanel.add(prefOutputPanel, "cell 0 4,grow");
+        contentPanel.add(prefOutputPanel, "cell 0 1,grow");
         prefOutputPanel.setLayout(new MigLayout("", "[][][]", "[]"));
 
         JPanel displayPanel = new JPanel();
-        contentPanel.add(displayPanel, "cell 0 6,grow");
+        contentPanel.add(displayPanel, "cell 0 3,grow");
         displayPanel.setLayout(new MigLayout("", "[][][][][grow]", "[grow][]"));
-
-        // ************** Program Timer Preferences Label ************** //
-        JLabel lblProgramTimerPreferences =
-            new JLabel("Program Timer Preferences");
-        contentPanel.add(lblProgramTimerPreferences, "cell 0 0");
-
-        // ************** Idle Interval Label ************** //
-        JLabel lblIdleInterval = new JLabel("Idle Interval");
-        prefTimerPanel.add(lblIdleInterval, "cell 0 1");
-        lblIdleInterval.setEnabled(getIdleChecked());
-        spinner.setToolTipText(
-            "the number is how long the program idles before turning off in minutes.");
-
-        // ************** Idle Spinner ************** //
-        prefTimerPanel.add(spinner, "cell 1 1");
-        spinner.setEnabled(getIdleChecked());
-        spinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent arg0) {
-                setIdleTimer();
-            }
-        });
-        spinner.setModel(new SpinnerNumberModel(getIdleTimer(), new Long(0),
-            null, new Long(1)));
-
-        // ************** Minutes Label ************** //
-        JLabel lblMinutes = new JLabel("(minutes)");
-        prefTimerPanel.add(lblMinutes, "cell 2 1");
-        lblMinutes.setEnabled(getIdleChecked());
 
         // ************** Output preferences Label ************** //
         JLabel lblProgramOutputPreferences = new JLabel(
             "Program Output Preferences (this does not change the display table)");
-        contentPanel.add(lblProgramOutputPreferences, "cell 0 3");
-
-        // ************** Idle Check box ************** //
-        idleTimerChkBx = new JCheckBox("Idle Timer");
-        idleTimerChkBx.setToolTipText(
-            "If enabled, the program timer will stop timing when the mouse "
-                + "is enactive for the selected idle interval.");
-        prefTimerPanel.add(idleTimerChkBx, "cell 0 0");
-        idleTimerChkBx.setSelected(getIdleChecked());
+        contentPanel.add(lblProgramOutputPreferences, "cell 0 0");
 
         // ************** Display Table Preferences Label ************** //
         JLabel lblProgramDisplayTable = new JLabel(
             "Program Display Preferences (this refers to the table in main window)");
-        contentPanel.add(lblProgramDisplayTable, "cell 0 5");
+        contentPanel.add(lblProgramDisplayTable, "cell 0 2");
         exportOptions.setToolTipText("This changes the unit of time that "
             + "exported data is displayed in.");
 
@@ -216,25 +150,6 @@ public class PreferencesGui extends JDialog {
         });
         displayOptions.setSelectedIndex(getDisplayIndex());
         displayPanel.add(displayOptions, "cell 0 0,grow");
-
-        // ************** Idle Check Box Listener ************** //
-        idleTimerChkBx.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-            	boolean bool = prefs.getBoolean(IDLE_CHECK, false);
-                prefs.putBoolean(IDLE_CHECK, !bool);
-                if (!idleTimerChkBx.isSelected()) {
-                    lblIdleInterval.setEnabled(false);
-                    lblMinutes.setEnabled(false);
-                    spinner.setEnabled(false);
-                }
-                else {
-                    lblIdleInterval.setEnabled(true);
-                    lblMinutes.setEnabled(true);
-                    spinner.setEnabled(true);
-                }
-            }
-        });
 
         // ************** Save Button ************** //
         JButton btnSave = new JButton("Save");
@@ -298,47 +213,5 @@ public class PreferencesGui extends JDialog {
     public static int getExportIndex() {
         return prefs.getInt(OUTPUT_INDEX, 2);
     }
-
-    /**
-     * Set the Idle value from its spinner value.
-     */
-    public void setIdleTimer() {
-        Long idleValue = (Long) spinner.getValue();
-        prefs.putLong(IDLE_TIMER, idleValue);
-    }
-
-    /**
-     * Returns the Idle timer value from its saved preference, if never saved
-     * then set to 1 by default.
-     * 
-     * @return returns long idle value, 1 if nothing is saved.
-     */
-    public static Long getIdleTimer() {
-        return prefs.getLong(IDLE_TIMER, 1);
-    }
-
-    /**
-     * Set the Idle check box from its saved preference, if never saved then set
-     * to false by default.
-     */
-    public void setIdleChecked() {
-        if (idleTimerChkBx.isSelected()) {
-            prefs.putBoolean(IDLE_CHECK, false);
-        }
-        else {
-            prefs.putBoolean(IDLE_CHECK, true);
-        }
-    }
-
-    /**
-     * Returns the status of the Idle check box, if the box does not have a save
-     * preference it returns false by default.
-     * 
-     * @return boolean, false is no preference saved.
-     */
-    public static boolean getIdleChecked() {
-        return prefs.getBoolean(IDLE_CHECK, false);
-    }
-
 
 }

@@ -21,6 +21,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -69,6 +70,8 @@ public class ExploreDataGui extends JDialog {
     private final JButton btnSubmitSearch = new JButton("Submit Search");
     private final JTextArea txtrTest = new JTextArea();
     private boolean singleData = false;
+    private final JTextPane txtpnTheLeftDate = new JTextPane();
+    private final JTextPane textPane = new JTextPane();
 
     /**
      * Launch the About pop up window.
@@ -93,7 +96,7 @@ public class ExploreDataGui extends JDialog {
     public ExploreDataGui() {
         textField.setColumns(10);
         setTitle("Explore Data");
-        setBounds(100, 100, 450, 334);
+        setBounds(100, 100, 450, 396);
 
         // ************** Frame panels and panes ************** //
         getContentPane()
@@ -104,8 +107,13 @@ public class ExploreDataGui extends JDialog {
         tabbedPane.addTab("Explore large data", null, contentPanel, null);
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPanel.setLayout(
-            new MigLayout("", "[304.00,left][-37.00][]",
+            new MigLayout("", "[304.00,grow,left][-37.00][]",
                 "[grow][70.00,grow][215.00,grow]"));
+        textPane.setEditable(false);
+        textPane.setText(
+            "The left date picker is the start date, the right date picker is the end date. You can optionally leave the right one empty.");
+
+        contentPanel.add(textPane, "cell 0 0,grow");
 
         // ************** Dates ************** //
 
@@ -204,7 +212,7 @@ public class ExploreDataGui extends JDialog {
 
         tabbedPane.addTab("Single program search", null, singleProgPanel, null);
         singleProgPanel.setLayout(
-            new MigLayout("", "[427.00,grow]", "[][][grow]"));
+            new MigLayout("", "[427.00,grow]", "[][grow][][][grow]"));
 
         singleProgPanel.add(progInputPanel, "cell 0 0,grow");
         progInputPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
@@ -212,8 +220,12 @@ public class ExploreDataGui extends JDialog {
         progInputPanel.add(lblEnterProgramName, "cell 0 0");
 
         progInputPanel.add(textField, "cell 0 1,growx");
+        txtpnTheLeftDate.setText(
+            "The left date picker is the start date, the right date picker is the end date. You can optionally leave the right one empty.");
 
-        singleProgPanel.add(calendarPanel, "cell 0 1,grow");
+        singleProgPanel.add(txtpnTheLeftDate, "cell 0 1,grow");
+
+        singleProgPanel.add(calendarPanel, "cell 0 3,grow");
         calendarPanel.setLayout(new MigLayout("", "[grow][grow]", "[grow][]"));
 
         calendarPanel.add(datePicker_1, "cell 0 0");
@@ -229,7 +241,7 @@ public class ExploreDataGui extends JDialog {
 
         calendarPanel.add(btnSubmitSearch, "cell 1 1");
 
-        singleProgPanel.add(displayPanel, "cell 0 2,grow");
+        singleProgPanel.add(displayPanel, "cell 0 4,grow");
         displayPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
         txtrTest.setText("Program name: <Search submission needed> \n"
             + "Total time over the range: <Time will be here in unit preference> \n"
@@ -352,9 +364,15 @@ public class ExploreDataGui extends JDialog {
             }
 
             Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
-            if (Main.getChecked()) {
+
+            System.out.println("get checked: " + Main.getChecked());
+            if (Main.chckbxConsolidatePrograms.isSelected()) {
                 loadedCurrentMap = DataHandling.validateData(comboMap);
             }
+            else {
+                loadedCurrentMap = comboMap;
+            }
+            System.out.println("get mode: " + Main.getMode());
             if (Main.getMode() == 3 || Main.getMode() == 2) {
                 if (!Main.getChecked()) {
                     loadedCurrentMap = comboMap;
@@ -363,24 +381,21 @@ public class ExploreDataGui extends JDialog {
                     DataHandling.validateWhatToDisplay(loadedCurrentMap);
             }
 
-            else if (Main.getMode() == 1 && Main.getChecked()) {
-                loadedCurrentMap = DataHandling.validateData(comboMap);
-            }
-
             Map<String, Double> displayMap =
                 TimeConvert.convertTime(loadedCurrentMap);
-            
-            System.out.println(loadedCurrentMap);
-            System.out.println(displayMap);
+
+            System.out.println("loaded current map " + loadedCurrentMap);
+            System.out.println("display map " + displayMap);
 
             Double time = displayMap.get(textInput);
 
             String strTime = "";
-            
+
             if (time == null) {
-            	JOptionPane.showMessageDialog(null,
-                        "No time found, check input or display mode!");
-            } else {
+                JOptionPane.showMessageDialog(null,
+                    "No time found, check input or display mode!");
+            }
+            else {
                 if (TimeConvert.getUnit().equals("Time (Written)")) {
                     strTime = DataHandling.convertToWritten(time);
                 }

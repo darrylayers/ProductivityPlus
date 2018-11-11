@@ -84,6 +84,9 @@ public class BarChart extends ApplicationFrame {
                 PlotOrientation.HORIZONTAL, false, true, false);
         CategoryPlot localCategoryPlot =
             (CategoryPlot) localJFreeChart.getPlot();
+
+        localCategoryPlot.setNoDataMessage("No data available");
+
         localCategoryPlot.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
         localCategoryPlot.setRangePannable(true);
         BarRenderer localBarRenderer =

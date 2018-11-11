@@ -9,7 +9,6 @@ import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
 
 import gui.Main;
-import gui.PreferencesGui;
 
 /**
  * ProgramTimer class that performs the timing feature and records all the data.
@@ -30,7 +29,6 @@ public class ProgramTimer implements Runnable {
     private static long end;
     public static boolean trackIfTrue;
     private static boolean leftApp = false;
-    private static CheckIdle idle;
 
     /**
      * Overridden run method to run the timer on a new thread. Tracks to see
@@ -39,15 +37,11 @@ public class ProgramTimer implements Runnable {
      */
     @Override
     public void run() {
-        idle = new CheckIdle();
         startTime();
         trackIfTrue = true;
         leftApp = false;
 
         while (trackIfTrue) {
-            if (PreferencesGui.getIdleChecked()) {
-                idle.run();
-            }
             // Grab the current in-focus window
             hwnd = User32.INSTANCE.GetForegroundWindow();
             User32.INSTANCE.GetWindowText(hwnd, buffer, buffer.length);

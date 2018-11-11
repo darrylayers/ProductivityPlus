@@ -81,7 +81,7 @@ public class Main {
     private static Set<String> keys;
     private static JScrollPane sc;
     public static JLabel secretLabel;
-    private static JCheckBox chckbxConsolidatePrograms;
+    static JCheckBox chckbxConsolidatePrograms;
 
     private JTextField progTextField;
     private JButton btnStopTimer;
@@ -589,6 +589,8 @@ public class Main {
                     if (date2 == null) {
                         try {
                             loadTable(
+                                DataHandling.acceptDateTable(formattedString));
+                            globalMap = DataHandling.convertMap(
                                 DataHandling.acceptDateTable(formattedString));
                         }
                         catch (IOException e) {

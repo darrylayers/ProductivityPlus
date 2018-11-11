@@ -32,12 +32,9 @@ public class GraphicalOutputGui extends JDialog {
     private static final long serialVersionUID = 3774721756310500262L;
     private JPanel pie = new JPanel();
     private JPanel bar = new JPanel();
-    private JPanel line = new JPanel();
-    private JPanel scatter = new JPanel();
     private JPanel piechartPanel = new JPanel();
     private JPanel bargraphPanel = new JPanel();
-    private JPanel linechartPanel = new JPanel();
-    private JPanel scatterplotPanel = new JPanel();
+
     private JTabbedPane tabbedPane;
     public static JSpinner spinner = new JSpinner();
     private static Preferences prefs =
@@ -101,9 +98,13 @@ public class GraphicalOutputGui extends JDialog {
         lblNumberOfItmes.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         spinnerPanel.add(spinner);
-        spinner.setModel(
-            new SpinnerNumberModel(getNumProgs(), new Integer(1), null,
-                new Integer(1)));
+        System.out.println(prefs.getInt(NUM_DISPLAY, 1));
+        if (getNumProgs() == 0) {
+            spinner.setModel(
+                new SpinnerNumberModel(prefs.getInt(NUM_DISPLAY, 1),
+                    new Integer(1), null,
+                    new Integer(1)));
+        }
 
         JButton btnRefreshGraphs = new JButton("Refresh graphs");
         btnRefreshGraphs.addMouseListener(new MouseAdapter() {
