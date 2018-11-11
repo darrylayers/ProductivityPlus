@@ -34,10 +34,9 @@ public class ExcelWriter {
 
         Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
 
-        if (Main.getChecked()) {
+        if (Main.chckbxConsolidatePrograms.isSelected()) {
             loadedCurrentMap = DataHandling.validateData(combinedMaps);
-        }
-        else {
+        } else {
             loadedCurrentMap = combinedMaps;
         }
         if (Main.getMode() == 3 || Main.getMode() == 2) {
@@ -45,16 +44,10 @@ public class ExcelWriter {
                 DataHandling.validateWhatToDisplay(loadedCurrentMap);
         }
 
-        else if (Main.getMode() == 1 && Main.getChecked()) {
-            loadedCurrentMap = DataHandling.validateData(combinedMaps);
-        }
-        else {
-            loadedCurrentMap = combinedMaps;
-        }
-        System.out.println(combinedMaps);
-        System.out.println(loadedCurrentMap);
+        System.out.println("combined maps " + combinedMaps);
+        System.out.println("loadedCurrentMap " + loadedCurrentMap);
         Map<String, Long> toDisplayMap = new HashMap<>(loadedCurrentMap);
-        System.out.println(toDisplayMap);
+        System.out.println("toDisplayMap " + toDisplayMap);
         Map<String, Double> finalMap =
             // TimeConvert.convertOutputTime(toDisplayMap);
             TimeConvert.convertExportTime(toDisplayMap);
@@ -88,11 +81,9 @@ public class ExcelWriter {
         Cell cell1 = headerRow.createCell(1);
         if (PreferencesGui.getExportIndex() == 0) {
             cell1.setCellValue("Time (Hours)");
-        }
-        else if (PreferencesGui.getExportIndex() == 1) {
+        } else if (PreferencesGui.getExportIndex() == 1) {
             cell1.setCellValue("Time (Minutes)");
-        }
-        else if (PreferencesGui.getExportIndex() == 2) {
+        } else if (PreferencesGui.getExportIndex() == 2) {
             cell1.setCellValue("Time (Seconds)");
         }
 

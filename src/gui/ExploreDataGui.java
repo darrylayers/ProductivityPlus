@@ -113,7 +113,8 @@ public class ExploreDataGui extends JDialog {
         textPane.setBackground(new Color(240, 240, 240));
         textPane.setEditable(false);
         textPane.setText(
-            "The left date picker is the start date, the right date picker is the end date. You can optionally leave the right one empty.");
+            "The left date picker is the start date, the right date picker is"
+                + " the end date. You can optionally leave the right one empty.");
 
         contentPanel.add(textPane, "cell 0 0,grow");
 
@@ -229,7 +230,8 @@ public class ExploreDataGui extends JDialog {
         txtpnTheLeftDate.setEditable(false);
         txtpnTheLeftDate.setBackground(new Color(240, 240, 240));
         txtpnTheLeftDate.setText(
-            "The left date picker is the start date, the right date picker is the end date. You can optionally leave the right one empty.");
+            "The left date picker is the start date, the right date picker is"
+                + " the end date. You can optionally leave the right one empty.");
 
         singleProgPanel.add(txtpnTheLeftDate, "cell 0 1,grow");
 

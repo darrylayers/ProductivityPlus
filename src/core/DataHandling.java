@@ -64,8 +64,7 @@ public class DataHandling {
                     .putAll((Map<? extends String, ? extends Long>) readMap);
             }
             ois.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // Catch exceptions
         }
     }
@@ -82,8 +81,7 @@ public class DataHandling {
                 new ObjectOutputStream(new FileOutputStream(savedMap));
             oos.writeObject(ProgramTimer.appMap);
             oos.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // Catch exceptions
         }
     }
@@ -119,13 +117,13 @@ public class DataHandling {
             ObjectInputStream ois = new ObjectInputStream(
                 new FileInputStream("./saved_data/" + date + ".map"));
             Object readMap = ois.readObject();
+            System.out.println("read map " + readMap);
             if (readMap != null && readMap instanceof HashMap) {
                 loadedAppMap
                     .putAll((Map<? extends String, ? extends Long>) readMap);
             }
             ois.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
         if (loadedAppMap.size() == 0) {
             JOptionPane.showMessageDialog(null,
@@ -133,8 +131,8 @@ public class DataHandling {
         }
         if (returnState) {
             return loadedAppMap;
-        }
-        else {
+        } else {
+            System.out.println("loaded appmap " + loadedAppMap);
             ExcelWriter.write(loadedAppMap, date);
         }
         return loadedAppMap;
@@ -162,8 +160,7 @@ public class DataHandling {
                     .putAll((Map<? extends String, ? extends Long>) readMap);
             }
             ois.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
         return loadedAppMap;
     }
@@ -221,8 +218,7 @@ public class DataHandling {
                         (Map<? extends String, ? extends Long>) readMap);
                 }
                 ois.close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
             }
             maps.add(loadedAppMap);
         }
@@ -305,8 +301,7 @@ public class DataHandling {
         if (Main.getChecked()) {
             loadedCurrentMap =
                 DataHandling.validateData(convertMapToLong(Main.globalMap));
-        }
-        else {
+        } else {
             loadedCurrentMap = convertMapToLong(Main.globalMap);
         }
         if (Main.getMode() == 3 || Main.getMode() == 2) {
@@ -363,8 +358,7 @@ public class DataHandling {
                                 itemstoHide[i].substring(2,
                                     itemstoHide[i].length()),
                                 current);
-                        }
-                        else {
+                        } else {
                             Long old = editedMap
                                 .get(itemstoHide[i].substring(2,
                                     itemstoHide[i].length()));
@@ -376,8 +370,7 @@ public class DataHandling {
                         doNotAdd.put(key, (long) 1);
                     }
                 }
-            }
-            catch (StringIndexOutOfBoundsException e) {
+            } catch (StringIndexOutOfBoundsException e) {
                 System.out.println("Error with retrieving consolidation list.");
             }
             if (!doNotAdd.containsKey(key)) {
@@ -419,8 +412,7 @@ public class DataHandling {
                     }
                 }
             }
-        }
-        else if (Main.getMode() == 3) {
+        } else if (Main.getMode() == 3) {
             list = TableHelper.loadList("exclusion");
             list.remove("");
             System.out.println("list 3 " + list);
@@ -495,15 +487,13 @@ public class DataHandling {
                     (int) Math.floor(((seconds / 3600.0) - 1) * 60))
                 + " minutes "
                 + seconds % 60 + pluralSec;
-        }
-        else if (seconds >= 60) {
+        } else if (seconds >= 60) {
             if (seconds >= 120) {
                 pluralMin = " minutes ";
             }
             output = seconds / 60 + pluralMin
                 + seconds % 60 + pluralSec;
-        }
-        else {
+        } else {
             if (seconds % 60 == 1) {
                 pluralSec = " second ";
             }

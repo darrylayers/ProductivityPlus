@@ -79,8 +79,7 @@ public class TableHelper {
 
         if (prefString.equals("inclusions")) {
             bytes = prefs.getByteArray(INCLUSION_LIST, temp);
-        }
-        else if (prefString.equals("exclusions")) {
+        } else if (prefString.equals("exclusions")) {
             bytes = prefs.getByteArray(EXCLUSION_LIST, temp);
         }
 
@@ -95,8 +94,7 @@ public class TableHelper {
                     retList.add(element);
                 }
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return retList;
@@ -118,8 +116,7 @@ public class TableHelper {
         for (String element : input) {
             try {
                 out.writeUTF(element);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -141,8 +138,7 @@ public class TableHelper {
     public static boolean inList(String item, ArrayList<String> list) {
         if (list.contains("- " + item) || list.contains(item)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -201,11 +197,9 @@ public class TableHelper {
         exclusions = TableHelper.loadList("exclusion");
         if (Main.getMode() == 2) {
             return inclusions;
-        }
-        else if (Main.getMode() == 3) {
+        } else if (Main.getMode() == 3) {
             return exclusions;
-        }
-        else {
+        } else {
             return list;
         }
     }
@@ -213,8 +207,7 @@ public class TableHelper {
     public static void clearList() {
         if (Main.getMode() == 2) {
             prefs.remove(INCLUSION_LIST);
-        }
-        else if (Main.getMode() == 3) {
+        } else if (Main.getMode() == 3) {
             prefs.remove(EXCLUSION_LIST);
         }
     }

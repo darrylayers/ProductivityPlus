@@ -52,8 +52,7 @@ public class TimeConvert {
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Hours)";
             }
-        }
-        else if (PreferencesGui.getDisplayIndex() == 1) {
+        } else if (PreferencesGui.getDisplayIndex() == 1) {
             for (String name : toDisplayMap.keySet()) {
                 Double convertedTime = (toDisplayMap.get(name) / 60.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
@@ -102,15 +101,13 @@ public class TimeConvert {
                         (int) Math.floor(((convertedTime / 3600.0) - 1) * 60))
                     + " minutes "
                     + convertedTime % 60 + pluralSec;
-            }
-            else if (convertedTime >= 60) {
+            } else if (convertedTime >= 60) {
                 if (convertedTime >= 120) {
                     pluralMin = " minutes ";
                 }
                 output = convertedTime / 60 + pluralMin
                     + convertedTime % 60 + pluralSec;
-            }
-            else {
+            } else {
                 if (convertedTime % 60 == 1) {
                     pluralSec = " second ";
                 }
@@ -131,14 +128,11 @@ public class TimeConvert {
     public static String getUnit() {
         if (PreferencesGui.getDisplayIndex() == 0) {
             dataUnit = "Time (Hours)";
-        }
-        else if (PreferencesGui.getDisplayIndex() == 1) {
+        } else if (PreferencesGui.getDisplayIndex() == 1) {
             dataUnit = "Time (Minutes)";
-        }
-        else if (PreferencesGui.getDisplayIndex() == 2) {
+        } else if (PreferencesGui.getDisplayIndex() == 2) {
             dataUnit = "Time (Seconds)";
-        }
-        else {
+        } else {
             dataUnit = "Time (Written)";
         }
 
@@ -179,8 +173,7 @@ public class TimeConvert {
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Hours)";
             }
-        }
-        else if (PreferencesGui.getExportIndex() == 1) {
+        } else if (PreferencesGui.getExportIndex() == 1) {
             for (String name : toDisplayMap.keySet()) {
                 Double convertedTime = (toDisplayMap.get(name) / 60.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));

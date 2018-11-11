@@ -81,7 +81,7 @@ public class Main {
     private static Set<String> keys;
     private static JScrollPane sc;
     public static JLabel secretLabel;
-    static JCheckBox chckbxConsolidatePrograms;
+    public static JCheckBox chckbxConsolidatePrograms;
 
     private JTextField progTextField;
     private JButton btnStopTimer;

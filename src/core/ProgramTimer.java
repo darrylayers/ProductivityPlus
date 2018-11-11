@@ -54,8 +54,7 @@ public class ProgramTimer implements Runnable {
 
                 try {
                     mapTime();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 startTime();
@@ -64,8 +63,7 @@ public class ProgramTimer implements Runnable {
             // Pause before next check to eliminate wasted checks / resources
             try {
                 Thread.sleep(5);
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -76,8 +74,7 @@ public class ProgramTimer implements Runnable {
                 Main.updateTable(false);
                 Main.secretLabel.setText("  ");
                 Main.secretLabel.setText("");
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -141,8 +138,7 @@ public class ProgramTimer implements Runnable {
                 System.out.print(
                     "Time spent in " + key + " was " + value / 60
                         + " minutes and " + value % 60 + " seconds.");
-            }
-            else {
+            } else {
                 System.out.println(
                     "Time spent in " + key + " was " + value + " seconds.");
             }
