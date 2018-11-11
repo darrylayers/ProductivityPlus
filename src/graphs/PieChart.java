@@ -112,6 +112,7 @@ public class PieChart extends ApplicationFrame {
         localPiePlot.setLabelBackgroundPaint(new Color(220, 220, 220));
         localPiePlot.setSimpleLabels(true);
         localPiePlot.setInteriorGap(0.0D);
+
         return localJFreeChart;
     }
 

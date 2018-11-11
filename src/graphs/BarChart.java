@@ -96,7 +96,9 @@ public class BarChart extends ApplicationFrame {
         localBarRenderer.setBaseItemLabelGenerator(
             new StandardCategoryItemLabelGenerator());
         localBarRenderer.setBaseToolTipGenerator(
-            new StandardCategoryToolTipGenerator("{1}) = {2} ",
+            new StandardCategoryToolTipGenerator(
+                "{1} = {2} " + TimeConvert.getUnit().substring(4,
+                    TimeConvert.getUnit().length()),
                 new DecimalFormat("0")));
         CategoryAxis localCategoryAxis = localCategoryPlot.getDomainAxis();
         localCategoryAxis.setCategoryMargin(0.25D);

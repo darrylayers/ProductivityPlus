@@ -436,7 +436,6 @@ public class Main {
         // ************** Button panel ************** //
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setToolTipText("Program data for today");
         buttonPanel.setBackground(Color.WHITE);
         mainPanel.add(buttonPanel, "cell 0 1,grow");
         buttonPanel.setLayout(new MigLayout("", "[100,grow]",
@@ -475,6 +474,13 @@ public class Main {
 
             }
         });
+
+        // ************** Load data button ************** //
+
+        JButton btnLoadData = new JButton("Load Data / Refresh");
+        btnLoadData
+            .setToolTipText("Refresh the table with data recorded previously");
+        buttonPanel.add(btnLoadData, "cell 0 12,growx");
 
         // ************** Graphical output button ************** //
 
@@ -561,9 +567,6 @@ public class Main {
         secretLabel.setText("  ");
         secretLabel.setText("");
 
-        JButton btnLoadData = new JButton("Load Data / Refresh");
-        btnLoadData
-            .setToolTipText("Refresh the table with data recorded previously");
         btnLoadData.addMouseListener(new MouseAdapter() {
             @SuppressWarnings("unchecked")
             @Override
@@ -645,8 +648,6 @@ public class Main {
             }
 
         });
-
-        buttonPanel.add(btnLoadData, "cell 0 12,growx");
 
         // ************** Close to Tray ************** //
         CloseToSystemTray tray = new CloseToSystemTray();
