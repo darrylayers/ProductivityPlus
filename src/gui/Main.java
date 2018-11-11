@@ -11,6 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -662,6 +664,15 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Check to see if there is a new version of the program
+        // True if there is
+        if (checkForUpdate(
+            "http://austinayers.com/ProductivityPlus_v1.html", 500)) {
+
+            JOptionPane.showMessageDialog(null,
+                "There is a new version of this program at austinayers.com/ProductivityPlus.zip");
+        }
     }
 
     /**
@@ -939,4 +950,25 @@ public class Main {
         }
     }
 
+    /**
+     * Check to see if there is an update for PP.
+     * 
+     * @param url
+     * @param timeout
+     * @return true if there is an update, false if not.
+     */
+    public static boolean checkForUpdate(String url, int timeout) {
+        url = url.replaceFirst("^https", "http");
+        try {
+            HttpURLConnection connection =
+                (HttpURLConnection) new URL(url).openConnection();
+            connection.setConnectTimeout(timeout);
+            connection.setReadTimeout(timeout);
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            return !(200 <= responseCode && responseCode <= 399);
+        } catch (IOException exception) {
+            return true;
+        }
+    }
 }
