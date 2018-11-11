@@ -92,15 +92,12 @@ public class GraphicalOutputGui extends JDialog {
         lblNumberOfItmes.setToolTipText(
             "This is the number of items that will be plotted.");
         lblNumberOfItmes.setFont(new Font("Verdana", Font.PLAIN, 11));
+        spinner.setModel(
+            new SpinnerNumberModel(prefs.getInt(NUM_DISPLAY, 1),
+                new Integer(1), null,
+                new Integer(1)));
 
         spinnerPanel.add(spinner);
-        System.out.println(prefs.getInt(NUM_DISPLAY, 1));
-        if (getNumProgs() == 0) {
-            spinner.setModel(
-                new SpinnerNumberModel(prefs.getInt(NUM_DISPLAY, 1),
-                    new Integer(1), null,
-                    new Integer(1)));
-        }
 
         JButton btnRefreshGraphs = new JButton("Refresh Graphs");
         btnRefreshGraphs.setToolTipText("Refresh graphs with new data.");
