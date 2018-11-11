@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -83,8 +84,7 @@ public class ExploreDataGui extends JDialog {
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
@@ -104,11 +104,12 @@ public class ExploreDataGui extends JDialog {
                 new MigLayout("", "[grow]", "[228px,grow]"));
 
         getContentPane().add(tabbedPane, "cell 0 0,grow");
-        tabbedPane.addTab("Explore large data", null, contentPanel, null);
+        tabbedPane.addTab("Explore Large Data", null, contentPanel, null);
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPanel.setLayout(
             new MigLayout("", "[304.00,grow,left][-37.00][]",
                 "[grow][70.00,grow][215.00,grow]"));
+        textPane.setBackground(new Color(240, 240, 240));
         textPane.setEditable(false);
         textPane.setText(
             "The left date picker is the start date, the right date picker is the end date. You can optionally leave the right one empty.");
@@ -188,8 +189,7 @@ public class ExploreDataGui extends JDialog {
                     Desktop.getDesktop().open(new File(
                         "./output/ProductivityPlusData" + ExcelWriter.getDate()
                             + ".xlsx"));
-                }
-                catch (java.lang.IllegalArgumentException | IOException e) {
+                } catch (java.lang.IllegalArgumentException | IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -210,7 +210,7 @@ public class ExploreDataGui extends JDialog {
 
         // ************** Single Program Search ************** //
 
-        tabbedPane.addTab("Single program search", null, singleProgPanel, null);
+        tabbedPane.addTab("Single Program Search", null, singleProgPanel, null);
         singleProgPanel.setLayout(
             new MigLayout("", "[427.00,grow]", "[][grow][][][grow]"));
 
@@ -220,6 +220,8 @@ public class ExploreDataGui extends JDialog {
         progInputPanel.add(lblEnterProgramName, "cell 0 0");
 
         progInputPanel.add(textField, "cell 0 1,growx");
+        txtpnTheLeftDate.setEditable(false);
+        txtpnTheLeftDate.setBackground(new Color(240, 240, 240));
         txtpnTheLeftDate.setText(
             "The left date picker is the start date, the right date picker is the end date. You can optionally leave the right one empty.");
 
@@ -298,21 +300,17 @@ public class ExploreDataGui extends JDialog {
                 List<Map> maps = DataHandling.loadMaps(dates);
                 try {
                     DataHandling.writeDates(maps, dates);
-                }
-                catch (IOException e1) {
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 try {
                     DataHandling.acceptDate(formattedString, false);
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }
-        else {
+        } else {
             int dateR = 0;
             date = datePicker_1.getDate();
             date2 = datePicker_2.getDate();
@@ -344,21 +342,18 @@ public class ExploreDataGui extends JDialog {
 
                         if (current == null) {
                             comboMap.put(key, entry.getValue());
-                        }
-                        else {
+                        } else {
                             comboMap.put(key, entry.getValue() + current);
                         }
 
                     }
                 }
-            }
-            else {
+            } else {
                 dateR = 1;
 
                 try {
                     comboMap = DataHandling.acceptDate(formattedString, true);
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -368,8 +363,7 @@ public class ExploreDataGui extends JDialog {
             System.out.println("get checked: " + Main.getChecked());
             if (Main.chckbxConsolidatePrograms.isSelected()) {
                 loadedCurrentMap = DataHandling.validateData(comboMap);
-            }
-            else {
+            } else {
                 loadedCurrentMap = comboMap;
             }
             System.out.println("get mode: " + Main.getMode());
@@ -394,12 +388,10 @@ public class ExploreDataGui extends JDialog {
             if (time == null) {
                 JOptionPane.showMessageDialog(null,
                     "No time found, check input or display mode!");
-            }
-            else {
+            } else {
                 if (TimeConvert.getUnit().equals("Time (Written)")) {
                     strTime = DataHandling.convertToWritten(time);
-                }
-                else {
+                } else {
                     strTime = time.toString();
                 }
 

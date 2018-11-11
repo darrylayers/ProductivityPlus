@@ -78,7 +78,7 @@ public class BarChart extends ApplicationFrame {
         CategoryDataset paramCategoryDataset) {
 
         JFreeChart localJFreeChart =
-            ChartFactory.createBarChart("Bar Chart for data displayed in table",
+            ChartFactory.createBarChart("Bar Chart for Data Displayed in Table",
                 "Program", "Time " + TimeConvert.getUnit(),
                 paramCategoryDataset,
                 PlotOrientation.HORIZONTAL, false, true, false);
