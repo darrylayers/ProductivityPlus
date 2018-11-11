@@ -63,8 +63,7 @@ public class ConsolidationGui extends JDialog {
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -90,7 +89,7 @@ public class ConsolidationGui extends JDialog {
         getContentPane().add(tablePanel, "cell 0 0,grow");
         tablePanel.setLayout(new MigLayout("", "[][grow]", "[][][][]"));
 
-        lblProgsToCombine = new JLabel("Programs to combine");
+        lblProgsToCombine = new JLabel("Programs to Combine");
         mainPanel.add(lblProgsToCombine, "cell 1 0,growy");
 
         secretLabel = new JLabel("");
@@ -98,7 +97,8 @@ public class ConsolidationGui extends JDialog {
 
         // ************** Buttons ************** //
 
-        JButton btnRemove = new JButton("Remove program");
+        JButton btnRemove = new JButton("Remove Program");
+        btnRemove.setToolTipText("Remove a program to consolidate.");
         btnRemove.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -106,15 +106,15 @@ public class ConsolidationGui extends JDialog {
                 if (DataHandling.checkEmpty(txtInput.getText())) {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
-                }
-                else {
+                } else {
                     removeRow("- " + txtInput.getText());
                 }
             }
         });
         mainPanel.add(btnRemove, "cell 1 4,growx");
 
-        JButton btnEnterProgram = new JButton("Enter program");
+        JButton btnEnterProgram = new JButton("Enter Program");
+        btnEnterProgram.setToolTipText("Add a program to consolidate.");
         btnEnterProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -125,8 +125,7 @@ public class ConsolidationGui extends JDialog {
                 if (DataHandling.checkEmpty(txtInput.getText())) {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
-                }
-                else {
+                } else {
                     addRow("- " + txtInput.getText());
                 }
             }
@@ -136,10 +135,12 @@ public class ConsolidationGui extends JDialog {
         // ************** Text input box ************** //
 
         txtInput = new JTextField();
+        txtInput.setToolTipText("Enter program name here.");
         mainPanel.add(txtInput, "cell 1 2,growx");
         txtInput.setColumns(10);
 
-        btnClearList = new JButton("Clear list");
+        btnClearList = new JButton("Clear List");
+        btnClearList.setToolTipText("Remove all programs from the list.");
         btnClearList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -159,8 +160,7 @@ public class ConsolidationGui extends JDialog {
     public void loadTable() {
         if (Main.toTrack) {
             tablePanel.remove(sc);
-        }
-        else {
+        } else {
             loadList();
             Main.toTrack = true;
         }
@@ -184,6 +184,8 @@ public class ConsolidationGui extends JDialog {
         table.setRowSorter(sorter);
 
         sc = new JScrollPane(table);
+        sc.setToolTipText(
+            "These are all the programs that are being combined into the parent program.");
         tablePanel.add(sc, "cell 2 3");
         secretLabel.setText("  ");
         secretLabel.setText("");
@@ -199,8 +201,7 @@ public class ConsolidationGui extends JDialog {
         if (inList(item)) {
             JOptionPane.showMessageDialog(null,
                 "Item already in list, not added.");
-        }
-        else {
+        } else {
             list.add(item);
             txtInput.setText("");
             loadTable();
@@ -218,8 +219,7 @@ public class ConsolidationGui extends JDialog {
         if (!inList(item)) {
             JOptionPane.showMessageDialog(null,
                 "Item not in list to remove.");
-        }
-        else {
+        } else {
             list.remove(item);
             txtInput.setText("");
             loadTable();
@@ -237,8 +237,7 @@ public class ConsolidationGui extends JDialog {
     public static boolean inList(String item) {
         if (list.contains("- " + item) || list.contains(item)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -258,8 +257,7 @@ public class ConsolidationGui extends JDialog {
                     list.add(element);
                 }
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -274,8 +272,7 @@ public class ConsolidationGui extends JDialog {
         for (String element : list) {
             try {
                 out.writeUTF(element);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

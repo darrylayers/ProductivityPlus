@@ -78,12 +78,15 @@ public class BarChart extends ApplicationFrame {
         CategoryDataset paramCategoryDataset) {
 
         JFreeChart localJFreeChart =
-            ChartFactory.createBarChart("Bar Chart for data displayed in table",
+            ChartFactory.createBarChart("Bar Chart for Data Displayed in Table",
                 "Program", "Time " + TimeConvert.getUnit(),
                 paramCategoryDataset,
                 PlotOrientation.HORIZONTAL, false, true, false);
         CategoryPlot localCategoryPlot =
             (CategoryPlot) localJFreeChart.getPlot();
+
+        localCategoryPlot.setNoDataMessage("No data available");
+
         localCategoryPlot.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
         localCategoryPlot.setRangePannable(true);
         BarRenderer localBarRenderer =
@@ -93,7 +96,9 @@ public class BarChart extends ApplicationFrame {
         localBarRenderer.setBaseItemLabelGenerator(
             new StandardCategoryItemLabelGenerator());
         localBarRenderer.setBaseToolTipGenerator(
-            new StandardCategoryToolTipGenerator("{1}) = {2} ",
+            new StandardCategoryToolTipGenerator(
+                "{1} = {2} " + TimeConvert.getUnit().substring(4,
+                    TimeConvert.getUnit().length()),
                 new DecimalFormat("0")));
         CategoryAxis localCategoryAxis = localCategoryPlot.getDomainAxis();
         localCategoryAxis.setCategoryMargin(0.25D);

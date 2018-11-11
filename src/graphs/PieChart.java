@@ -95,7 +95,7 @@ public class PieChart extends ApplicationFrame {
     private static JFreeChart createChart(PieDataset paramPieDataset) {
 
         JFreeChart localJFreeChart = ChartFactory.createPieChart(
-            "Pie Chart for data displayed in table", paramPieDataset,
+            "Pie Chart for Data Displayed in Table", paramPieDataset,
             true, true, false);
         PiePlot localPiePlot = (PiePlot) localJFreeChart.getPlot();
 
@@ -112,6 +112,7 @@ public class PieChart extends ApplicationFrame {
         localPiePlot.setLabelBackgroundPaint(new Color(220, 220, 220));
         localPiePlot.setSimpleLabels(true);
         localPiePlot.setInteriorGap(0.0D);
+
         return localJFreeChart;
     }
 

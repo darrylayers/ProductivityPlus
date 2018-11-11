@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,12 +33,9 @@ public class GraphicalOutputGui extends JDialog {
     private static final long serialVersionUID = 3774721756310500262L;
     private JPanel pie = new JPanel();
     private JPanel bar = new JPanel();
-    private JPanel line = new JPanel();
-    private JPanel scatter = new JPanel();
     private JPanel piechartPanel = new JPanel();
     private JPanel bargraphPanel = new JPanel();
-    private JPanel linechartPanel = new JPanel();
-    private JPanel scatterplotPanel = new JPanel();
+
     private JTabbedPane tabbedPane;
     public static JSpinner spinner = new JSpinner();
     private static Preferences prefs =
@@ -58,8 +56,7 @@ public class GraphicalOutputGui extends JDialog {
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -76,7 +73,7 @@ public class GraphicalOutputGui extends JDialog {
         getContentPane().setLayout(
             new MigLayout("", "[184.00][817.00,grow]", "[][503.00,grow]"));
 
-        JLabel lblGraphSettings = new JLabel("Graph Settings and controls");
+        JLabel lblGraphSettings = new JLabel("Graph Settings and Controls");
         getContentPane().add(lblGraphSettings, "cell 0 0,alignx center");
         lblGraphSettings.setFont(new Font("Verdana", Font.PLAIN, 11));
 
@@ -85,11 +82,7 @@ public class GraphicalOutputGui extends JDialog {
         controlPanel
             .setLayout(
                 new MigLayout("", "[204.00,grow][-58.00][-84.00][71.00]",
-                    "[18.00][][8.00][][][]"));
-
-        JLabel lblclickRefreshTo =
-            new JLabel("(Click refresh to update with new dates)");
-        controlPanel.add(lblclickRefreshTo, "cell 0 3");
+                    "[18.00][][8.00][][]"));
 
         JPanel spinnerPanel = new JPanel();
         controlPanel.add(spinnerPanel, "cell 0 0,alignx left,growy");
@@ -101,11 +94,16 @@ public class GraphicalOutputGui extends JDialog {
         lblNumberOfItmes.setFont(new Font("Verdana", Font.PLAIN, 11));
 
         spinnerPanel.add(spinner);
-        spinner.setModel(
-            new SpinnerNumberModel(getNumProgs(), new Integer(1), null,
-                new Integer(1)));
+        System.out.println(prefs.getInt(NUM_DISPLAY, 1));
+        if (getNumProgs() == 0) {
+            spinner.setModel(
+                new SpinnerNumberModel(prefs.getInt(NUM_DISPLAY, 1),
+                    new Integer(1), null,
+                    new Integer(1)));
+        }
 
-        JButton btnRefreshGraphs = new JButton("Refresh graphs");
+        JButton btnRefreshGraphs = new JButton("Refresh Graphs");
+        btnRefreshGraphs.setToolTipText("Refresh graphs with new data.");
         btnRefreshGraphs.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -117,14 +115,16 @@ public class GraphicalOutputGui extends JDialog {
         controlPanel.add(btnRefreshGraphs, "cell 0 1,grow");
 
         JTextPane txtpnHelpfulTipYou = new JTextPane();
-        txtpnHelpfulTipYou.setText(
-            "Helpful tip: You can use the scroll wheel on the graphs to rotate. \n\n"
+        txtpnHelpfulTipYou.setBackground(new Color(240, 240, 240));
+        txtpnHelpfulTipYou
+            .setText("(Click Refresh Graphs to update with new dates) \n\n" +
+                "Helpful tip: You can use the scroll wheel on the graphs to rotate. \n\n"
                 + "You can also right-click the graphs for more options, including the option to save them.");
         txtpnHelpfulTipYou.setEditable(false);
-        controlPanel.add(txtpnHelpfulTipYou, "cell 0 4,grow");
+        controlPanel.add(txtpnHelpfulTipYou, "cell 0 3,grow");
 
         JLabel secretLabel = new JLabel("");
-        controlPanel.add(secretLabel, "cell 0 5,alignx right");
+        controlPanel.add(secretLabel, "cell 0 4,alignx right");
 
         spinner.addChangeListener(new ChangeListener() {
             @Override

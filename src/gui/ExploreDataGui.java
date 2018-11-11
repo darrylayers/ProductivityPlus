@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,6 +22,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -69,6 +71,8 @@ public class ExploreDataGui extends JDialog {
     private final JButton btnSubmitSearch = new JButton("Submit Search");
     private final JTextArea txtrTest = new JTextArea();
     private boolean singleData = false;
+    private final JTextPane txtpnTheLeftDate = new JTextPane();
+    private final JTextPane textPane = new JTextPane();
 
     /**
      * Launch the About pop up window.
@@ -80,8 +84,7 @@ public class ExploreDataGui extends JDialog {
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
@@ -91,9 +94,10 @@ public class ExploreDataGui extends JDialog {
      * Create the dialog.
      */
     public ExploreDataGui() {
+        textField.setToolTipText("Enter program name to look up.");
         textField.setColumns(10);
         setTitle("Explore Data");
-        setBounds(100, 100, 450, 334);
+        setBounds(100, 100, 450, 396);
 
         // ************** Frame panels and panes ************** //
         getContentPane()
@@ -101,11 +105,17 @@ public class ExploreDataGui extends JDialog {
                 new MigLayout("", "[grow]", "[228px,grow]"));
 
         getContentPane().add(tabbedPane, "cell 0 0,grow");
-        tabbedPane.addTab("Explore large data", null, contentPanel, null);
+        tabbedPane.addTab("Explore Large Data", null, contentPanel, null);
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPanel.setLayout(
-            new MigLayout("", "[304.00,left][-37.00][]",
+            new MigLayout("", "[304.00,grow,left][-37.00][]",
                 "[grow][70.00,grow][215.00,grow]"));
+        textPane.setBackground(new Color(240, 240, 240));
+        textPane.setEditable(false);
+        textPane.setText(
+            "The left date picker is the start date, the right date picker is the end date. You can optionally leave the right one empty.");
+
+        contentPanel.add(textPane, "cell 0 0,grow");
 
         // ************** Dates ************** //
 
@@ -115,8 +125,12 @@ public class ExploreDataGui extends JDialog {
         contentPanel.add(datePanel, "cell 0 1,grow");
         datePanel.setLayout(
             new MigLayout("", "[83.00,grow][][]", "[][][55.00,grow][grow]"));
+        datePicker.getComponentDateTextField()
+            .setToolTipText("Enter start date.");
         datePanel.add(datePicker, "");
         datePicker.setDateToToday();
+        datePicker2.getComponentDateTextField().setToolTipText(
+            "Enter end date. Can be left empty for single date search.");
         datePanel.add(datePicker2, "cell 1 0");
 
         // ************** Exports ************** //
@@ -137,6 +151,7 @@ public class ExploreDataGui extends JDialog {
         // exportPanel.add(rdbtnExcelExport, "cell 0 0");
 
         JButton btnOpenOutput = new JButton("Open Output");
+        btnOpenOutput.setToolTipText("Open the created Excel file.");
         JButton btnCreateExportFile = new JButton("Create export file");
         btnCreateExportFile.addMouseListener(new MouseAdapter() {
             @Override
@@ -170,7 +185,7 @@ public class ExploreDataGui extends JDialog {
         // exportPanel.add(rdbtntxtExport, "cell 2 0");
 
         btnCreateExportFile.setToolTipText(
-            "File is exported to Excel format (.xlsx)");
+            "File is exported to Excel format (.xlsx).");
         exportPanel.add(btnCreateExportFile, "cell 0 1,grow");
 
         btnOpenOutput.addMouseListener(new MouseAdapter() {
@@ -180,8 +195,7 @@ public class ExploreDataGui extends JDialog {
                     Desktop.getDesktop().open(new File(
                         "./output/ProductivityPlusData" + ExcelWriter.getDate()
                             + ".xlsx"));
-                }
-                catch (java.lang.IllegalArgumentException | IOException e) {
+                } catch (java.lang.IllegalArgumentException | IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -202,9 +216,9 @@ public class ExploreDataGui extends JDialog {
 
         // ************** Single Program Search ************** //
 
-        tabbedPane.addTab("Single program search", null, singleProgPanel, null);
+        tabbedPane.addTab("Single Program Search", null, singleProgPanel, null);
         singleProgPanel.setLayout(
-            new MigLayout("", "[427.00,grow]", "[][][grow]"));
+            new MigLayout("", "[427.00,grow]", "[][grow][][][grow]"));
 
         singleProgPanel.add(progInputPanel, "cell 0 0,grow");
         progInputPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
@@ -212,13 +226,24 @@ public class ExploreDataGui extends JDialog {
         progInputPanel.add(lblEnterProgramName, "cell 0 0");
 
         progInputPanel.add(textField, "cell 0 1,growx");
+        txtpnTheLeftDate.setEditable(false);
+        txtpnTheLeftDate.setBackground(new Color(240, 240, 240));
+        txtpnTheLeftDate.setText(
+            "The left date picker is the start date, the right date picker is the end date. You can optionally leave the right one empty.");
 
-        singleProgPanel.add(calendarPanel, "cell 0 1,grow");
+        singleProgPanel.add(txtpnTheLeftDate, "cell 0 1,grow");
+
+        singleProgPanel.add(calendarPanel, "cell 0 3,grow");
         calendarPanel.setLayout(new MigLayout("", "[grow][grow]", "[grow][]"));
+        datePicker_1.getComponentDateTextField()
+            .setToolTipText("Starting look up date.");
 
         calendarPanel.add(datePicker_1, "cell 0 0");
+        datePicker_2.getComponentDateTextField()
+            .setToolTipText("Ending look up date.");
 
         calendarPanel.add(datePicker_2, "cell 1 0");
+        btnSubmitSearch.setToolTipText("Submit program search.");
         btnSubmitSearch.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -229,7 +254,7 @@ public class ExploreDataGui extends JDialog {
 
         calendarPanel.add(btnSubmitSearch, "cell 1 1");
 
-        singleProgPanel.add(displayPanel, "cell 0 2,grow");
+        singleProgPanel.add(displayPanel, "cell 0 4,grow");
         displayPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
         txtrTest.setText("Program name: <Search submission needed> \n"
             + "Total time over the range: <Time will be here in unit preference> \n"
@@ -286,21 +311,17 @@ public class ExploreDataGui extends JDialog {
                 List<Map> maps = DataHandling.loadMaps(dates);
                 try {
                     DataHandling.writeDates(maps, dates);
-                }
-                catch (IOException e1) {
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 try {
                     DataHandling.acceptDate(formattedString, false);
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }
-        else {
+        } else {
             int dateR = 0;
             date = datePicker_1.getDate();
             date2 = datePicker_2.getDate();
@@ -332,29 +353,31 @@ public class ExploreDataGui extends JDialog {
 
                         if (current == null) {
                             comboMap.put(key, entry.getValue());
-                        }
-                        else {
+                        } else {
                             comboMap.put(key, entry.getValue() + current);
                         }
 
                     }
                 }
-            }
-            else {
+            } else {
                 dateR = 1;
 
                 try {
                     comboMap = DataHandling.acceptDate(formattedString, true);
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
             Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
-            if (Main.getChecked()) {
+
+            System.out.println("get checked: " + Main.getChecked());
+            if (Main.chckbxConsolidatePrograms.isSelected()) {
                 loadedCurrentMap = DataHandling.validateData(comboMap);
+            } else {
+                loadedCurrentMap = comboMap;
             }
+            System.out.println("get mode: " + Main.getMode());
             if (Main.getMode() == 3 || Main.getMode() == 2) {
                 if (!Main.getChecked()) {
                     loadedCurrentMap = comboMap;
@@ -363,28 +386,23 @@ public class ExploreDataGui extends JDialog {
                     DataHandling.validateWhatToDisplay(loadedCurrentMap);
             }
 
-            else if (Main.getMode() == 1 && Main.getChecked()) {
-                loadedCurrentMap = DataHandling.validateData(comboMap);
-            }
-
             Map<String, Double> displayMap =
                 TimeConvert.convertTime(loadedCurrentMap);
-            
-            System.out.println(loadedCurrentMap);
-            System.out.println(displayMap);
+
+            System.out.println("loaded current map " + loadedCurrentMap);
+            System.out.println("display map " + displayMap);
 
             Double time = displayMap.get(textInput);
 
             String strTime = "";
-            
+
             if (time == null) {
-            	JOptionPane.showMessageDialog(null,
-                        "No time found, check input or display mode!");
+                JOptionPane.showMessageDialog(null,
+                    "No time found, check input or display mode!");
             } else {
                 if (TimeConvert.getUnit().equals("Time (Written)")) {
                     strTime = DataHandling.convertToWritten(time);
-                }
-                else {
+                } else {
                     strTime = time.toString();
                 }
 

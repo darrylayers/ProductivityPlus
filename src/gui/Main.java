@@ -81,15 +81,15 @@ public class Main {
     private static Set<String> keys;
     private static JScrollPane sc;
     public static JLabel secretLabel;
-    private static JCheckBox chckbxConsolidatePrograms;
+    static JCheckBox chckbxConsolidatePrograms;
 
     private JTextField progTextField;
     private JButton btnStopTimer;
-    private JRadioButton trackAllRButton = new JRadioButton("Track all");
+    private JRadioButton trackAllRButton = new JRadioButton("Track All");
     private JRadioButton trackInclusionsRButton =
-        new JRadioButton("Track inclusions");
+        new JRadioButton("Track Inclusions");
     private JRadioButton trackExclusionsRButton =
-        new JRadioButton("Track exclusions");
+        new JRadioButton("Track Exclusions");
 
     public static boolean toTrack = false;
     public static Map<String, Double> globalMap = new HashMap<String, Double>();
@@ -110,8 +110,7 @@ public class Main {
         // Load the hashmap info ProgramTimer.appMap
         try {
             DataHandling.loadMap();
-        }
-        catch (NumberFormatException | IOException e) {
+        } catch (NumberFormatException | IOException e) {
             e.printStackTrace();
         }
 
@@ -140,8 +139,7 @@ public class Main {
                 try {
                     Desktop.getDesktop().open(new File("./output"));
 
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -156,8 +154,7 @@ public class Main {
                 try {
                     Desktop.getDesktop().open(new File("./saved_data"));
 
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -188,8 +185,7 @@ public class Main {
                 if (ProgramTimer.trackIfTrue) {
                     JOptionPane.showMessageDialog(null,
                         "Cannot edit preferences while program tracker is running.");
-                }
-                else {
+                } else {
                     PreferencesGui.newWindow();
                 }
             }
@@ -222,7 +218,8 @@ public class Main {
         tabbedPane.addTab("Program Timer", null, mainPanel, null);
 
         JPanel displayPanel = new JPanel();
-        tabbedPane.addTab("What to display", null, displayPanel, null);
+        displayPanel.setToolTipText("");
+        tabbedPane.addTab("What to Display", null, displayPanel, null);
         displayPanel.setLayout(new MigLayout("",
             "[310.00px,grow][450,grow][501.00,grow]", "[75][457.00px,grow]"));
 
@@ -231,13 +228,13 @@ public class Main {
 
         JLabel inclusionsLabel = new JLabel("Inclusions");
         inclusionsLabel.setToolTipText(
-            "These are the ONLY programs that will be tracked if the \"Track inclusions\" button is selected. This is useful if you only want to track a few programs.");
+            "These are the ONLY programs that will be tracked if the \"Track Inclusions\" button is selected. This is useful if you only want to track a few programs.");
         displayPanel.add(inclusionsLabel,
             "cell 1 0,alignx center,aligny center");
 
         JLabel exclusionsLabel = new JLabel("Exclusions");
         exclusionsLabel.setToolTipText(
-            "These are the programs that will be excluded from tracking if the \"Track exclusions\" button is selected. This is useful if you want to avoid tracking only a few programs.");
+            "These are the programs that will be excluded from tracking if the \"Track Exclusions\" button is selected. This is useful if you want to avoid tracking only a few programs.");
         displayPanel.add(exclusionsLabel,
             "cell 2 0,alignx center,aligny center");
 
@@ -246,7 +243,7 @@ public class Main {
         controlPanel.setLayout(new MigLayout("", "[132.00,grow]",
             "[][][][][][][][][][][][][][][]"));
 
-        JLabel modeLabel = new JLabel("Mode - What to display");
+        JLabel modeLabel = new JLabel("Mode - What to Display");
         controlPanel.add(modeLabel, "cell 0 0,alignx center,aligny center");
 
         trackAllRButton
@@ -268,11 +265,9 @@ public class Main {
 
         if (getMode() == 1) {
             trackAllRButton.setSelected(true);
-        }
-        else if (getMode() == 2) {
+        } else if (getMode() == 2) {
             trackInclusionsRButton.setSelected(true);
-        }
-        else if (getMode() == 3) {
+        } else if (getMode() == 3) {
             trackExclusionsRButton.setSelected(true);
         }
 
@@ -281,7 +276,7 @@ public class Main {
         controlPanel.add(progTextField, "cell 0 5,growx");
         progTextField.setColumns(10);
 
-        JButton btnAddProgram = new JButton("Add program");
+        JButton btnAddProgram = new JButton("Add Program");
         btnAddProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -289,13 +284,11 @@ public class Main {
                 if (DataHandling.checkEmpty(progTextField.getText())) {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
-                }
-                else {
+                } else {
                     if (getMode() == 1) {
                         JOptionPane.showMessageDialog(null,
-                            "Cannot add program. Track all is selected.");
-                    }
-                    else if (getMode() == 2 || getMode() == 3) {
+                            "Cannot add program. Track All is selected.");
+                    } else if (getMode() == 2 || getMode() == 3) {
                         List<String> inclusions = new ArrayList<>();
                         List<String> exclusions = new ArrayList<>();
                         displayPanel.remove(inclusionScrollPane);
@@ -304,8 +297,7 @@ public class Main {
                         exclusions = TableHelper.loadList("exclusion");
                         if (getMode() == 2) {
                             inclusions.add("- " + progTextField.getText());
-                        }
-                        else {
+                        } else {
                             exclusions.add("- " + progTextField.getText());
                         }
                         TableHelper.saveList(inclusions, "inclusion");
@@ -329,8 +321,7 @@ public class Main {
                 if (trackExclusionsRButton.isSelected()) {
                     trackInclusionsRButton.setSelected(false);
                     trackAllRButton.setSelected(false);
-                }
-                else {
+                } else {
                     trackExclusionsRButton.setSelected(true);
                 }
                 setMode();
@@ -343,8 +334,7 @@ public class Main {
                 if (trackInclusionsRButton.isSelected()) {
                     trackAllRButton.setSelected(false);
                     trackExclusionsRButton.setSelected(false);
-                }
-                else {
+                } else {
                     trackInclusionsRButton.setSelected(true);
                 }
                 setMode();
@@ -358,8 +348,7 @@ public class Main {
                 if (trackAllRButton.isSelected()) {
                     trackInclusionsRButton.setSelected(false);
                     trackExclusionsRButton.setSelected(false);
-                }
-                else {
+                } else {
                     trackAllRButton.setSelected(true);
                 }
                 setMode();
@@ -371,7 +360,7 @@ public class Main {
             "Add a program from whichever table is selected above.");
         controlPanel.add(btnAddProgram, "cell 0 6,grow");
 
-        JButton btnRemoveProgram = new JButton("Remove program");
+        JButton btnRemoveProgram = new JButton("Remove Program");
         btnRemoveProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -379,12 +368,11 @@ public class Main {
                 if (DataHandling.checkEmpty(progTextField.getText())) {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
-                }
-                else {
+                } else {
 
                     if (getMode() == 1) {
                         JOptionPane.showMessageDialog(null,
-                            "Cannot remove program. Track all is selected.");
+                            "Cannot remove program. Track All is selected.");
                     }
 
                     else if (getMode() == 2 || getMode() == 3) {
@@ -396,8 +384,7 @@ public class Main {
                         exclusions = TableHelper.loadList("exclusion");
                         if (getMode() == 2) {
                             inclusions.remove("- " + progTextField.getText());
-                        }
-                        else {
+                        } else {
                             exclusions.remove("- " + progTextField.getText());
                         }
                         TableHelper.saveList(inclusions, "inclusion");
@@ -421,7 +408,8 @@ public class Main {
         JLabel secret_label = new JLabel("");
         controlPanel.add(secret_label, "cell 0 14");
 
-        JButton btnClearList = new JButton("Clear list");
+        JButton btnClearList = new JButton("Clear List");
+        btnClearList.setToolTipText("Clear the selected list of all entries.");
         btnClearList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -448,7 +436,6 @@ public class Main {
         // ************** Button panel ************** //
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setToolTipText("Program data for today");
         buttonPanel.setBackground(Color.WHITE);
         mainPanel.add(buttonPanel, "cell 0 1,grow");
         buttonPanel.setLayout(new MigLayout("", "[100,grow]",
@@ -457,6 +444,7 @@ public class Main {
         // ************** Start button ************** //
 
         JButton btnStartTimer = new JButton("Start Timer");
+        btnStartTimer.setToolTipText("Start tracking what you do.");
         buttonPanel.add(btnStartTimer, "cell 0 0,growx");
         btnStartTimer.addMouseListener(new MouseAdapter() {
             @Override
@@ -469,6 +457,7 @@ public class Main {
         // ************** Stop button ************** //
 
         btnStopTimer = new JButton("Stop Timer");
+        btnStopTimer.setToolTipText("Stop tracking what you do.");
         buttonPanel.add(btnStopTimer, "cell 0 1,growx");
         btnStopTimer.addMouseListener(new MouseAdapter() {
             @Override
@@ -478,8 +467,7 @@ public class Main {
                 setStopLabel();
                 try {
                     Thread.sleep(50);
-                }
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 updateTable(false);
@@ -487,9 +475,17 @@ public class Main {
             }
         });
 
+        // ************** Load data button ************** //
+
+        JButton btnLoadData = new JButton("Load Data / Refresh");
+        btnLoadData
+            .setToolTipText("Refresh the table with data recorded previously");
+        buttonPanel.add(btnLoadData, "cell 0 12,growx");
+
         // ************** Graphical output button ************** //
 
         JButton btnGraphOutput = new JButton("Graphical Output");
+        btnGraphOutput.setToolTipText("View what is in the table graphically.");
         btnGraphOutput.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -501,6 +497,7 @@ public class Main {
         // ************** Explore data button ************** //
 
         JButton btnExploreData = new JButton("Explore Data");
+        btnExploreData.setToolTipText("Explore your saved data.");
         btnExploreData.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -517,9 +514,10 @@ public class Main {
                 // setChecked();
                 prefs.putBoolean(VALIDATE_STRINGS,
                     chckbxConsolidatePrograms.isSelected());
-                /*                updateTable(false);
-                secretLabel.setText("  ");
-                secretLabel.setText("");*/
+                /*
+                 * updateTable(false); secretLabel.setText("  ");
+                 * secretLabel.setText("");
+                 */
             }
         });
         buttonPanel.add(chckbxConsolidatePrograms, "cell 0 5,growx");
@@ -533,6 +531,8 @@ public class Main {
         buttonPanel.add(secretLabel, "cell 0 7,alignx center");
 
         JButton btnRefreshTable = new JButton("Refresh Today's Data");
+        btnRefreshTable
+            .setToolTipText("Refresh the table with data recorded today.");
         btnRefreshTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -547,6 +547,8 @@ public class Main {
         buttonPanel.add(lblStartDate, "cell 0 8");
 
         DatePicker datePicker = new DatePicker((DatePickerSettings) null);
+        datePicker.getComponentDateTextField()
+            .setToolTipText("Beginning date.");
         buttonPanel.add(datePicker, "cell 0 9,grow");
 
         JLabel lblEndDate = new JLabel("End Date");
@@ -555,6 +557,7 @@ public class Main {
         buttonPanel.add(lblEndDate, "cell 0 10");
 
         DatePicker datePicker2 = new DatePicker((DatePickerSettings) null);
+        datePicker2.getComponentDateTextField().setToolTipText("Ending date.");
         buttonPanel.add(datePicker2, "cell 0 11,grow");
 
         // ************** Table ************** //
@@ -564,7 +567,6 @@ public class Main {
         secretLabel.setText("  ");
         secretLabel.setText("");
 
-        JButton btnLoadData = new JButton("Load Data / Refresh");
         btnLoadData.addMouseListener(new MouseAdapter() {
             @SuppressWarnings("unchecked")
             @Override
@@ -575,8 +577,7 @@ public class Main {
                 if (date == null) {
                     JOptionPane.showMessageDialog(null,
                         "Please enter a start date.");
-                }
-                else {
+                } else {
                     String formattedString;
                     String formattedString2;
                     // Pass the date(s) to DateHandling.java
@@ -590,8 +591,9 @@ public class Main {
                         try {
                             loadTable(
                                 DataHandling.acceptDateTable(formattedString));
-                        }
-                        catch (IOException e) {
+                            globalMap = DataHandling.convertMap(
+                                DataHandling.acceptDateTable(formattedString));
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
@@ -620,21 +622,18 @@ public class Main {
                         if (chckbxConsolidatePrograms.isSelected()) {
                             loadedCurrentMap =
                                 DataHandling.validateData(combinedMaps);
-                        }
-                        else {
+                        } else {
                             loadedCurrentMap = combinedMaps;
                         }
                         if (Main.getMode() == 3 || Main.getMode() == 2) {
                             loadedCurrentMap =
                                 DataHandling
                                     .validateWhatToDisplay(loadedCurrentMap);
-                        }
-                        else if (Main.getMode() == 1
+                        } else if (Main.getMode() == 1
                             && chckbxConsolidatePrograms.isSelected()) {
                             loadedCurrentMap =
                                 DataHandling.validateData(combinedMaps);
-                        }
-                        else {
+                        } else {
                             loadedCurrentMap = combinedMaps;
                         }
 
@@ -650,14 +649,11 @@ public class Main {
 
         });
 
-        buttonPanel.add(btnLoadData, "cell 0 12,growx");
-
         // ************** Close to Tray ************** //
         CloseToSystemTray tray = new CloseToSystemTray();
         try {
             tray.startTray();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -747,12 +743,10 @@ public class Main {
             }
             loadedCurrentMap =
                 DataHandling.validateWhatToDisplay(loadedCurrentMap);
-        }
-        else if (Main.getMode() == 1
+        } else if (Main.getMode() == 1
             && chckbxConsolidatePrograms.isSelected()) {
             loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
-        }
-        else {
+        } else {
             loadedCurrentMap = ProgramTimer.appMap;
         }
         // All the keys we need are loaded from the map
@@ -765,8 +759,7 @@ public class Main {
             model = new DefaultTableModel(1, 2);
             String[] colHeadings = {"Program", "Time"};
             model.setColumnIdentifiers(colHeadings);
-        }
-        else {
+        } else {
             model = new DefaultTableModel(
                 getRows((TimeConvert.convertTime(loadedCurrentMap))), columns) {
                 @Override
@@ -774,8 +767,7 @@ public class Main {
                     Class returnValue;
                     if ((column >= 0) && (column < getColumnCount())) {
                         returnValue = getValueAt(0, column).getClass();
-                    }
-                    else {
+                    } else {
                         returnValue = Object.class;
                     }
                     return returnValue;
@@ -798,8 +790,7 @@ public class Main {
             // Append a new column with copied data
             model.addColumn(TimeConvert.getUnit(),
                 finalMap2.values().toArray());
-        }
-        else {
+        } else {
             RowSorter<TableModel> sorter =
                 new TableRowSorter<TableModel>(model);
             table.setRowSorter(sorter);
@@ -897,8 +888,7 @@ public class Main {
             model = new DefaultTableModel(1, 2);
             String[] colHeadings = {"Program", "Time"};
             model.setColumnIdentifiers(colHeadings);
-        }
-        else {
+        } else {
             model = new DefaultTableModel(
                 getRows((TimeConvert.convertTime(loadedMap))), columns) {
                 @Override
@@ -906,8 +896,7 @@ public class Main {
                     Class returnValue;
                     if ((column >= 0) && (column < getColumnCount())) {
                         returnValue = getValueAt(0, column).getClass();
-                    }
-                    else {
+                    } else {
                         returnValue = Object.class;
                     }
                     return returnValue;
@@ -930,8 +919,7 @@ public class Main {
             // Append a new column with copied data
             model.addColumn(TimeConvert.getUnit(),
                 finalMap2.values().toArray());
-        }
-        else {
+        } else {
 
             RowSorter<TableModel> sorter =
                 new TableRowSorter<TableModel>(model);
@@ -956,8 +944,7 @@ public class Main {
     public void setChecked() {
         if (chckbxConsolidatePrograms.isSelected()) {
             prefs.putBoolean(VALIDATE_STRINGS, true);
-        }
-        else {
+        } else {
             prefs.putBoolean(VALIDATE_STRINGS, false);
         }
     }
@@ -987,11 +974,9 @@ public class Main {
     public void setMode() {
         if (trackAllRButton.isSelected()) {
             prefs.putInt(DISPLAY_MODE, 1);
-        }
-        else if (trackInclusionsRButton.isSelected()) {
+        } else if (trackInclusionsRButton.isSelected()) {
             prefs.putInt(DISPLAY_MODE, 2);
-        }
-        else if (trackExclusionsRButton.isSelected()) {
+        } else if (trackExclusionsRButton.isSelected()) {
             prefs.putInt(DISPLAY_MODE, 3);
         }
     }
