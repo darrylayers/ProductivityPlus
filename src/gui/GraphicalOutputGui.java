@@ -103,6 +103,7 @@ public class GraphicalOutputGui extends JDialog {
         }
 
         JButton btnRefreshGraphs = new JButton("Refresh Graphs");
+        btnRefreshGraphs.setToolTipText("Refresh graphs with new data.");
         btnRefreshGraphs.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {

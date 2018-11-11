@@ -55,8 +55,7 @@ public class PreferencesGui extends JDialog {
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
             bundle();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -153,7 +152,7 @@ public class PreferencesGui extends JDialog {
 
         // ************** Save Button ************** //
         JButton btnSave = new JButton("Save");
-        btnSave.setToolTipText("Save changes");
+        btnSave.setToolTipText("Save changes.");
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -166,7 +165,7 @@ public class PreferencesGui extends JDialog {
 
         // ************** Cancel Button ************** //
         JButton btnCancel = new JButton("Cancel");
-        btnCancel.setToolTipText("Revert changes");
+        btnCancel.setToolTipText("Revert changes.");
         btnCancel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {

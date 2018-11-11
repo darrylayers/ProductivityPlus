@@ -218,6 +218,7 @@ public class Main {
         tabbedPane.addTab("Program Timer", null, mainPanel, null);
 
         JPanel displayPanel = new JPanel();
+        displayPanel.setToolTipText("");
         tabbedPane.addTab("What to Display", null, displayPanel, null);
         displayPanel.setLayout(new MigLayout("",
             "[310.00px,grow][450,grow][501.00,grow]", "[75][457.00px,grow]"));
@@ -408,6 +409,7 @@ public class Main {
         controlPanel.add(secret_label, "cell 0 14");
 
         JButton btnClearList = new JButton("Clear List");
+        btnClearList.setToolTipText("Clear the selected list of all entries.");
         btnClearList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -443,6 +445,7 @@ public class Main {
         // ************** Start button ************** //
 
         JButton btnStartTimer = new JButton("Start Timer");
+        btnStartTimer.setToolTipText("Start tracking what you do.");
         buttonPanel.add(btnStartTimer, "cell 0 0,growx");
         btnStartTimer.addMouseListener(new MouseAdapter() {
             @Override
@@ -455,6 +458,7 @@ public class Main {
         // ************** Stop button ************** //
 
         btnStopTimer = new JButton("Stop Timer");
+        btnStopTimer.setToolTipText("Stop tracking what you do.");
         buttonPanel.add(btnStopTimer, "cell 0 1,growx");
         btnStopTimer.addMouseListener(new MouseAdapter() {
             @Override
@@ -475,6 +479,7 @@ public class Main {
         // ************** Graphical output button ************** //
 
         JButton btnGraphOutput = new JButton("Graphical Output");
+        btnGraphOutput.setToolTipText("View what is in the table graphically.");
         btnGraphOutput.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -486,6 +491,7 @@ public class Main {
         // ************** Explore data button ************** //
 
         JButton btnExploreData = new JButton("Explore Data");
+        btnExploreData.setToolTipText("Explore your saved data.");
         btnExploreData.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -519,6 +525,8 @@ public class Main {
         buttonPanel.add(secretLabel, "cell 0 7,alignx center");
 
         JButton btnRefreshTable = new JButton("Refresh Today's Data");
+        btnRefreshTable
+            .setToolTipText("Refresh the table with data recorded today.");
         btnRefreshTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -533,6 +541,8 @@ public class Main {
         buttonPanel.add(lblStartDate, "cell 0 8");
 
         DatePicker datePicker = new DatePicker((DatePickerSettings) null);
+        datePicker.getComponentDateTextField()
+            .setToolTipText("Beginning date.");
         buttonPanel.add(datePicker, "cell 0 9,grow");
 
         JLabel lblEndDate = new JLabel("End Date");
@@ -541,6 +551,7 @@ public class Main {
         buttonPanel.add(lblEndDate, "cell 0 10");
 
         DatePicker datePicker2 = new DatePicker((DatePickerSettings) null);
+        datePicker2.getComponentDateTextField().setToolTipText("Ending date.");
         buttonPanel.add(datePicker2, "cell 0 11,grow");
 
         // ************** Table ************** //
@@ -551,6 +562,8 @@ public class Main {
         secretLabel.setText("");
 
         JButton btnLoadData = new JButton("Load Data / Refresh");
+        btnLoadData
+            .setToolTipText("Refresh the table with data recorded previously");
         btnLoadData.addMouseListener(new MouseAdapter() {
             @SuppressWarnings("unchecked")
             @Override

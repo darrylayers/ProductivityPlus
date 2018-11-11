@@ -94,6 +94,7 @@ public class ExploreDataGui extends JDialog {
      * Create the dialog.
      */
     public ExploreDataGui() {
+        textField.setToolTipText("Enter program name to look up.");
         textField.setColumns(10);
         setTitle("Explore Data");
         setBounds(100, 100, 450, 396);
@@ -124,8 +125,12 @@ public class ExploreDataGui extends JDialog {
         contentPanel.add(datePanel, "cell 0 1,grow");
         datePanel.setLayout(
             new MigLayout("", "[83.00,grow][][]", "[][][55.00,grow][grow]"));
+        datePicker.getComponentDateTextField()
+            .setToolTipText("Enter start date.");
         datePanel.add(datePicker, "");
         datePicker.setDateToToday();
+        datePicker2.getComponentDateTextField().setToolTipText(
+            "Enter end date. Can be left empty for single date search.");
         datePanel.add(datePicker2, "cell 1 0");
 
         // ************** Exports ************** //
@@ -146,6 +151,7 @@ public class ExploreDataGui extends JDialog {
         // exportPanel.add(rdbtnExcelExport, "cell 0 0");
 
         JButton btnOpenOutput = new JButton("Open Output");
+        btnOpenOutput.setToolTipText("Open the created Excel file.");
         JButton btnCreateExportFile = new JButton("Create export file");
         btnCreateExportFile.addMouseListener(new MouseAdapter() {
             @Override
@@ -179,7 +185,7 @@ public class ExploreDataGui extends JDialog {
         // exportPanel.add(rdbtntxtExport, "cell 2 0");
 
         btnCreateExportFile.setToolTipText(
-            "File is exported to Excel format (.xlsx)");
+            "File is exported to Excel format (.xlsx).");
         exportPanel.add(btnCreateExportFile, "cell 0 1,grow");
 
         btnOpenOutput.addMouseListener(new MouseAdapter() {
@@ -229,10 +235,15 @@ public class ExploreDataGui extends JDialog {
 
         singleProgPanel.add(calendarPanel, "cell 0 3,grow");
         calendarPanel.setLayout(new MigLayout("", "[grow][grow]", "[grow][]"));
+        datePicker_1.getComponentDateTextField()
+            .setToolTipText("Starting look up date.");
 
         calendarPanel.add(datePicker_1, "cell 0 0");
+        datePicker_2.getComponentDateTextField()
+            .setToolTipText("Ending look up date.");
 
         calendarPanel.add(datePicker_2, "cell 1 0");
+        btnSubmitSearch.setToolTipText("Submit program search.");
         btnSubmitSearch.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {

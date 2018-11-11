@@ -98,6 +98,7 @@ public class ConsolidationGui extends JDialog {
         // ************** Buttons ************** //
 
         JButton btnRemove = new JButton("Remove Program");
+        btnRemove.setToolTipText("Remove a program to consolidate.");
         btnRemove.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -113,6 +114,7 @@ public class ConsolidationGui extends JDialog {
         mainPanel.add(btnRemove, "cell 1 4,growx");
 
         JButton btnEnterProgram = new JButton("Enter Program");
+        btnEnterProgram.setToolTipText("Add a program to consolidate.");
         btnEnterProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -133,10 +135,12 @@ public class ConsolidationGui extends JDialog {
         // ************** Text input box ************** //
 
         txtInput = new JTextField();
+        txtInput.setToolTipText("Enter program name here.");
         mainPanel.add(txtInput, "cell 1 2,growx");
         txtInput.setColumns(10);
 
         btnClearList = new JButton("Clear List");
+        btnClearList.setToolTipText("Remove all programs from the list.");
         btnClearList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -180,6 +184,8 @@ public class ConsolidationGui extends JDialog {
         table.setRowSorter(sorter);
 
         sc = new JScrollPane(table);
+        sc.setToolTipText(
+            "These are all the programs that are being combined into the parent program.");
         tablePanel.add(sc, "cell 2 3");
         secretLabel.setText("  ");
         secretLabel.setText("");
