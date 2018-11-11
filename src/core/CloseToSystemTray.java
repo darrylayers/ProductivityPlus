@@ -53,14 +53,12 @@ public class CloseToSystemTray {
             public void actionPerformed(ActionEvent e) {
                 try {
                     DataHandling.saveMap();
-                }
-                catch (IOException e1) {
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
                 try {
                     Thread.sleep(1000);
-                }
-                catch (InterruptedException e1) {
+                } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
                 System.exit(0);
@@ -80,8 +78,7 @@ public class CloseToSystemTray {
 
         try {
             systemTray.add(trayIcon);
-        }
-        catch (AWTException awtException) {
+        } catch (AWTException awtException) {
             awtException.printStackTrace();
         }
     }
