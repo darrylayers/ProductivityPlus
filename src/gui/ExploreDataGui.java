@@ -131,6 +131,7 @@ public class ExploreDataGui extends JDialog {
             .setToolTipText("Enter start date.");
         datePanel.add(datePicker, "");
         datePicker.setDateToToday();
+        datePicker_1.setDateToToday();
         datePicker2.getComponentDateTextField().setToolTipText(
             "Enter end date. Can be left empty for single date search.");
         datePanel.add(datePicker2, "cell 1 0");
@@ -158,10 +159,14 @@ public class ExploreDataGui extends JDialog {
         btnCreateExportFile.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-
-                ExploreDataGui.updateBar(0);
-                btnOpenOutput.setEnabled(true);
-                loadMapsFromMem();
+                if (datePicker.getDate() == null) {
+                    JOptionPane.showMessageDialog(null,
+                        "Please enter a start date.");
+                } else {
+                    ExploreDataGui.updateBar(0);
+                    btnOpenOutput.setEnabled(true);
+                    loadMapsFromMem();
+                }
             }
         });
 
@@ -251,8 +256,13 @@ public class ExploreDataGui extends JDialog {
         btnSubmitSearch.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                singleData = true;
-                loadMapsFromMem();
+                if (datePicker_1.getDate() == null) {
+                    JOptionPane.showMessageDialog(null,
+                        "Please enter a start date.");
+                } else {
+                    singleData = true;
+                    loadMapsFromMem();
+                }
             }
         });
 
@@ -281,15 +291,6 @@ public class ExploreDataGui extends JDialog {
      */
     public static void updateBar(int newValue) {
         progressBar.setValue(newValue);
-    }
-
-    /**
-     * Method that returns what value the progress bar is at.
-     * 
-     * @return int value of progress bar.
-     */
-    private static int getBarValue() {
-        return progressBar.getValue();
     }
 
     /**

@@ -82,7 +82,6 @@ public class Main {
         new JScrollPane((Component) null);
     private static DefaultTableModel model;
     private static JTable table;
-    private static Set<String> keys;
     private static JScrollPane sc;
     public static JLabel secretLabel;
     public static JCheckBox chckbxConsolidatePrograms;
@@ -102,7 +101,6 @@ public class Main {
     /**
      * Main method that builds the GUI.
      */
-    @SuppressWarnings("unused")
     public static void main(String[] args) {
         new Main();
     }
@@ -699,26 +697,6 @@ public class Main {
     }
 
     /**
-     * Set the status label to the 'tracking' state.
-     */
-    private static void setStartLabel() {
-        trackStatusLabel.setText("Status: Currently tracking...");
-    }
-
-    /**
-     * This method stops the program and changes the status label to being
-     * stopped.
-     * 
-     * @throws IOException
-     */
-    private static void simulateClick() {
-        SingletonTimer.setBeenCalled();
-        ProgramTimer.stop();
-        setStopLabel();
-
-    }
-
-    /**
      * Start the program timer. This method creates a new thread from a
      * ProgramTimer object and starts tracking. We must use a new thread to not
      * 'hang' the GUI.
@@ -734,7 +712,7 @@ public class Main {
      * @param fresh,
      *            only true if the table is being launched for the first time.
      */
-    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static void updateTable(boolean fresh) {
         // Remove old table object
         if (!fresh) {
@@ -757,8 +735,6 @@ public class Main {
         } else {
             loadedCurrentMap = ProgramTimer.appMap;
         }
-        // All the keys we need are loaded from the map
-        setKeys(loadedCurrentMap.keySet());
 
         globalMap = DataHandling.convertMap(loadedCurrentMap);
 
@@ -770,6 +746,9 @@ public class Main {
         } else {
             model = new DefaultTableModel(
                 getRows((TimeConvert.convertTime(loadedCurrentMap))), columns) {
+                private static final long serialVersionUID =
+                    6142201610590876247L;
+
                 @Override
                 public Class getColumnClass(int column) {
                     Class returnValue;
@@ -787,7 +766,6 @@ public class Main {
             model = new DefaultTableModel();
             table = new JTable(model);
             model.addColumn("Program");
-            setKeys(loadedCurrentMap.keySet());
             for (String name : loadedCurrentMap.keySet()) {
                 String key = name.toString();
                 model.addRow(new Object[] {key});
@@ -836,25 +814,6 @@ public class Main {
     }
 
     /**
-     * Getter for keys set.
-     * 
-     * @return returns keys for appMap
-     */
-    private static Set<String> getKeys() {
-        return keys;
-    }
-
-    /**
-     * Setter for keys set.
-     * 
-     * @param keys
-     *            Set<String>
-     */
-    private static void setKeys(Set<String> keys) {
-        Main.keys = keys;
-    }
-
-    /**
      * Setter to set the frame location variables to be used to create new
      * windows that match the position of the main gui.
      */
@@ -878,7 +837,7 @@ public class Main {
      * @param loadedMap,
      *            the map we're loading the table with.
      */
-    @SuppressWarnings({"rawtypes", "unchecked", "serial"})
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static void loadTable(Map<String, Long> loadedMap) {
 
         if (loadedMap.isEmpty()) {
@@ -889,8 +848,6 @@ public class Main {
         mainPanel.remove(sc);
         mainPanel.remove(table);
 
-        // All the keys we need are loaded from the map
-        setKeys(loadedMap.keySet());
         String columns[] = {"Program", TimeConvert.getUnit()};
         if (loadedMap.size() == 0) {
             model = new DefaultTableModel(1, 2);
@@ -899,6 +856,12 @@ public class Main {
         } else {
             model = new DefaultTableModel(
                 getRows((TimeConvert.convertTime(loadedMap))), columns) {
+                /**
+                     * 
+                     */
+                private static final long serialVersionUID =
+                    -5228479117217622133L;
+
                 @Override
                 public Class getColumnClass(int column) {
                     Class returnValue;
@@ -916,7 +879,6 @@ public class Main {
             model = new DefaultTableModel();
             table = new JTable(model);
             model.addColumn("Program");
-            setKeys(loadedMap.keySet());
             for (String name : loadedMap.keySet()) {
                 String key = name.toString();
                 model.addRow(new Object[] {key});
@@ -943,18 +905,6 @@ public class Main {
         mainPanel.add(sc, "growx");
         secretLabel.setText("  ");
         secretLabel.setText("");
-    }
-
-    /**
-     * Set the Idle check box from its saved preference, if never saved then set
-     * to false by default.
-     */
-    private void setChecked() {
-        if (chckbxConsolidatePrograms.isSelected()) {
-            prefs.putBoolean(VALIDATE_STRINGS, true);
-        } else {
-            prefs.putBoolean(VALIDATE_STRINGS, false);
-        }
     }
 
     /**

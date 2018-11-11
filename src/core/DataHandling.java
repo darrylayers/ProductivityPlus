@@ -44,7 +44,6 @@ public class DataHandling {
 
     private static File savedMap =
         new File("./saved_data/" + getDate() + ".map");
-    private static int range = 0;
 
     /**
      * This method loads the appMap hash map in ProgramTimer.java
@@ -184,7 +183,6 @@ public class DataHandling {
         int days1_int = Integer.valueOf(days1);
         int days2_int = Integer.valueOf(days2);
         int dateCalc = (days2_int - days1_int);
-        setDateRange(dateCalc);
         int year = Calendar.getInstance().get(Calendar.YEAR);
         String strYear = Integer.toString(year);
 
@@ -437,25 +435,6 @@ public class DataHandling {
         }
         System.out.println("What to display filter " + editedMap);
         return editedMap;
-    }
-
-    /**
-     * Get the date range.
-     * 
-     * @return int value of date differences.
-     */
-    private static int getDateRange() {
-        return range;
-    }
-
-    /**
-     * Set the range range.
-     * 
-     * @param date,
-     *            int value
-     */
-    private static void setDateRange(int date) {
-        range = date;
     }
 
     /**

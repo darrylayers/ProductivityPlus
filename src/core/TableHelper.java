@@ -143,67 +143,6 @@ public class TableHelper {
         }
     }
 
-    /**
-     * Get the inclusions.
-     * 
-     * @return byte[] of inclusions.
-     */
-    private byte[] getInclusions() {
-        byte[] temp = {0};
-        return prefs.getByteArray(INCLUSION_LIST, temp);
-    }
-
-    /**
-     * Set the inclusions preferences.
-     * 
-     * @param bytes[]
-     *            of bytes
-     */
-    private void setInclusions(byte[] bytes) {
-        prefs.putByteArray(INCLUSION_LIST, bytes);
-    }
-
-    /**
-     * Set the exclusions preferences.
-     * 
-     * @return array of bytes.
-     */
-    private byte[] getExclusions() {
-        byte[] temp = {0};
-        return prefs.getByteArray(EXCLUSION_LIST, temp);
-    }
-
-    /**
-     * Set the exclusions preferences.
-     * 
-     * @param arraylist
-     *            of bytes
-     */
-    private void setExclusions(byte[] bytes) {
-        prefs.putByteArray(EXCLUSION_LIST, bytes);
-    }
-
-    /**
-     * Load and return whichever list the user has selected. Either inclusions
-     * or exclusions.
-     * 
-     * @return return either inclusions or exclusions.
-     */
-    private static List<String> getSavedList() {
-        List<String> list = new ArrayList<String>();
-        List<String> inclusions = new ArrayList<>();
-        inclusions = TableHelper.loadList("inclusion");
-        List<String> exclusions = new ArrayList<>();
-        exclusions = TableHelper.loadList("exclusion");
-        if (Main.getMode() == 2) {
-            return inclusions;
-        } else if (Main.getMode() == 3) {
-            return exclusions;
-        } else {
-            return list;
-        }
-    }
-
     public static void clearList() {
         if (Main.getMode() == 2) {
             prefs.remove(INCLUSION_LIST);

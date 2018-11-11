@@ -16,17 +16,7 @@ import gui.PreferencesGui;
  */
 public class TimeConvert {
 
-    private static Map<String, Double> convertedMap = new HashMap<>();;
     private static String dataUnit = "";
-    private static String dataUnitExport = "";
-
-    /**
-     * We need to be able to convert the given time in seconds to the desired
-     * time, this time can either be minutes or hours.
-     * 
-     * We are actually taking a hashmap of time in seconds, and converting the
-     * time to the desire time. (min or hours).
-     */
 
     /**
      * This method converts the times in the given hashmap and returns a
@@ -59,16 +49,13 @@ public class TimeConvert {
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Minutes)";
             }
-        }
-
-        else {
+        } else {
             for (String name : toDisplayMap.keySet()) {
                 Double convertedTime = (toDisplayMap.get(name) / 1.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Seconds)";
             }
-
         }
         return convertedMap;
     }
@@ -135,18 +122,7 @@ public class TimeConvert {
         } else {
             dataUnit = "Time (Written)";
         }
-
         return dataUnit;
-    }
-
-    /**
-     * This method returns whichever time unit the user has currently selected
-     * for exporting.
-     * 
-     * @return string of proper time unit.
-     */
-    private static String getDataUnitExport() {
-        return dataUnitExport;
     }
 
     /**
@@ -180,18 +156,14 @@ public class TimeConvert {
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Minutes)";
             }
-        }
-
-        else {
+        } else {
             for (String name : toDisplayMap.keySet()) {
                 Double convertedTime = (toDisplayMap.get(name) / 1.0);
                 Double modTime = Double.valueOf(df.format(convertedTime));
                 convertedMap.put(name, modTime);
                 dataUnit = "Time (Seconds)";
             }
-
         }
         return convertedMap;
     }
-
 }
