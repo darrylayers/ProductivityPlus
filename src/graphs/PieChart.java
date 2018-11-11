@@ -27,7 +27,7 @@ import gui.Main;
  */
 public class PieChart extends ApplicationFrame {
 
-    private static final long serialVersionUID = -617075449581724970L;
+    public static final long serialVersionUID = -617075449581724970L;
     public static Map<String, Double> orderedMap;
 
     /**
@@ -49,7 +49,7 @@ public class PieChart extends ApplicationFrame {
      * 
      * @return the data set for the pie chart.
      */
-    private static PieDataset createDataset() {
+    public static PieDataset createDataset() {
 
         orderedMap = DataHandling.orderedMap();
         // orderedMap = Main.globalMap;
@@ -92,7 +92,7 @@ public class PieChart extends ApplicationFrame {
      * @param the
      *            pie chart's data set.
      */
-    private static JFreeChart createChart(PieDataset paramPieDataset) {
+    public static JFreeChart createChart(PieDataset paramPieDataset) {
 
         JFreeChart localJFreeChart = ChartFactory.createPieChart(
             "Pie Chart for Data Displayed in Table", paramPieDataset,

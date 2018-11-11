@@ -94,7 +94,7 @@ public class ExploreDataGui extends JDialog {
     /**
      * Create the dialog.
      */
-    public ExploreDataGui() {
+    private ExploreDataGui() {
         textField.setToolTipText("Enter program name to look up.");
         textField.setColumns(10);
         setTitle("Explore Data");
@@ -288,7 +288,7 @@ public class ExploreDataGui extends JDialog {
      * 
      * @return int value of progress bar.
      */
-    public static int getBarValue() {
+    private static int getBarValue() {
         return progressBar.getValue();
     }
 
@@ -297,7 +297,7 @@ public class ExploreDataGui extends JDialog {
      * both features in Explore Data.
      */
     @SuppressWarnings("unchecked")
-    public void loadMapsFromMem() {
+    private void loadMapsFromMem() {
         LocalDate date;
         LocalDate date2;
 

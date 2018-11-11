@@ -135,7 +135,7 @@ public class TableHelper {
      *            to check
      * @return true if the item is in the list.
      */
-    public static boolean inList(String item, ArrayList<String> list) {
+    private static boolean inList(String item, ArrayList<String> list) {
         if (list.contains("- " + item) || list.contains(item)) {
             return true;
         } else {
@@ -148,7 +148,7 @@ public class TableHelper {
      * 
      * @return byte[] of inclusions.
      */
-    public byte[] getInclusions() {
+    private byte[] getInclusions() {
         byte[] temp = {0};
         return prefs.getByteArray(INCLUSION_LIST, temp);
     }
@@ -159,7 +159,7 @@ public class TableHelper {
      * @param bytes[]
      *            of bytes
      */
-    public void setInclusions(byte[] bytes) {
+    private void setInclusions(byte[] bytes) {
         prefs.putByteArray(INCLUSION_LIST, bytes);
     }
 
@@ -168,7 +168,7 @@ public class TableHelper {
      * 
      * @return array of bytes.
      */
-    public byte[] getExclusions() {
+    private byte[] getExclusions() {
         byte[] temp = {0};
         return prefs.getByteArray(EXCLUSION_LIST, temp);
     }
@@ -179,7 +179,7 @@ public class TableHelper {
      * @param arraylist
      *            of bytes
      */
-    public void setExclusions(byte[] bytes) {
+    private void setExclusions(byte[] bytes) {
         prefs.putByteArray(EXCLUSION_LIST, bytes);
     }
 
@@ -189,7 +189,7 @@ public class TableHelper {
      * 
      * @return return either inclusions or exclusions.
      */
-    public static List<String> getSavedList() {
+    private static List<String> getSavedList() {
         List<String> list = new ArrayList<String>();
         List<String> inclusions = new ArrayList<>();
         inclusions = TableHelper.loadList("inclusion");

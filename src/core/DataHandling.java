@@ -42,7 +42,7 @@ import gui.Main;
  */
 public class DataHandling {
 
-    public static File savedMap =
+    private static File savedMap =
         new File("./saved_data/" + getDate() + ".map");
     private static int range = 0;
 
@@ -91,7 +91,7 @@ public class DataHandling {
      * 
      * @return Today's date in form Dyy, ex: 093018 for 09/30/18
      */
-    public static String getDate() {
+    private static String getDate() {
 
         Date now = new Date();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("Dyy");
@@ -109,7 +109,8 @@ public class DataHandling {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    public static Map<String, Long> acceptDate(String date, boolean returnState)
+    public static Map<String, Long> acceptDate(String date,
+        boolean returnState)
         throws IOException {
 
         Map<String, Long> loadedAppMap = new HashMap<>();
@@ -260,7 +261,7 @@ public class DataHandling {
      *            the map to be sorted.
      * @return a sorted map by values.
      */
-    public static Map<String, Double> sortHashMapByValues(
+    private static Map<String, Double> sortHashMapByValues(
         Map<String, Double> finalMap) {
 
         List<String> mapKeys = new ArrayList<>(finalMap.keySet());
@@ -443,7 +444,7 @@ public class DataHandling {
      * 
      * @return int value of date differences.
      */
-    public static int getDateRange() {
+    private static int getDateRange() {
         return range;
     }
 
@@ -453,7 +454,7 @@ public class DataHandling {
      * @param date,
      *            int value
      */
-    public static void setDateRange(int date) {
+    private static void setDateRange(int date) {
         range = date;
     }
 

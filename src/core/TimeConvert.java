@@ -16,7 +16,7 @@ import gui.PreferencesGui;
  */
 public class TimeConvert {
 
-    public static Map<String, Double> convertedMap = new HashMap<>();;
+    private static Map<String, Double> convertedMap = new HashMap<>();;
     private static String dataUnit = "";
     private static String dataUnitExport = "";
 
@@ -145,7 +145,7 @@ public class TimeConvert {
      * 
      * @return string of proper time unit.
      */
-    public static String getDataUnitExport() {
+    private static String getDataUnitExport() {
         return dataUnitExport;
     }
 

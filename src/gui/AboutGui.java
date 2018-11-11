@@ -44,7 +44,7 @@ public class AboutGui extends JDialog {
     /**
      * Create the dialog.
      */
-    public AboutGui() {
+    private AboutGui() {
         setAlwaysOnTop(true);
         setTitle("About");
         setBounds(100, 100, 625, 559);

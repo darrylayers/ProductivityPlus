@@ -37,7 +37,7 @@ public class GraphicalOutputGui extends JDialog {
     private JPanel bar = new JPanel();
 
     private JTabbedPane tabbedPane;
-    public static JSpinner spinner = new JSpinner();
+    private static JSpinner spinner = new JSpinner();
     private static Preferences prefs =
         Preferences.userRoot().node("GraphGui");
     private static final String NUM_DISPLAY = "display";
@@ -60,7 +60,7 @@ public class GraphicalOutputGui extends JDialog {
     /**
      * Create the dialog.
      */
-    public GraphicalOutputGui() {
+    private GraphicalOutputGui() {
         setAlwaysOnTop(true);
         setTitle("Graphs");
         setBounds(100, 100, 1030, 634);
@@ -155,7 +155,7 @@ public class GraphicalOutputGui extends JDialog {
     /**
      * Set the Idle value from its spinner value.
      */
-    public void setProgCount() {
+    private void setProgCount() {
         int displayCount = (int) spinner.getValue();
         prefs.putInt(NUM_DISPLAY, displayCount);
     }
@@ -170,7 +170,7 @@ public class GraphicalOutputGui extends JDialog {
         return prefs.getInt(NUM_DISPLAY, 1);
     }
 
-    public void buildGraphs() {
+    private void buildGraphs() {
         JPanel piechartPanel = new JPanel();
         pie = PieChart.createDemoPanel();
         piechartPanel.add(pie);

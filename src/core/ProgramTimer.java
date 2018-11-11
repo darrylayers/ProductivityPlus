@@ -93,7 +93,7 @@ public class ProgramTimer implements Runnable {
      * Adds the last calculated program time to the appropriate location in the
      * hashmap.
      */
-    public static void mapTime() throws IOException {
+    private static void mapTime() throws IOException {
         // If the program has time existing, we need to add the new to the old
         if (appMap.containsKey(progLast)) {
             oldTime = appMap.get(progLast);
@@ -110,7 +110,7 @@ public class ProgramTimer implements Runnable {
     /**
      * Starts the program timer over when a new window is in focus.
      */
-    public static void startTime() {
+    private static void startTime() {
         start = System.nanoTime();
     }
 
@@ -118,7 +118,7 @@ public class ProgramTimer implements Runnable {
      * Method to stop tracking when an old window is in focus. Must divide to
      * convert to seconds from nanoseconds.
      */
-    public static void endTime() {
+    private static void endTime() {
         end = System.nanoTime();
         newTime = (end - start) / 1000000000;
         System.out

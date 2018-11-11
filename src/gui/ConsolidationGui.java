@@ -57,7 +57,7 @@ public class ConsolidationGui extends JDialog {
     /**
      * Launch the About pop up window.
      */
-    public static void newWindow() {
+    static void newWindow() {
         try {
             ConsolidationGui dialog = new ConsolidationGui();
             dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -72,7 +72,7 @@ public class ConsolidationGui extends JDialog {
     /**
      * Create the dialog.
      */
-    public ConsolidationGui() {
+    private ConsolidationGui() {
         setTitle("What to Track");
         setBounds(100, 100, 528, 399);
 
@@ -158,7 +158,7 @@ public class ConsolidationGui extends JDialog {
     /**
      * Load the table in the consolidation GUI.
      */
-    public void loadTable() {
+    private void loadTable() {
         if (Main.toTrack) {
             tablePanel.remove(sc);
         } else {
@@ -198,7 +198,7 @@ public class ConsolidationGui extends JDialog {
      * @param item,
      *            the item to add.
      */
-    public void addRow(String item) {
+    private void addRow(String item) {
         if (inList(item)) {
             JOptionPane.showMessageDialog(null,
                 "Item already in list, not added.");
@@ -216,7 +216,7 @@ public class ConsolidationGui extends JDialog {
      * @param item,
      *            the item to remove.
      */
-    public void removeRow(String item) {
+    private void removeRow(String item) {
         if (!inList(item)) {
             JOptionPane.showMessageDialog(null,
                 "Item not in list to remove.");
@@ -235,7 +235,7 @@ public class ConsolidationGui extends JDialog {
      *            the item to check the list for.
      * @return returns true if the list contains the item.
      */
-    public static boolean inList(String item) {
+    private static boolean inList(String item) {
         if (list.contains("- " + item) || list.contains(item)) {
             return true;
         } else {
@@ -266,7 +266,7 @@ public class ConsolidationGui extends JDialog {
     /**
      * Save the local list to the preferences.
      */
-    public void saveList() {
+    private void saveList() {
         System.out.print("Saving list: " + list + "\n");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);

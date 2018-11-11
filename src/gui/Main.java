@@ -48,6 +48,8 @@ import javax.swing.table.TableRowSorter;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
 import core.CloseToSystemTray;
 import core.DataHandling;
@@ -94,7 +96,8 @@ public class Main {
         new JRadioButton("Track Exclusions");
 
     public static boolean toTrack = false;
-    public static Map<String, Double> globalMap = new HashMap<String, Double>();
+    public static Map<String, Double> globalMap =
+        new HashMap<String, Double>();
 
     /**
      * Main method that builds the GUI.
@@ -107,7 +110,7 @@ public class Main {
     /**
      * Constructor that builds the frame.
      */
-    public Main() {
+    private Main() {
 
         // Load the hashmap info ProgramTimer.appMap
         try {
@@ -548,7 +551,17 @@ public class Main {
         JLabel lblStartDate = new JLabel("Start Date");
         buttonPanel.add(lblStartDate, "cell 0 8");
 
+        DatePicker datePicker2 = new DatePicker((DatePickerSettings) null);
+        datePicker2.getComponentDateTextField().setToolTipText("Ending date.");
+        buttonPanel.add(datePicker2, "cell 0 11,grow");
+
         DatePicker datePicker = new DatePicker((DatePickerSettings) null);
+        datePicker.addDateChangeListener(new DateChangeListener() {
+            @Override
+            public void dateChanged(DateChangeEvent arg0) {
+                datePicker2.setDate(datePicker.getDate());
+            }
+        });
         datePicker.getComponentDateTextField()
             .setToolTipText("Beginning date.");
         buttonPanel.add(datePicker, "cell 0 9,grow");
@@ -557,10 +570,6 @@ public class Main {
         lblEndDate
             .setToolTipText("Leave end date blank if only viewing one day");
         buttonPanel.add(lblEndDate, "cell 0 10");
-
-        DatePicker datePicker2 = new DatePicker((DatePickerSettings) null);
-        datePicker2.getComponentDateTextField().setToolTipText("Ending date.");
-        buttonPanel.add(datePicker2, "cell 0 11,grow");
 
         // ************** Table ************** //
 
@@ -685,14 +694,14 @@ public class Main {
     /**
      * Set the status label to the 'not tracking' state.
      */
-    public static void setStopLabel() {
+    private static void setStopLabel() {
         trackStatusLabel.setText("Status: Currently not tracking.");
     }
 
     /**
      * Set the status label to the 'tracking' state.
      */
-    public static void setStartLabel() {
+    private static void setStartLabel() {
         trackStatusLabel.setText("Status: Currently tracking...");
     }
 
@@ -702,7 +711,7 @@ public class Main {
      * 
      * @throws IOException
      */
-    public static void simulateClick() {
+    private static void simulateClick() {
         SingletonTimer.setBeenCalled();
         ProgramTimer.stop();
         setStopLabel();
@@ -714,7 +723,7 @@ public class Main {
      * ProgramTimer object and starts tracking. We must use a new thread to not
      * 'hang' the GUI.
      */
-    public static void startTimer() {
+    private static void startTimer() {
         SingletonTimer.getInstance().callTimer();
     }
 
@@ -812,7 +821,7 @@ public class Main {
      *            the map to display.
      * @return Object[][] of the rows.
      */
-    public static Object[][] getRows(Map<String, Double> finalMap) {
+    private static Object[][] getRows(Map<String, Double> finalMap) {
         Object[][] rows = new Object[finalMap.size()][2];
         Set<Entry<String, Double>> entries = finalMap.entrySet();
         Iterator<Entry<String, Double>> entriesIterator = entries.iterator();
@@ -831,7 +840,7 @@ public class Main {
      * 
      * @return returns keys for appMap
      */
-    public static Set<String> getKeys() {
+    private static Set<String> getKeys() {
         return keys;
     }
 
@@ -841,7 +850,7 @@ public class Main {
      * @param keys
      *            Set<String>
      */
-    public static void setKeys(Set<String> keys) {
+    private static void setKeys(Set<String> keys) {
         Main.keys = keys;
     }
 
@@ -870,7 +879,7 @@ public class Main {
      *            the map we're loading the table with.
      */
     @SuppressWarnings({"rawtypes", "unchecked", "serial"})
-    public static void loadTable(Map<String, Long> loadedMap) {
+    private static void loadTable(Map<String, Long> loadedMap) {
 
         if (loadedMap.isEmpty()) {
             JOptionPane.showMessageDialog(null,
@@ -940,7 +949,7 @@ public class Main {
      * Set the Idle check box from its saved preference, if never saved then set
      * to false by default.
      */
-    public void setChecked() {
+    private void setChecked() {
         if (chckbxConsolidatePrograms.isSelected()) {
             prefs.putBoolean(VALIDATE_STRINGS, true);
         } else {
@@ -970,7 +979,7 @@ public class Main {
      * Setter for the mode, 1 = track all, 2 = track inclusions, 3 = track
      * exclusions
      */
-    public void setMode() {
+    private void setMode() {
         if (trackAllRButton.isSelected()) {
             prefs.putInt(DISPLAY_MODE, 1);
         } else if (trackInclusionsRButton.isSelected()) {

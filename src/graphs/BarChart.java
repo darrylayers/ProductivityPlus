@@ -30,7 +30,7 @@ public class BarChart extends ApplicationFrame {
 
     private static final long serialVersionUID = -7957255223166147473L;
 
-    public BarChart(String paramString) {
+    private BarChart(String paramString) {
 
         super(paramString);
         JPanel localJPanel = createDemoPanel();

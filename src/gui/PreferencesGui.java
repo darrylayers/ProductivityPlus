@@ -81,18 +81,18 @@ public class PreferencesGui extends JDialog {
     // Simple getters for fields for each saved preference
     // these are used to restore old saves when the user
     // decides to cancel any saved changes made.
-    public static int getExport() {
+    private static int getExport() {
         return export;
     }
 
-    public static int getDisplay() {
+    private static int getDisplay() {
         return display;
     }
 
     /**
      * Create the dialog.
      */
-    public PreferencesGui() {
+    private PreferencesGui() {
         setAlwaysOnTop(true);
         setTitle("Preferences");
         setBounds(100, 100, 502, 254);
@@ -182,7 +182,7 @@ public class PreferencesGui extends JDialog {
      * Save the display index to memory, this method saves the current selected
      * index.
      */
-    public void setDisplayIndex() {
+    private void setDisplayIndex() {
         int indexVal = displayOptions.getSelectedIndex();
         prefs.putInt(DISPLAY_INDEX, indexVal);
     }
@@ -191,7 +191,7 @@ public class PreferencesGui extends JDialog {
      * Save the export index to memory, this method saves the current selected
      * index.
      */
-    public void setExportIndex() {
+    private void setExportIndex() {
         int indexVal = exportOptions.getSelectedIndex();
         prefs.putInt(OUTPUT_INDEX, indexVal);
     }
