@@ -231,7 +231,8 @@ public class ExploreDataGui extends JDialog {
         txtpnTheLeftDate.setBackground(new Color(240, 240, 240));
         txtpnTheLeftDate.setText(
             "The left date picker is the start date, the right date picker is"
-                + " the end date. You can optionally leave the right one empty.");
+                + " the end date. You can optionally leave the right one empty. "
+                + "Tip: It is usually best to be on 'Display All Mode' when using this feature.");
 
         singleProgPanel.add(txtpnTheLeftDate, "cell 0 1,grow");
 
