@@ -366,7 +366,6 @@ public class ExploreDataGui extends JDialog {
                 }
             } else {
                 dateR = 1;
-
                 try {
                     comboMap = DataHandling.acceptDate(formattedString, true);
                 } catch (IOException e) {
