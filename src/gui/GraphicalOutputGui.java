@@ -16,12 +16,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DatePickerSettings;
-
 import core.DataHandling;
 import graphs.BarChart;
-import graphs.LineChart;
 import graphs.PieChart;
 import net.miginfocom.swing.MigLayout;
 
@@ -89,34 +85,11 @@ public class GraphicalOutputGui extends JDialog {
         controlPanel
             .setLayout(
                 new MigLayout("", "[204.00,grow][-58.00][-84.00][71.00]",
-                    "[18.00][][8.00][][][][][][][]"));
-
-        JTextPane txtpnDatePickerFor = new JTextPane();
-        txtpnDatePickerFor.setText("Date picker for range to use ");
-        controlPanel.add(txtpnDatePickerFor, "cell 0 2");
-
-        JLabel lblStartDate = new JLabel("Start date:");
-        controlPanel.add(lblStartDate, "cell 0 3");
-
-        DatePicker datePicker = new DatePicker((DatePickerSettings) null);
-        controlPanel.add(datePicker, "cell 0 4,growx");
-
-        JLabel lblEndDate = new JLabel("End date:");
-        controlPanel.add(lblEndDate, "cell 0 5");
-
-        DatePicker datePicker_1 = new DatePicker((DatePickerSettings) null);
-        controlPanel.add(datePicker_1, "cell 0 6,growx");
+                    "[18.00][][8.00][][][]"));
 
         JLabel lblclickRefreshTo =
             new JLabel("(Click refresh to update with new dates)");
-        controlPanel.add(lblclickRefreshTo, "cell 0 7");
-
-        JTextPane txtpnHelpfulTipYou = new JTextPane();
-        txtpnHelpfulTipYou.setText(
-            "Helpful tip: You can use the scroll wheel on the graphs to rotate. \n\n"
-                + "You can also right-click the graphs for more options, including the option to save them.");
-        txtpnHelpfulTipYou.setEditable(false);
-        controlPanel.add(txtpnHelpfulTipYou, "cell 0 8,grow");
+        controlPanel.add(lblclickRefreshTo, "cell 0 3");
 
         JPanel spinnerPanel = new JPanel();
         controlPanel.add(spinnerPanel, "cell 0 0,alignx left,growy");
@@ -143,8 +116,15 @@ public class GraphicalOutputGui extends JDialog {
         });
         controlPanel.add(btnRefreshGraphs, "cell 0 1,grow");
 
+        JTextPane txtpnHelpfulTipYou = new JTextPane();
+        txtpnHelpfulTipYou.setText(
+            "Helpful tip: You can use the scroll wheel on the graphs to rotate. \n\n"
+                + "You can also right-click the graphs for more options, including the option to save them.");
+        txtpnHelpfulTipYou.setEditable(false);
+        controlPanel.add(txtpnHelpfulTipYou, "cell 0 4,grow");
+
         JLabel secretLabel = new JLabel("");
-        controlPanel.add(secretLabel, "cell 0 9");
+        controlPanel.add(secretLabel, "cell 0 5,alignx right");
 
         spinner.addChangeListener(new ChangeListener() {
             @Override
@@ -210,9 +190,5 @@ public class GraphicalOutputGui extends JDialog {
         bar = BarChart.createDemoPanel();
         bargraphPanel.add(bar);
 
-        JPanel linechartPanel = new JPanel();
-        tabbedPane.addTab("Line Chart", null, linechartPanel, null);
-        line = LineChart.createDemoPanel();
-        linechartPanel.add(line);
     }
 }
