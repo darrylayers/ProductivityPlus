@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -33,9 +34,9 @@ import net.miginfocom.swing.MigLayout;
  * @author Austin Ayers
  * 
  */
-@SuppressWarnings("serial")
 public class ConsolidationGui extends JDialog {
 
+    private static final long serialVersionUID = -5312647494167181674L;
     private static JTable table;
     private static DefaultTableModel model;
     private static JScrollPane sc;
@@ -59,7 +60,7 @@ public class ConsolidationGui extends JDialog {
     public static void newWindow() {
         try {
             ConsolidationGui dialog = new ConsolidationGui();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);

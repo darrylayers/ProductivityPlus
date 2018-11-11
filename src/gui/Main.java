@@ -39,6 +39,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -99,7 +101,7 @@ public class Main {
      */
     @SuppressWarnings("unused")
     public static void main(String[] args) {
-        Main gui = new Main();
+        new Main();
     }
 
     /**
@@ -119,7 +121,7 @@ public class Main {
         frame = new JFrame();
         frame.setLocation(100, 100);
         frame.setSize(986, 554);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         frame.setTitle("ProductivityPlus");
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
@@ -213,7 +215,7 @@ public class Main {
 
         // ************** Tab pane ************** //
 
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
         frame.getContentPane().add(tabbedPane, "cell 0 0,growx,aligny top");
         tabbedPane.addTab("Program Timer", null, mainPanel, null);
 
@@ -580,10 +582,7 @@ public class Main {
                 } else {
                     String formattedString;
                     String formattedString2;
-                    // Pass the date(s) to DateHandling.java
-                    @SuppressWarnings("unused")
-                    SimpleDateFormat dateFormatter =
-                        new SimpleDateFormat("Dyy");
+                    new SimpleDateFormat("Dyy");
                     DateTimeFormatter formatter =
                         DateTimeFormatter.ofPattern("Dyy");
                     formattedString = date.format(formatter);
@@ -798,7 +797,7 @@ public class Main {
         }
         DefaultTableCellRenderer renderer =
             (DefaultTableCellRenderer) table.getDefaultRenderer(Double.class);
-        renderer.setHorizontalAlignment(JLabel.LEFT);
+        renderer.setHorizontalAlignment(SwingConstants.LEFT);
 
         sc = new JScrollPane(table);
         mainPanel.add(sc, "growx");
@@ -928,7 +927,7 @@ public class Main {
         }
         DefaultTableCellRenderer renderer =
             (DefaultTableCellRenderer) table.getDefaultRenderer(Double.class);
-        renderer.setHorizontalAlignment(JLabel.LEFT);
+        renderer.setHorizontalAlignment(SwingConstants.LEFT);
 
         sc = new JScrollPane(table);
         mainPanel.add(sc);

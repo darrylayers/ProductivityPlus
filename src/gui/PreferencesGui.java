@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -22,9 +23,9 @@ import net.miginfocom.swing.MigLayout;
  * @author Austin Ayers
  * 
  */
-@SuppressWarnings("serial")
 public class PreferencesGui extends JDialog {
 
+    private static final long serialVersionUID = 7170758428931373020L;
     private static final String DISPLAY_INDEX = "displayIndex";
     private static final String OUTPUT_INDEX = "outputIndex";
 
@@ -50,7 +51,7 @@ public class PreferencesGui extends JDialog {
     public static void newWindow() {
         try {
             PreferencesGui dialog = new PreferencesGui();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);

@@ -14,6 +14,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -33,18 +35,12 @@ public class GraphicalOutputGui extends JDialog {
     private static final long serialVersionUID = 3774721756310500262L;
     private JPanel pie = new JPanel();
     private JPanel bar = new JPanel();
-    private JPanel piechartPanel = new JPanel();
-    private JPanel bargraphPanel = new JPanel();
 
     private JTabbedPane tabbedPane;
     public static JSpinner spinner = new JSpinner();
     private static Preferences prefs =
         Preferences.userRoot().node("GraphGui");
     private static final String NUM_DISPLAY = "display";
-    @SuppressWarnings("unused")
-    private static String[] displayTypes = {"Pie Chart",
-        "Bar Graph", "Chart 3",
-        "Chart 4"};
 
     /**
      * Launch the graphical output pop up window.
@@ -52,7 +48,7 @@ public class GraphicalOutputGui extends JDialog {
     public static void newWindow() {
         try {
             GraphicalOutputGui dialog = new GraphicalOutputGui();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
@@ -93,9 +89,7 @@ public class GraphicalOutputGui extends JDialog {
             "This is the number of items that will be plotted.");
         lblNumberOfItmes.setFont(new Font("Verdana", Font.PLAIN, 11));
         spinner.setModel(
-            new SpinnerNumberModel(prefs.getInt(NUM_DISPLAY, 1),
-                new Integer(1), null,
-                new Integer(1)));
+            new SpinnerNumberModel(prefs.getInt(NUM_DISPLAY, 1), 1, null, 1));
 
         spinnerPanel.add(spinner);
 
@@ -138,7 +132,7 @@ public class GraphicalOutputGui extends JDialog {
         getContentPane().add(graphPanel, "cell 1 1,grow");
         graphPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
 
-        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane = new JTabbedPane(SwingConstants.TOP);
         graphPanel.add(tabbedPane, "cell 0 0,grow");
 
         buildGraphs();
