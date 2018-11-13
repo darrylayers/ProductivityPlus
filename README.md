@@ -1,5 +1,5 @@
 # ProductivityPlus
-Fall 2018 Capstone Project - Monitor how much time you spend in your applications and choose to view the data with in-app graphs or export to a .xlms file to be view in Excel.
+Fall 2018 Capstone Project - Monitor how much time you spend in your applications and choose to view the data with in-app graphs or export to a .xlms file to be viewed in Excel.
 
 **How to use**
 
@@ -41,3 +41,5 @@ JFreeChart | Used for graphing data
 JCommon | Used to help JFreeChart graph data
 
 All resources can be found here: http://austinayers.com/ProductivityPlus_lib.zip
+
+[Timeline of this project using Gource](http://austinayers.com/ProductivityPlusImages/gource.gif)
