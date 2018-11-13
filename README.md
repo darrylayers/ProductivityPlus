@@ -21,7 +21,7 @@ All preferences are saved using Java Preferences, meaning the can be found under
 
 **Explore Data window:**
 
-![Image of the explore data](http://austinayers.com/ProductivityPlusImages/explore_data.png)
+![Image of the explore data](http://austinayers.com/ProductivityPlusImages/explore_data_combo.png)
 
 **Library information**
 
