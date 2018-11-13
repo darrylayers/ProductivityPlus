@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -28,6 +29,7 @@ public class PreferencesGui extends JDialog {
     private static final long serialVersionUID = 7170758428931373020L;
     private static final String DISPLAY_INDEX = "displayIndex";
     private static final String OUTPUT_INDEX = "outputIndex";
+    private static final String UPDATE_CHECK = "updateCheck";
 
     private static String[] exportTypes = {"Hours (ex: 1.3 hours)",
         "Minutes (ex: 95.2 minutes)", "Seconds (ex: 138 seconds)"};
@@ -38,8 +40,11 @@ public class PreferencesGui extends JDialog {
         "Written (ex: 33 minutes 2 seconds)"};
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static JComboBox displayOptions = new JComboBox(displayTypes);
+    private static JCheckBox chckbxDisplayUpdateNotifications =
+        new JCheckBox("Display update notifications");
     private static int export;
     private static int display;
+    private static boolean update;
     private static Preferences prefs =
         Preferences.userRoot().node("PreferencesGui");
 
@@ -67,6 +72,7 @@ public class PreferencesGui extends JDialog {
     private static void bundle() {
         export = getExportIndex();
         display = getDisplayIndex();
+        update = getUpdateStatus();
     }
 
     /**
@@ -76,6 +82,7 @@ public class PreferencesGui extends JDialog {
     private static void saveBundle() {
         prefs.putInt(OUTPUT_INDEX, getExport());
         prefs.putInt(DISPLAY_INDEX, getDisplay());
+        prefs.putBoolean(UPDATE_CHECK, getUpdate());
     }
 
     // Simple getters for fields for each saved preference
@@ -89,25 +96,43 @@ public class PreferencesGui extends JDialog {
         return display;
     }
 
+    private static boolean getUpdate() {
+        return update;
+    }
+
     /**
      * Create the dialog.
      */
     private PreferencesGui() {
         setAlwaysOnTop(true);
         setTitle("Preferences");
-        setBounds(100, 100, 502, 254);
+        setBounds(100, 100, 502, 332);
 
         // ************** Frame panels and panes ************** //
         getContentPane()
-            .setLayout(new MigLayout("", "[434px]", "[159.00px][33px]"));
+            .setLayout(new MigLayout("", "[434px]", "[53.00][159.00px][33px]"));
+
+        chckbxDisplayUpdateNotifications.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                prefs.putBoolean(UPDATE_CHECK,
+                    chckbxDisplayUpdateNotifications.isSelected());
+            }
+        });
+        chckbxDisplayUpdateNotifications
+            .setToolTipText("When check you will be "
+                + "alerted about new updates on launch of this application.");
+        chckbxDisplayUpdateNotifications
+            .setSelected(prefs.getBoolean(UPDATE_CHECK, true));
+        getContentPane().add(chckbxDisplayUpdateNotifications, "cell 0 0");
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        getContentPane().add(contentPanel, "cell 0 0,grow");
+        getContentPane().add(contentPanel, "cell 0 1,grow");
         contentPanel.setLayout(
             new MigLayout("", "[217.00,grow][][]", "[][40.00][][40.00]"));
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        getContentPane().add(buttonPane, "cell 0 1,growx,aligny top");
+        getContentPane().add(buttonPane, "cell 0 2,growx,aligny top");
 
         JPanel prefOutputPanel = new JPanel();
         contentPanel.add(prefOutputPanel, "cell 0 1,grow");
@@ -212,6 +237,15 @@ public class PreferencesGui extends JDialog {
      */
     public static int getExportIndex() {
         return prefs.getInt(OUTPUT_INDEX, 2);
+    }
+
+    /**
+     * Get the display index from memory, if nothing is saved return 3.
+     * 
+     * @return returns saved value, if nothing is saved return 3.
+     */
+    public static boolean getUpdateStatus() {
+        return prefs.getBoolean(OUTPUT_INDEX, true);
     }
 
 }

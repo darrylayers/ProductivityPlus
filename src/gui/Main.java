@@ -665,13 +665,15 @@ public class Main {
             e.printStackTrace();
         }
 
-        // Check to see if there is a new version of the program
-        // True if there is
-        if (checkForUpdate(
-            "http://austinayers.com/ProductivityPlus_v1.html", 500)) {
+        if (PreferencesGui.getUpdateStatus()) {
+            // Check to see if there is a new version of the program
+            // True if there is
+            if (checkForUpdate(
+                "http://austinayers.com/ProductivityPlus_v1.html", 500)) {
 
-            JOptionPane.showMessageDialog(null,
-                "There is a new version of this program at austinayers.com/ProductivityPlus.zip");
+                JOptionPane.showMessageDialog(null,
+                    "There is a new version of this program at austinayers.com/ProductivityPlus.zip");
+            }
         }
     }
 
