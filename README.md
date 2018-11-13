@@ -11,6 +11,20 @@ All preferences are saved using Java Preferences, meaning the can be found under
 
 (Run->regedit->HKEY_CURRENT_USER->Software->JavaSoft->Prefs)
 
+**Main window:**
+
+![Image of the main window](http://austinayers.com/ProductivityPlusImages/main_window.png)
+
+**Pie Chart demo:**
+
+![Image of the pie chart window](http://austinayers.com/ProductivityPlusImages/graph_main.png)
+
+**Explore Data window:**
+
+![Image of the explore data](http://austinayers.com/ProductivityPlusImages/explore_data.png)
+
+**Library information**
+
 Library | What it is used for
 ------------ | -------------
 Apache POI | Used to write Excel files
@@ -27,5 +41,3 @@ JFreeChart | Used for graphing data
 JCommon | Used to help JFreeChart graph data
 
 All resources can be found here: http://austinayers.com/ProductivityPlus_lib.zip
-
-![Image of the main window](http://austinayers.com/ProductivityPlusImages/main_window.png)
