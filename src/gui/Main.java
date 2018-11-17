@@ -654,12 +654,7 @@ public class Main {
                         } else {
                             loadedCurrentMap = combinedMaps;
                         }
-
-                        System.out
-                            .println(
-                                "loadedCurrentMap map " + loadedCurrentMap);
                         globalMap = DataHandling.convertMap(loadedCurrentMap);
-                        System.out.println("global map " + globalMap);
                         loadTable(DataHandling.convertMapToLong(globalMap));
                     }
                 }
@@ -879,9 +874,7 @@ public class Main {
         } else {
             model = new DefaultTableModel(
                 getRows((TimeConvert.convertTime(loadedMap))), columns) {
-                /**
-                     * 
-                     */
+
                 private static final long serialVersionUID =
                     -5228479117217622133L;
 

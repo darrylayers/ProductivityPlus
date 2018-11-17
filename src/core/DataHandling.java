@@ -41,7 +41,6 @@ import gui.Main;
  * 
  */
 public class DataHandling {
-
     /**
      * This method loads the appMap hash map in ProgramTimer.java
      * 
@@ -50,7 +49,6 @@ public class DataHandling {
      */
     @SuppressWarnings("unchecked")
     public static void loadMap() throws NumberFormatException, IOException {
-
         File savedMap =
             new File("./saved_data/" + getDate() + ".map");
 
@@ -74,7 +72,6 @@ public class DataHandling {
      * @throws IOException
      */
     public static void saveMap() throws IOException {
-
         File savedMap =
             new File("./saved_data/" + getDate() + ".map");
 
@@ -94,7 +91,6 @@ public class DataHandling {
      * @return Today's date in form Dyy, ex: 093018 for 09/30/18
      */
     private static String getDate() {
-
         Date now = new Date();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("Dyy");
         return dateFormatter.format(now);
@@ -114,13 +110,11 @@ public class DataHandling {
     public static Map<String, Long> acceptDate(String date,
         boolean returnState)
         throws IOException {
-
         Map<String, Long> loadedAppMap = new HashMap<>();
         try {
             ObjectInputStream ois = new ObjectInputStream(
                 new FileInputStream("./saved_data/" + date + ".map"));
             Object readMap = ois.readObject();
-            System.out.println("read map " + readMap);
             if (readMap != null && readMap instanceof HashMap) {
                 loadedAppMap
                     .putAll((Map<? extends String, ? extends Long>) readMap);
@@ -135,7 +129,6 @@ public class DataHandling {
         if (returnState) {
             return loadedAppMap;
         } else {
-            System.out.println("loaded appmap " + loadedAppMap);
             ExcelWriter.write(loadedAppMap, date);
         }
         return loadedAppMap;
@@ -152,7 +145,6 @@ public class DataHandling {
     @SuppressWarnings("unchecked")
     public static Map<String, Long> acceptDateTable(String date)
         throws IOException {
-
         Map<String, Long> loadedAppMap = new HashMap<>();
         try {
             ObjectInputStream ois = new ObjectInputStream(
@@ -179,7 +171,6 @@ public class DataHandling {
      * @return returns an arraylist of String dates
      */
     public static List<String> dateDiff(String date1, String date2) {
-
         List<String> dates = new ArrayList<String>();
         String days1 = date1.substring(0, 3);
         String days2 = date2.substring(0, 3);
@@ -206,7 +197,6 @@ public class DataHandling {
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static List<Map> loadMaps(List<String> dates) {
-
         List<Map> maps = new ArrayList<Map>();
         for (int j = 0; j < dates.size(); j++) {
             Map<String, Long> loadedAppMap = new HashMap<>();
@@ -238,7 +228,6 @@ public class DataHandling {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static void writeDates(List<Map> maps, List<String> dates)
         throws IOException {
-
         Map<String, Long> combinedMaps = new HashMap<>();
         int i = 100 / maps.size();
         for (Map<String, Long> map : maps) {
@@ -264,7 +253,6 @@ public class DataHandling {
      */
     private static Map<String, Double> sortHashMapByValues(
         Map<String, Double> finalMap) {
-
         List<String> mapKeys = new ArrayList<>(finalMap.keySet());
         List<Double> mapValues = new ArrayList<>(finalMap.values());
         Collections.sort(mapValues);
@@ -298,7 +286,6 @@ public class DataHandling {
      * @return Ordered map of today's values.
      */
     public static Map<String, Double> orderedMap() {
-
         Map<String, Long> loadedCurrentMap = new HashMap<>();
         if (Main.getChecked()) {
             loadedCurrentMap =
@@ -332,7 +319,6 @@ public class DataHandling {
      * @return a map of consolidated entries.
      */
     public static Map<String, Long> validateData(Map<String, Long> inputMap) {
-
         Map<String, Long> editedMap = new HashMap<String, Long>();
         Map<String, Long> doNotAdd = new HashMap<String, Long>();
 
@@ -351,7 +337,6 @@ public class DataHandling {
             try {
                 // Check to see if the key needs to be combined or not
                 for (int i = 0; i < size; i++) {
-                    // for (String element : itemstoHide) {
                     if (key.contains(itemstoHide[i])) {
                         if (editedMap
                             .get(itemstoHide[i].substring(2,
@@ -400,7 +385,6 @@ public class DataHandling {
         if (Main.getMode() == 2) {
             list = TableHelper.loadList("inclusion");
             list.remove("");
-            System.out.println("list 2 " + list);
             int size = list.size();
             String[] itemsToShow = list.toArray(new String[list.size()]);
             for (Entry<String, Long> entry : inputMap.entrySet()) {
@@ -417,7 +401,6 @@ public class DataHandling {
         } else if (Main.getMode() == 3) {
             list = TableHelper.loadList("exclusion");
             list.remove("");
-            System.out.println("list 3 " + list);
             int size = list.size();
             String[] itemstoHide = list.toArray(new String[list.size()]);
             // For each item in the input map...
@@ -436,7 +419,6 @@ public class DataHandling {
                 }
             }
         }
-        System.out.println("What to display filter " + editedMap);
         return editedMap;
     }
 

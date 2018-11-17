@@ -31,7 +31,6 @@ public class BarChart extends ApplicationFrame {
     private static final long serialVersionUID = -7957255223166147473L;
 
     private BarChart(String paramString) {
-
         super(paramString);
         JPanel localJPanel = createDemoPanel();
         localJPanel.setPreferredSize(new Dimension(500, 270));
@@ -39,7 +38,6 @@ public class BarChart extends ApplicationFrame {
     }
 
     private static CategoryDataset createDataset() {
-
         DefaultCategoryDataset localDefaultCategoryDataset =
             new DefaultCategoryDataset();
 
@@ -76,7 +74,6 @@ public class BarChart extends ApplicationFrame {
 
     private static JFreeChart createChart(
         CategoryDataset paramCategoryDataset) {
-
         JFreeChart localJFreeChart =
             ChartFactory.createBarChart("Bar Chart for Data Displayed in Table",
                 "Program", "Time " + TimeConvert.getUnit(),
@@ -115,7 +112,6 @@ public class BarChart extends ApplicationFrame {
     }
 
     public static JPanel createDemoPanel() {
-
         JFreeChart localJFreeChart = createChart(createDataset());
         ChartPanel localChartPanel = new ChartPanel(localJFreeChart);
         localChartPanel.setMouseWheelEnabled(true);

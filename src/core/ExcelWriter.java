@@ -31,7 +31,6 @@ public class ExcelWriter {
     public static void write(Map<String, Long> combinedMaps, String date)
         throws IOException {
         ExploreDataGui.updateBar(0);
-
         Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
 
         if (Main.chckbxConsolidatePrograms.isSelected()) {
@@ -43,15 +42,9 @@ public class ExcelWriter {
             loadedCurrentMap =
                 DataHandling.validateWhatToDisplay(loadedCurrentMap);
         }
-
-        System.out.println("combined maps " + combinedMaps);
-        System.out.println("loadedCurrentMap " + loadedCurrentMap);
         Map<String, Long> toDisplayMap = new HashMap<>(loadedCurrentMap);
-        System.out.println("toDisplayMap " + toDisplayMap);
         Map<String, Double> finalMap =
-            // TimeConvert.convertOutputTime(toDisplayMap);
             TimeConvert.convertExportTime(toDisplayMap);
-        System.out.println(finalMap);
 
         printedDate = date;
 

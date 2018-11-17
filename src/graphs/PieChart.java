@@ -17,7 +17,6 @@ import org.jfree.ui.ApplicationFrame;
 
 import core.DataHandling;
 import gui.GraphicalOutputGui;
-import gui.Main;
 
 /**
  * PieChart.java This class is used to create a pie chart of the top 5 entries
@@ -37,7 +36,6 @@ public class PieChart extends ApplicationFrame {
      *            the chart title.
      */
     public PieChart(String paramString) {
-
         super(paramString);
         JPanel localJPanel = createDemoPanel();
         localJPanel.setPreferredSize(new Dimension(1800, 1670));
@@ -50,10 +48,7 @@ public class PieChart extends ApplicationFrame {
      * @return the data set for the pie chart.
      */
     public static PieDataset createDataset() {
-
         orderedMap = DataHandling.orderedMap();
-        // orderedMap = Main.globalMap;
-        System.out.println("Printing: " + Main.globalMap);
         DefaultPieDataset localDefaultPieDataset = new DefaultPieDataset();
         if (orderedMap.size() == 0) {
             return localDefaultPieDataset;
@@ -93,26 +88,21 @@ public class PieChart extends ApplicationFrame {
      *            pie chart's data set.
      */
     public static JFreeChart createChart(PieDataset paramPieDataset) {
-
         JFreeChart localJFreeChart = ChartFactory.createPieChart(
             "Pie Chart for Data Displayed in Table", paramPieDataset,
             true, true, false);
         PiePlot localPiePlot = (PiePlot) localJFreeChart.getPlot();
-
         for (int j = 0; j < GraphicalOutputGui.getNumProgs() - 1; j++) {
             localPiePlot.setSectionPaint(
                 orderedMap.entrySet().iterator().next().getKey(),
                 new Color(160, 160, 255));
         }
-
         localPiePlot.setNoDataMessage("No data available");
-
         localPiePlot.setLabelGenerator(
             new StandardPieSectionLabelGenerator("{0} ({2} percent)"));
         localPiePlot.setLabelBackgroundPaint(new Color(220, 220, 220));
         localPiePlot.setSimpleLabels(true);
         localPiePlot.setInteriorGap(0.0D);
-
         return localJFreeChart;
     }
 
@@ -122,7 +112,6 @@ public class PieChart extends ApplicationFrame {
      * @return return the panel the pie chart is in.
      */
     public static JPanel createDemoPanel() {
-
         JFreeChart localJFreeChart = createChart(createDataset());
         ChartPanel localChartPanel = new ChartPanel(localJFreeChart);
         localChartPanel.setMouseWheelEnabled(true);
@@ -136,13 +125,10 @@ public class PieChart extends ApplicationFrame {
      * @return 5, or less if less values are in map.
      */
     public static int checkValues() {
-
         int size = orderedMap.size();
         if (size < 5) {
             return size;
         }
         return 5;
-
     }
-
 }

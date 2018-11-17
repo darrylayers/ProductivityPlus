@@ -119,10 +119,6 @@ public class ConsolidationGui extends JDialog {
         btnEnterProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-
-                System.out.println("inside enter");
-                System.out.println(txtInput.getText());
-
                 if (DataHandling.checkEmpty(txtInput.getText())) {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
@@ -267,7 +263,6 @@ public class ConsolidationGui extends JDialog {
      * Save the local list to the preferences.
      */
     private void saveList() {
-        System.out.print("Saving list: " + list + "\n");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
         for (String element : list) {

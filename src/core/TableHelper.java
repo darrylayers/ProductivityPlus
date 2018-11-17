@@ -43,25 +43,19 @@ public class TableHelper {
      *            List of strings.
      */
     public static JScrollPane loadTable(List<String> input) {
-
         model = new DefaultTableModel(0, 1);
         String[] colHeadings = {"Programs in list"};
         model.setColumnIdentifiers(colHeadings);
         table = new JTable(model);
         input.remove("");
-
         // Load the able
         for (String entry : input) {
             model.addRow(new Object[] {entry.substring(2, entry.length())});
         }
-
         RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         table.setRowSorter(sorter);
-
         sc = new JScrollPane(table);
-
         return sc;
-
     }
 
     /**
@@ -82,8 +76,7 @@ public class TableHelper {
         } else if (prefString.equals("exclusions")) {
             bytes = prefs.getByteArray(EXCLUSION_LIST, temp);
         }
-
-        ArrayList<String> retList = new ArrayList<String>();
+        List<String> retList = new ArrayList<String>();
         bytes = prefs.getByteArray(prefString, temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         DataInputStream in = new DataInputStream(bais);
@@ -110,7 +103,6 @@ public class TableHelper {
      *            string attached to the preference we are saving.
      */
     public static void saveList(List<String> input, String prefsString) {
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
         for (String element : input) {
@@ -121,9 +113,7 @@ public class TableHelper {
             }
         }
         byte[] bytes = baos.toByteArray();
-
         prefs.putByteArray(prefsString, bytes);
-
     }
 
     /**
@@ -131,12 +121,12 @@ public class TableHelper {
      * 
      * @param item
      *            to check
-     * @param list
+     * @param retList
      *            to check
      * @return true if the item is in the list.
      */
-    private static boolean inList(String item, ArrayList<String> list) {
-        if (list.contains("- " + item) || list.contains(item)) {
+    private static boolean inList(String item, List<String> retList) {
+        if (retList.contains("- " + item) || retList.contains(item)) {
             return true;
         } else {
             return false;

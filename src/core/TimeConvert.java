@@ -9,8 +9,7 @@ import gui.PreferencesGui;
 
 /**
  * The purpose of this class is to convert the saved or current data to the
- * specified unit. If the user wants their data presented in hours, this class
- * will convert the data from seconds to hours.
+ * specified unit.
  * 
  * @author Austin Ayers
  */

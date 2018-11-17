@@ -18,7 +18,6 @@ import gui.Main;
 
 public class ProgramTimer implements Runnable {
 
-    public static Map<String, Long> appMap = new HashMap<>();
     private static char[] buffer = new char[4096];
     private static HWND hwnd;
     private static String prog = "";
@@ -27,8 +26,11 @@ public class ProgramTimer implements Runnable {
     private static long oldTime;
     private static long start;
     private static long end;
-    public static boolean trackIfTrue;
     private static boolean leftApp = false;
+
+    public static boolean trackIfTrue;
+
+    public static Map<String, Long> appMap = new HashMap<>();
 
     /**
      * Overridden run method to run the timer on a new thread. Tracks to see
@@ -145,5 +147,4 @@ public class ProgramTimer implements Runnable {
         }
         System.out.println("=====================\n");
     }
-
 }

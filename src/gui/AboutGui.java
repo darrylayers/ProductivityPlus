@@ -20,10 +20,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class AboutGui extends JDialog {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3642805775576134791L;
     private final JPanel contentPanel = new JPanel();
 
     /**

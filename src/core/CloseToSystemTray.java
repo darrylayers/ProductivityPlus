@@ -21,18 +21,12 @@ import gui.Main;
  */
 public class CloseToSystemTray {
 
-    /*
-     * public Image image = Toolkit.getDefaultToolkit() .getImage(
-     * this.getClass().getResource("resource/favicon.png").toString());
-     */
-
     /**
      * Creates the tray and all the functionality.
      * 
      * @throws IOException
      */
     public void startTray() throws IOException {
-
         if (!SystemTray.isSupported()) {
             return;
         }

@@ -43,7 +43,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class ExploreDataGui extends JDialog {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7452480813384342669L;
     private final JPanel contentPanel = new JPanel();
     private DatePickerSettings datePickerSettings = new DatePickerSettings();
     private DatePicker datePicker = new DatePicker(datePickerSettings);
@@ -342,12 +342,8 @@ public class ExploreDataGui extends JDialog {
 
             if (date2 != null) {
                 formattedString2 = date2.format(formatter);
-                System.out.println(formattedString + " " + formattedString2);
                 List<String> dates =
                     DataHandling.dateDiff(formattedString, formattedString2);
-                System.out.print(dates);
-                System.out.print(
-                    DataHandling.dateDiff(formattedString, formattedString2));
                 dateR = dates.size();
 
                 @SuppressWarnings("rawtypes")
@@ -377,13 +373,11 @@ public class ExploreDataGui extends JDialog {
 
             Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
 
-            System.out.println("get checked: " + Main.getChecked());
             if (Main.chckbxConsolidatePrograms.isSelected()) {
                 loadedCurrentMap = DataHandling.validateData(comboMap);
             } else {
                 loadedCurrentMap = comboMap;
             }
-            System.out.println("get mode: " + Main.getMode());
             if (Main.getMode() == 3 || Main.getMode() == 2) {
                 if (!Main.getChecked()) {
                     loadedCurrentMap = comboMap;
@@ -394,9 +388,6 @@ public class ExploreDataGui extends JDialog {
 
             Map<String, Double> displayMap =
                 TimeConvert.convertTime(loadedCurrentMap);
-
-            System.out.println("loaded current map " + loadedCurrentMap);
-            System.out.println("display map " + displayMap);
 
             Double time = displayMap.get(textInput);
 
