@@ -85,6 +85,7 @@ public class ExploreDataGui extends JDialog {
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
+            progressBar.setValue(0);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -202,6 +203,7 @@ public class ExploreDataGui extends JDialog {
                     Desktop.getDesktop().open(new File(
                         "./output/ProductivityPlusData" + ExcelWriter.getDate()
                             + ".xlsx"));
+                    progressBar.setValue(0);
                 } catch (java.lang.IllegalArgumentException | IOException e) {
                     e.printStackTrace();
                 }
