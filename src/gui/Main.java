@@ -112,6 +112,16 @@ public class Main {
      */
     private Main() {
 
+        // Verify folders exists, if not create
+        File f = new File("./output/");
+        if (!f.exists()) {
+            new File("./output").mkdirs();
+        }
+        f = new File("./saved_data/");
+        if (!f.exists()) {
+            new File("./saved_data").mkdirs();
+        }
+
         // Load the hashmap info ProgramTimer.appMap
         try {
             DataHandling.loadMap();

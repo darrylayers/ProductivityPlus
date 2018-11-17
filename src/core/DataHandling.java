@@ -42,9 +42,6 @@ import gui.Main;
  */
 public class DataHandling {
 
-    private static File savedMap =
-        new File("./saved_data/" + getDate() + ".map");
-
     /**
      * This method loads the appMap hash map in ProgramTimer.java
      * 
@@ -53,6 +50,9 @@ public class DataHandling {
      */
     @SuppressWarnings("unchecked")
     public static void loadMap() throws NumberFormatException, IOException {
+
+        File savedMap =
+            new File("./saved_data/" + getDate() + ".map");
 
         try {
             ObjectInputStream ois =
@@ -74,6 +74,9 @@ public class DataHandling {
      * @throws IOException
      */
     public static void saveMap() throws IOException {
+
+        File savedMap =
+            new File("./saved_data/" + getDate() + ".map");
 
         try {
             ObjectOutputStream oos =

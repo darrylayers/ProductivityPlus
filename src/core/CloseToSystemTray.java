@@ -9,7 +9,6 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 import gui.Main;
@@ -70,13 +69,6 @@ public class CloseToSystemTray {
         });
 
         trayPopupMenu.add(close);
-
-        File f = new File("resources/favicon.png");
-        if (f.exists() && !f.isDirectory()) {
-            System.out
-                .println(this.getClass().getResource("/favicon.png"));
-
-        }
 
         Image image = Toolkit.getDefaultToolkit()
             .getImage(
