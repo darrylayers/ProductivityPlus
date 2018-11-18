@@ -72,6 +72,7 @@ public class Main {
 
     private final static String VALIDATE_STRINGS = "validate";
     private final static String DISPLAY_MODE = "mode";
+    private final static String FIRST_CONSOLIDATE = "firstConsolidate";
 
     private static Preferences prefs = Preferences.userRoot().node("Main");
     private static JFrame frame;
@@ -96,6 +97,7 @@ public class Main {
         new JRadioButton("Track Inclusions");
     private JRadioButton trackExclusionsRButton =
         new JRadioButton("Track Exclusions");
+    private boolean firstLaunch = prefs.getBoolean(FIRST_CONSOLIDATE, true);
 
     public static boolean toTrack = false;
     public static Map<String, Double> globalMap =
@@ -530,7 +532,20 @@ public class Main {
         chckbxConsolidatePrograms.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                // setChecked();
+
+                // Check to see if it is the
+                // first time Consolidate Programs
+                // has been checked, if so, display
+                // how-to message.
+                if (firstLaunch) {
+                    JOptionPane.showMessageDialog(null,
+                        "Just a heads up! To use the Consolidate Programs "
+                            + "feature, you must also create a list of programs "
+                            + "you would like to consolidate under the "
+                            + "Edit->Program Consolidation tab!");
+                    prefs.putBoolean(FIRST_CONSOLIDATE, false);
+                }
+
                 prefs.putBoolean(VALIDATE_STRINGS,
                     chckbxConsolidatePrograms.isSelected());
             }
