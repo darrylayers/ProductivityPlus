@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -122,6 +123,8 @@ public class Main {
             new File("./saved_data").mkdirs();
         }
 
+        // Load app icon
+
         // Load the hashmap info ProgramTimer.appMap
         try {
             DataHandling.loadMap();
@@ -139,6 +142,9 @@ public class Main {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        frame.setIconImage(Toolkit.getDefaultToolkit()
+            .getImage(getClass().getResource("/favicon.png")));
 
         // ************** Menu Bar ************** //
         JMenuBar menuBar = new JMenuBar();
