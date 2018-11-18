@@ -3,11 +3,11 @@ Fall 2018 Capstone Project - Monitor how much time you spend in your application
 
 **How to use**
 
-You can find the latest version of this program at http://austinayers.com/ProductivityPlus.zip
+You can find the latest version of this program at http://austinayers.com/ProductivityPlus.exe or http://austinayers.com/ProductivityPlus.jar
 
-Unzip the contents (ProductivityPlus.jar, resources, saved_data, and output folders) to any directory and run.
+Just double click to run.
 
-All preferences are saved using Java Preferences, meaning the can be found under your registry.
+All preferences are saved using Java Preferences, meaning they can be found under your registry.
 
 (Run->regedit->HKEY_CURRENT_USER->Software->JavaSoft->Prefs)
 
