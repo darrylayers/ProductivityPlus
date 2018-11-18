@@ -123,8 +123,6 @@ public class Main {
             new File("./saved_data").mkdirs();
         }
 
-        // Load app icon
-
         // Load the hashmap info ProgramTimer.appMap
         try {
             DataHandling.loadMap();
@@ -138,13 +136,13 @@ public class Main {
         frame.setLocation(100, 100);
         frame.setSize(986, 554);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        frame.setTitle("ProductivityPlus");
+        frame.setTitle("Productivity Plus");
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
         frame.setIconImage(Toolkit.getDefaultToolkit()
-            .getImage(getClass().getResource("/favicon.png")));
+            .getImage(getClass().getResource("/icon.png")));
 
         // ************** Menu Bar ************** //
         JMenuBar menuBar = new JMenuBar();

@@ -66,7 +66,7 @@ public class CloseToSystemTray {
 
         Image image = Toolkit.getDefaultToolkit()
             .getImage(
-                this.getClass().getResource("/favicon.png"));
+                this.getClass().getResource("/icon.png"));
 
         TrayIcon trayIcon =
             new TrayIcon(image, "Productivity Plus", trayPopupMenu);
