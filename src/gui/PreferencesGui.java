@@ -87,17 +87,29 @@ public class PreferencesGui extends JDialog {
         prefs.putBoolean(UPDATE_CHECK, getUpdate());
     }
 
-    // Simple getters for fields for each saved preference
-    // these are used to restore old saves when the user
-    // decides to cancel any saved changes made.
+    /**
+     * Export getter
+     * 
+     * @return export
+     */
     private static int getExport() {
         return export;
     }
 
+    /**
+     * Display getter
+     * 
+     * @return display
+     */
     private static int getDisplay() {
         return display;
     }
 
+    /**
+     * Update getter
+     * 
+     * @return update
+     */
     private static boolean getUpdate() {
         return update;
     }
@@ -127,7 +139,6 @@ public class PreferencesGui extends JDialog {
         getContentPane().add(updatePanel, "cell 0 0,alignx left");
 
         // Update checkbox
-
         chckbxDisplayUpdateNotifications
             .setHorizontalAlignment(SwingConstants.LEFT);
         updatePanel.add(chckbxDisplayUpdateNotifications);
@@ -147,7 +158,6 @@ public class PreferencesGui extends JDialog {
             .setSelected(prefs.getBoolean(UPDATE_CHECK, true));
 
         // Button pane
-
         JPanel buttonPane = new JPanel();
         buttonPane
             .setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -155,13 +165,11 @@ public class PreferencesGui extends JDialog {
         getContentPane().add(buttonPane, "cell 0 2,growx,aligny top");
 
         // Pref output panel
-
         JPanel prefOutputPanel = new JPanel();
         contentPanel.add(prefOutputPanel, "cell 0 1,grow");
         prefOutputPanel.setLayout(new MigLayout("", "[][][]", "[]"));
 
         // Display panel
-
         JPanel displayPanel = new JPanel();
         contentPanel.add(displayPanel, "cell 0 3,grow");
         displayPanel.setLayout(new MigLayout("", "[][][][][grow]", "[grow][]"));

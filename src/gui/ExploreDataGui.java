@@ -103,7 +103,6 @@ public class ExploreDataGui extends JDialog {
         setBounds(100, 100, 450, 396);
 
         // Frame panels and panes
-
         getContentPane()
             .setLayout(
                 new MigLayout("", "[grow]", "[228px,grow]"));
@@ -116,7 +115,6 @@ public class ExploreDataGui extends JDialog {
                 "[grow][70.00,grow][215.00,grow]"));
 
         // Text pane settings for date picker info
-
         textPane.setBackground(new Color(240, 240, 240));
         textPane.setEditable(false);
         textPane.setText(
@@ -126,7 +124,6 @@ public class ExploreDataGui extends JDialog {
         contentPanel.add(textPane, "cell 0 0,grow");
 
         // Dates
-
         JPanel datePanel = new JPanel();
         datePanel.setBorder(
             new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -143,14 +140,12 @@ public class ExploreDataGui extends JDialog {
         datePanel.add(datePicker2, "cell 1 0");
 
         // Exports
-
         JPanel exportPanel = new JPanel();
         contentPanel.add(exportPanel, "cell 0 2,grow");
         exportPanel
             .setLayout(new MigLayout("", "[142.00][142.00][]", "[][][33.00]"));
 
         // Open output button
-
         JButton btnOpenOutput = new JButton("Open Output");
         btnOpenOutput.setToolTipText("Open the created Excel file.");
         JButton btnCreateExportFile = new JButton("Create export file");
@@ -171,7 +166,6 @@ public class ExploreDataGui extends JDialog {
         });
 
         // Create export file button
-
         btnCreateExportFile.setToolTipText(
             "File is exported to Excel format (.xlsx).");
         exportPanel.add(btnCreateExportFile, "cell 0 1,grow");
@@ -189,41 +183,29 @@ public class ExploreDataGui extends JDialog {
                 }
             }
         });
-
         // Disable the open output button
-
         btnOpenOutput.setEnabled(false);
-
         exportPanel.add(btnOpenOutput, "cell 1 1,grow");
-
         // Progress bar listener
-
         progressBar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 progressBar.setValue(0);
             }
         });
-
         // Progress Bar
-
         exportPanel.add(progressBar, "cell 0 2");
         progressBar.setMinimum(barMin);
         progressBar.setMaximum(barMax);
-
         // Single Program Search
-
         tabbedPane.addTab("Single Program Search", null, singleProgPanel, null);
         singleProgPanel.setLayout(
             new MigLayout("", "[427.00,grow]", "[][grow][][][grow]"));
 
         singleProgPanel.add(progInputPanel, "cell 0 0,grow");
         progInputPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
-
         // Labels and text fields
-
         progInputPanel.add(lblEnterProgramName, "cell 0 0");
-
         progInputPanel.add(textField, "cell 0 1,growx");
         txtpnTheLeftDate.setEditable(false);
         txtpnTheLeftDate.setBackground(new Color(240, 240, 240));
@@ -233,20 +215,15 @@ public class ExploreDataGui extends JDialog {
                 + "Tip: It is usually best to be on 'Display All Mode' when using this feature.");
 
         singleProgPanel.add(txtpnTheLeftDate, "cell 0 1,grow");
-
         // Calendars
-
         singleProgPanel.add(calendarPanel, "cell 0 3,grow");
         calendarPanel.setLayout(new MigLayout("", "[grow][grow]", "[grow][]"));
         datePicker_1.getComponentDateTextField()
             .setToolTipText("Starting look up date.");
-
         calendarPanel.add(datePicker_1, "cell 0 0");
         datePicker_2.getComponentDateTextField()
             .setToolTipText("Ending look up date.");
-
         calendarPanel.add(datePicker_2, "cell 1 0");
-
         // Submit button
         btnSubmitSearch.setToolTipText("Submit program search.");
         btnSubmitSearch.addMouseListener(new MouseAdapter() {
@@ -261,11 +238,8 @@ public class ExploreDataGui extends JDialog {
                 }
             }
         });
-
         calendarPanel.add(btnSubmitSearch, "cell 1 1");
-
         // Single program search result panel
-
         singleProgPanel.add(displayPanel, "cell 0 4,grow");
         displayPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
         txtrTest.setText("Program name: <Search submission needed> \n"
@@ -274,12 +248,9 @@ public class ExploreDataGui extends JDialog {
             + "Hint: This info is copy/pastable!");
 
         displayPanel.add(txtrTest, "cell 0 0,grow");
-
         // Date settings
-
         datePickerSettings.setFormatForDatesBeforeCommonEra("MM/dd/yyyy");
         datePickerSettings.setFormatForDatesCommonEra("MM/dd/yyyy");
-
         datePickerSettings2.setFormatForDatesBeforeCommonEra("MM/dd/yyyy");
         datePickerSettings2.setFormatForDatesCommonEra("MM/dd/yyyy");
     }
@@ -321,7 +292,6 @@ public class ExploreDataGui extends JDialog {
                     DataHandling.dateDiff(formattedString, formattedString2);
 
                 // Load maps with each map we need
-
                 @SuppressWarnings("rawtypes")
                 List<Map> maps = DataHandling.loadMaps(dates);
 
@@ -394,7 +364,6 @@ public class ExploreDataGui extends JDialog {
             }
 
             // Modify the map using the user's preferences
-
             Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
 
             if (Main.chckbxConsolidatePrograms.isSelected()) {

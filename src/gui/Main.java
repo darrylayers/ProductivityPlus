@@ -133,7 +133,6 @@ public class Main {
         }
 
         // Frame creation
-
         frame = new JFrame();
         frame.setLocation(100, 100);
         frame.setSize(986, 554);

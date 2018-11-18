@@ -51,12 +51,17 @@ public class PieChart extends ApplicationFrame {
      * @return the data set for the pie chart.
      */
     public static PieDataset createDataset() {
+        // Create var with an ordered map
         orderedMap = DataHandling.orderedMap();
+        // Create empty data set.
         DefaultPieDataset localDefaultPieDataset = new DefaultPieDataset();
+        // If the map set is empty, return empty data set.
         if (orderedMap.size() == 0) {
             return localDefaultPieDataset;
         }
+        // Create string array with size of list of progs
         String keyList[] = new String[GraphicalOutputGui.getProgCount()];
+        // Find the last key
         String lKeyLast = "";
         int k = 1;
         int counter = 0;

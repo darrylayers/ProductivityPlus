@@ -83,7 +83,6 @@ public class ConsolidationGui extends JDialog {
         setBounds(100, 100, 592, 419);
 
         // Frame panels and panes
-
         getContentPane()
             .setLayout(new MigLayout("", "[grow]", "[305.00,grow]"));
 
@@ -100,12 +99,10 @@ public class ConsolidationGui extends JDialog {
         tablePanel.setLayout(new MigLayout("", "[][grow]", "[][][][]"));
 
         // Programs to Combine label
-
         lblProgsToCombine = new JLabel("Programs to Combine");
         mainPanel.add(lblProgsToCombine, "cell 1 0,grow");
 
         // Remove program button
-
         JButton btnRemove = new JButton("Remove Program");
         btnRemove.setToolTipText("Remove a program to consolidate.");
         btnRemove.addMouseListener(new MouseAdapter() {
@@ -125,7 +122,6 @@ public class ConsolidationGui extends JDialog {
         mainPanel.add(btnRemove, "cell 1 3,growx");
 
         // Enter program button
-
         JButton btnEnterProgram = new JButton("Enter Program");
         btnEnterProgram.setToolTipText("Add a program to consolidate.");
         btnEnterProgram.addMouseListener(new MouseAdapter() {
@@ -144,14 +140,12 @@ public class ConsolidationGui extends JDialog {
         mainPanel.add(btnEnterProgram, "cell 1 2,growx");
 
         // Text input box
-
         txtInput = new JTextField();
         txtInput.setToolTipText("Enter program name here.");
         mainPanel.add(txtInput, "cell 1 1,growx");
         txtInput.setColumns(10);
 
         // Clear list button
-
         btnClearList = new JButton("Clear List");
         btnClearList.setToolTipText("Remove all programs from the list.");
         btnClearList.addMouseListener(new MouseAdapter() {
@@ -165,7 +159,6 @@ public class ConsolidationGui extends JDialog {
         mainPanel.add(btnClearList, "cell 1 4,grow");
 
         // Instructional text pane
-
         txtpnWhatDoI = new JTextPane();
         txtpnWhatDoI.setEditable(false);
         txtpnWhatDoI.setBackground(new Color(240, 240, 240));

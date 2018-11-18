@@ -83,7 +83,6 @@ public class GraphicalOutputGui extends JDialog {
                     "[18.00][][8.00][][]"));
 
         // Spinner panel
-
         JPanel spinnerPanel = new JPanel();
         controlPanel.add(spinnerPanel, "cell 0 0,alignx left,growy");
 
@@ -127,7 +126,6 @@ public class GraphicalOutputGui extends JDialog {
         controlPanel.add(secretLabel, "cell 0 4,alignx right");
 
         // Spinner listener
-
         spinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent arg0) {
@@ -148,7 +146,6 @@ public class GraphicalOutputGui extends JDialog {
         graphPanel.add(tabbedPane, "cell 0 0,grow");
 
         // Recreate the graphs
-
         buildGraphs();
 
     }
@@ -195,6 +192,5 @@ public class GraphicalOutputGui extends JDialog {
         tabbedPane.addTab("Bar Graph", null, bargraphPanel, null);
         bar = BarChart.createPanel();
         bargraphPanel.add(bar);
-
     }
 }
