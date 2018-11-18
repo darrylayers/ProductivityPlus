@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,8 +14,9 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -108,9 +110,28 @@ public class PreferencesGui extends JDialog {
         setTitle("Preferences");
         setBounds(100, 100, 502, 332);
 
-        // ************** Frame panels and panes ************** //
+        // Frame panels and panes
         getContentPane()
-            .setLayout(new MigLayout("", "[434px]", "[53.00][159.00px][33px]"));
+            .setLayout(
+                new MigLayout("", "[434px,grow]", "[53.00][159.00px][33px]"));
+
+        contentPanel
+            .setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        getContentPane().add(contentPanel, "cell 0 1,grow");
+        contentPanel.setLayout(
+            new MigLayout("", "[217.00,grow][][]", "[][40.00][][40.00][]"));
+
+        JPanel updatePanel = new JPanel();
+        updatePanel
+            .setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        getContentPane().add(updatePanel, "cell 0 0,alignx left");
+
+        // Update checkbox
+
+        chckbxDisplayUpdateNotifications
+            .setHorizontalAlignment(SwingConstants.LEFT);
+        updatePanel.add(chckbxDisplayUpdateNotifications);
+        chckbxDisplayUpdateNotifications.setForeground(new Color(0, 0, 0));
 
         chckbxDisplayUpdateNotifications.addMouseListener(new MouseAdapter() {
             @Override
@@ -124,37 +145,40 @@ public class PreferencesGui extends JDialog {
                 + "alerted about new updates on launch of this application.");
         chckbxDisplayUpdateNotifications
             .setSelected(prefs.getBoolean(UPDATE_CHECK, true));
-        getContentPane().add(chckbxDisplayUpdateNotifications, "cell 0 0");
-        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        getContentPane().add(contentPanel, "cell 0 1,grow");
-        contentPanel.setLayout(
-            new MigLayout("", "[217.00,grow][][]", "[][40.00][][40.00]"));
+
+        // Button pane
 
         JPanel buttonPane = new JPanel();
+        buttonPane
+            .setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, "cell 0 2,growx,aligny top");
+
+        // Pref output panel
 
         JPanel prefOutputPanel = new JPanel();
         contentPanel.add(prefOutputPanel, "cell 0 1,grow");
         prefOutputPanel.setLayout(new MigLayout("", "[][][]", "[]"));
 
+        // Display panel
+
         JPanel displayPanel = new JPanel();
         contentPanel.add(displayPanel, "cell 0 3,grow");
         displayPanel.setLayout(new MigLayout("", "[][][][][grow]", "[grow][]"));
 
-        // ************** Output preferences Label ************** //
+        // Output preferences Label
         JLabel lblProgramOutputPreferences = new JLabel(
             "Program Output Preferences (this does not change the display table)");
         contentPanel.add(lblProgramOutputPreferences, "cell 0 0");
 
-        // ************** Display Table Preferences Label ************** //
+        // Display Table Preferences Label
         JLabel lblProgramDisplayTable = new JLabel(
             "Program Display Preferences (this refers to the table in main window)");
         contentPanel.add(lblProgramDisplayTable, "cell 0 2");
         exportOptions.setToolTipText("This changes the unit of time that "
             + "exported data is displayed in.");
 
-        // ************** Export Options listener ************** //
+        // Export Options listener
         exportOptions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -166,7 +190,7 @@ public class PreferencesGui extends JDialog {
         displayOptions.setToolTipText(
             "This changes the unit of time that displayed in-app data is displayed in.");
 
-        // ************** Display options listener ************** //
+        // Display options listener
         displayOptions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -176,7 +200,7 @@ public class PreferencesGui extends JDialog {
         displayOptions.setSelectedIndex(getDisplayIndex());
         displayPanel.add(displayOptions, "cell 0 0,grow");
 
-        // ************** Save Button ************** //
+        // Save Button
         JButton btnSave = new JButton("Save");
         btnSave.setToolTipText("Save changes.");
         btnSave.addMouseListener(new MouseAdapter() {
@@ -189,12 +213,13 @@ public class PreferencesGui extends JDialog {
         buttonPane.add(btnSave);
         getRootPane().setDefaultButton(btnSave);
 
-        // ************** Cancel Button ************** //
+        // Cancel Button
         JButton btnCancel = new JButton("Cancel");
         btnCancel.setToolTipText("Revert changes.");
         btnCancel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
+                // Reload the original settings when the window was launched
                 saveBundle();
                 dispose();
             }

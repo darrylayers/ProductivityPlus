@@ -65,14 +65,16 @@ public class GraphicalOutputGui extends JDialog {
         setTitle("Graphs");
         setBounds(100, 100, 1030, 634);
 
-        // ************** Frame panels and panes ************** //
+        // Frame panels and panes
         getContentPane().setLayout(
             new MigLayout("", "[184.00][817.00,grow]", "[][503.00,grow]"));
 
+        // Graph settings label
         JLabel lblGraphSettings = new JLabel("Graph Settings and Controls");
         getContentPane().add(lblGraphSettings, "cell 0 0,alignx center");
         lblGraphSettings.setFont(new Font("Verdana", Font.PLAIN, 11));
 
+        // Control panel
         JPanel controlPanel = new JPanel();
         getContentPane().add(controlPanel, "cell 0 1,growy");
         controlPanel
@@ -80,19 +82,25 @@ public class GraphicalOutputGui extends JDialog {
                 new MigLayout("", "[204.00,grow][-58.00][-84.00][71.00]",
                     "[18.00][][8.00][][]"));
 
+        // Spinner panel
+
         JPanel spinnerPanel = new JPanel();
         controlPanel.add(spinnerPanel, "cell 0 0,alignx left,growy");
 
+        // Number of items label
         JLabel lblNumberOfItmes = new JLabel("Number of items");
         spinnerPanel.add(lblNumberOfItmes);
         lblNumberOfItmes.setToolTipText(
             "This is the number of items that will be plotted.");
         lblNumberOfItmes.setFont(new Font("Verdana", Font.PLAIN, 11));
+
+        // Set the spinner model
         spinner.setModel(
             new SpinnerNumberModel(prefs.getInt(NUM_DISPLAY, 1), 1, null, 1));
 
         spinnerPanel.add(spinner);
 
+        // Refresh graphs button
         JButton btnRefreshGraphs = new JButton("Refresh Graphs");
         btnRefreshGraphs.setToolTipText("Refresh graphs with new data.");
         btnRefreshGraphs.addMouseListener(new MouseAdapter() {
@@ -105,6 +113,7 @@ public class GraphicalOutputGui extends JDialog {
         });
         controlPanel.add(btnRefreshGraphs, "cell 0 1,grow");
 
+        // Hint pane
         JTextPane txtpnHelpfulTipYou = new JTextPane();
         txtpnHelpfulTipYou.setBackground(new Color(240, 240, 240));
         txtpnHelpfulTipYou
@@ -117,6 +126,8 @@ public class GraphicalOutputGui extends JDialog {
         JLabel secretLabel = new JLabel("");
         controlPanel.add(secretLabel, "cell 0 4,alignx right");
 
+        // Spinner listener
+
         spinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent arg0) {
@@ -128,12 +139,15 @@ public class GraphicalOutputGui extends JDialog {
             }
         });
 
+        // Graph panel
         JPanel graphPanel = new JPanel();
         getContentPane().add(graphPanel, "cell 1 1,grow");
         graphPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
 
         tabbedPane = new JTabbedPane(SwingConstants.TOP);
         graphPanel.add(tabbedPane, "cell 0 0,grow");
+
+        // Recreate the graphs
 
         buildGraphs();
 
@@ -171,14 +185,15 @@ public class GraphicalOutputGui extends JDialog {
     }
 
     private void buildGraphs() {
+        // Build the pie chart
         JPanel piechartPanel = new JPanel();
         pie = PieChart.createDemoPanel();
         piechartPanel.add(pie);
         tabbedPane.addTab("Pie Chart", null, piechartPanel, null);
-
+        // Built the bar graph
         JPanel bargraphPanel = new JPanel();
         tabbedPane.addTab("Bar Graph", null, bargraphPanel, null);
-        bar = BarChart.createDemoPanel();
+        bar = BarChart.createPanel();
         bargraphPanel.add(bar);
 
     }

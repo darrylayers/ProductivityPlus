@@ -27,13 +27,16 @@ import gui.GraphicalOutputGui;
 public class PieChart extends ApplicationFrame {
 
     public static final long serialVersionUID = -617075449581724970L;
-    public static Map<String, Double> orderedMap;
+
+    public static Map<String, Double> orderedMap; // this is the ordered map of
+                                                  // entries to graph
 
     /**
      * Constuctor for the chart.
      * 
      * @param paramString,
      *            the chart title.
+     * @return the pie chart itself.
      */
     public PieChart(String paramString) {
         super(paramString);
@@ -62,7 +65,7 @@ public class PieChart extends ApplicationFrame {
         }
         keyList[0] = lKeyLast;
         String oldKey = "";
-
+        // Create an array of the ordered list
         for (int p = 0; p < GraphicalOutputGui.getNumProgs() - 1; p++) {
             for (String key : orderedMap.keySet()) {
                 if (key == keyList[counter]) {
@@ -73,6 +76,8 @@ public class PieChart extends ApplicationFrame {
                 oldKey = key;
             }
         }
+        // Add how ever many desired data entries from the data array to the bar
+        // chart data set.
         for (int i = 0; i < GraphicalOutputGui.getNumProgs(); i++) {
             localDefaultPieDataset.setValue(
                 keyList[i], orderedMap.get(keyList[i]));
@@ -83,11 +88,12 @@ public class PieChart extends ApplicationFrame {
     /**
      * Create and return the pie chart from the data.
      * 
-     * @return returns the actual pie chart.
      * @param the
      *            pie chart's data set.
+     * @return returns the actual pie chart.
      */
     public static JFreeChart createChart(PieDataset paramPieDataset) {
+        // Chart title and axies
         JFreeChart localJFreeChart = ChartFactory.createPieChart(
             "Pie Chart for Data Displayed in Table", paramPieDataset,
             true, true, false);
@@ -97,7 +103,9 @@ public class PieChart extends ApplicationFrame {
                 orderedMap.entrySet().iterator().next().getKey(),
                 new Color(160, 160, 255));
         }
+        // No data message
         localPiePlot.setNoDataMessage("No data available");
+        // Chart settings
         localPiePlot.setLabelGenerator(
             new StandardPieSectionLabelGenerator("{0} ({2} percent)"));
         localPiePlot.setLabelBackgroundPaint(new Color(220, 220, 220));
@@ -116,19 +124,5 @@ public class PieChart extends ApplicationFrame {
         ChartPanel localChartPanel = new ChartPanel(localJFreeChart);
         localChartPanel.setMouseWheelEnabled(true);
         return localChartPanel;
-    }
-
-    /**
-     * This method returns the minimum number of values that we can graph.
-     * Default 5.
-     * 
-     * @return 5, or less if less values are in map.
-     */
-    public static int checkValues() {
-        int size = orderedMap.size();
-        if (size < 5) {
-            return size;
-        }
-        return 5;
     }
 }
