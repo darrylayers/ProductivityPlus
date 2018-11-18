@@ -533,10 +533,6 @@ public class Main {
                 // setChecked();
                 prefs.putBoolean(VALIDATE_STRINGS,
                     chckbxConsolidatePrograms.isSelected());
-                /*
-                 * updateTable(false); secretLabel.setText("  ");
-                 * secretLabel.setText("");
-                 */
             }
         });
         buttonPanel.add(chckbxConsolidatePrograms, "cell 0 5,growx");
@@ -674,14 +670,16 @@ public class Main {
             e.printStackTrace();
         }
 
-        if (PreferencesGui.getUpdateStatus()) {
+        if (PreferencesGui.prefs.getBoolean("updateCheck",
+            PreferencesGui.getUpdateStatus())) {
             // Check to see if there is a new version of the program
             // True if there is
             if (checkForUpdate(
                 "http://austinayers.com/ProductivityPlus_v1.html", 500)) {
 
                 JOptionPane.showMessageDialog(null,
-                    "There is a new version of this program at austinayers.com/ProductivityPlus.zip");
+                    "There is a new version of this program at "
+                        + "austinayers.com/ProductivityPlus.exe or /ProductivityPlus.jar");
             }
         }
     }

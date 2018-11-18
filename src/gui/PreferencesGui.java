@@ -40,12 +40,12 @@ public class PreferencesGui extends JDialog {
         "Written (ex: 33 minutes 2 seconds)"};
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static JComboBox displayOptions = new JComboBox(displayTypes);
-    private static JCheckBox chckbxDisplayUpdateNotifications =
+    public static JCheckBox chckbxDisplayUpdateNotifications =
         new JCheckBox("Display update notifications");
     private static int export;
     private static int display;
     private static boolean update;
-    private static Preferences prefs =
+    public static Preferences prefs =
         Preferences.userRoot().node("PreferencesGui");
 
     private final JPanel contentPanel = new JPanel();
