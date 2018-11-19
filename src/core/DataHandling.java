@@ -190,7 +190,7 @@ public class DataHandling {
             Map<String, Long> loadedAppMap = new HashMap<>();
             // Load the saved .map file
             File savedMap =
-                new File("./saved_data/" + getDate() + ".map");
+                new File("./saved_data/" + dates.get(j) + ".map");
             readMap(savedMap, loadedAppMap);
             maps.add(loadedAppMap);
         }
@@ -415,9 +415,8 @@ public class DataHandling {
      *            input string.
      * @return true if the input string is empty.
      */
-    @SuppressWarnings("null")
     public static boolean checkEmpty(String str) {
-        return (str == null && str.isEmpty());
+        return (str.isEmpty());
     }
 
     /**
@@ -532,6 +531,11 @@ public class DataHandling {
      */
     @SuppressWarnings("unchecked")
     private static void readMap(File savedMap, Map<String, Long> location) {
+
+        if (!savedMap.exists()) {
+            return;
+        }
+
         try {
             ObjectInputStream ois =
                 new ObjectInputStream(new FileInputStream(savedMap));

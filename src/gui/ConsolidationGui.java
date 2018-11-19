@@ -59,6 +59,7 @@ public class ConsolidationGui extends JDialog {
     private JTextPane txtpnWhatDoI;
 
     public static List<String> list = new ArrayList<String>();
+    private JLabel label = new JLabel();
 
     /**
      * Launch the About pop up window.
@@ -81,7 +82,7 @@ public class ConsolidationGui extends JDialog {
      */
     private ConsolidationGui() {
         setTitle("Program Consolidation");
-        setBounds(100, 100, 592, 419);
+        setBounds(100, 100, 592, 450);
 
         // Frame panels and panes
         getContentPane()
@@ -94,7 +95,7 @@ public class ConsolidationGui extends JDialog {
         getContentPane().add(mainPanel, "cell 0 0,grow");
         mainPanel
             .setLayout(
-                new MigLayout("", "[][246.00][40.00]", "[][][][][][grow]"));
+                new MigLayout("", "[][246.00][40.00]", "[][][][][][grow][]"));
 
         getContentPane().add(tablePanel, "cell 0 0,grow");
         tablePanel.setLayout(new MigLayout("", "[][grow]", "[][][][]"));
@@ -133,7 +134,7 @@ public class ConsolidationGui extends JDialog {
                 // the list.
                 if (DataHandling.checkEmpty(txtInput.getText())) {
                     JOptionPane.showMessageDialog(null,
-                        "Input string empty.");
+                        "Input string empty");
                 } else {
                     // Append and add the entry
                     addRow("- " + txtInput.getText());
@@ -173,6 +174,8 @@ public class ConsolidationGui extends JDialog {
             + "Ex. input: 'Google Chrome'");
         mainPanel.add(txtpnWhatDoI, "cell 1 5,grow");
 
+        mainPanel.add(label, "cell 1 6");
+
         loadTable(); // Refresh the table
     }
 
@@ -198,7 +201,6 @@ public class ConsolidationGui extends JDialog {
         model = new DefaultTableModel(0, 1);
         String[] colHeadings = {"Program in list"};
         model.setColumnIdentifiers(colHeadings);
-
         table = new JTable(model);
         // Remove empty string if present in list
         if (list.contains("")) {
@@ -219,6 +221,8 @@ public class ConsolidationGui extends JDialog {
         sc.setToolTipText(
             "These are all the programs that are being combined into the parent program.");
         tablePanel.add(sc, "cell 2 3");
+        label.setText("");
+        label.setText(" ");
     }
 
     /**

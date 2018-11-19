@@ -5,6 +5,7 @@ import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -161,7 +162,11 @@ public class ExploreDataGui extends JDialog {
                     ExploreDataGui.updateBar(0);
                     // Reenable the open output button
                     btnOpenOutput.setEnabled(true);
-                    loadMapsFromMem();
+                    try {
+                        loadMapsFromMem();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -235,7 +240,11 @@ public class ExploreDataGui extends JDialog {
                         "Please enter a start date.");
                 } else {
                     singleData = true;
-                    loadMapsFromMem();
+                    try {
+                        loadMapsFromMem();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -268,9 +277,11 @@ public class ExploreDataGui extends JDialog {
     /**
      * Load the maps from memory given the dates. This is the method used for
      * both features in Explore Data.
+     * 
+     * @throws FileNotFoundException
      */
     @SuppressWarnings("unchecked")
-    private void loadMapsFromMem() {
+    private void loadMapsFromMem() throws FileNotFoundException {
         LocalDate date;
         LocalDate date2;
 

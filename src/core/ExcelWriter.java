@@ -36,7 +36,6 @@ public class ExcelWriter {
         Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
         // Filter data into empty map
         loadedCurrentMap = DataHandling.validate(combinedMaps);
-
         // Convert the export time
         Map<String, Double> finalMap =
             TimeConvert.convertExportTime(loadedCurrentMap);

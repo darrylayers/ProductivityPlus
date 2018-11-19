@@ -139,7 +139,7 @@ public class Main {
         frame.setLocation(100, 100);
         frame.setSize(986, 554);
         frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        frame.setTitle("Productivity Plus");
+        frame.setTitle("ProductivityPlus");
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
