@@ -27,6 +27,7 @@ public class CloseToSystemTray {
      * @throws IOException
      */
     public void startTray() throws IOException {
+
         // Make sure tray is supported
         if (!SystemTray.isSupported()) {
             return;

@@ -43,7 +43,6 @@ public class AboutGui extends JDialog {
      * Create the dialog.
      */
     private AboutGui() {
-        setAlwaysOnTop(true);
         setTitle("About");
         setBounds(100, 100, 625, 559);
 
@@ -68,7 +67,7 @@ public class AboutGui extends JDialog {
             "How to use ProductivityPlus - What does each button do?");
         aboutPanel.add(lblHowToUse, "cell 0 0");
 
-        // Text Areas
+        // Text areas
         JTextPane txtpnPressstartTimer = new JTextPane();
         txtpnPressstartTimer.setBackground(new Color(240, 240, 240));
         txtpnPressstartTimer.setEditable(false);

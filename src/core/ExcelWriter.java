@@ -34,8 +34,10 @@ public class ExcelWriter {
         ExploreDataGui.updateBar(0);
 
         Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
+
         // Filter data into empty map
         loadedCurrentMap = DataHandling.validate(combinedMaps);
+
         // Convert the export time
         Map<String, Double> finalMap =
             TimeConvert.convertExportTime(loadedCurrentMap);
@@ -67,6 +69,8 @@ public class ExcelWriter {
         cell.setCellStyle(headerCellStyle);
 
         Cell cell1 = headerRow.createCell(1);
+
+        // Get the unit preference
         if (PreferencesGui.getExportIndex() == 0) {
             cell1.setCellValue("Time (Hours)");
         } else if (PreferencesGui.getExportIndex() == 1) {

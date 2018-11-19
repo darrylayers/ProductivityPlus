@@ -184,16 +184,17 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-
         });
         mnFile.add(savedDataItem);
 
         // Edit menu button
         JMenu mnEdit = new JMenu("Edit");
         menuBar.add(mnEdit);
+
         // Preferences menu button
         JMenuItem preferencesItem = new JMenuItem("Preferences");
         mnEdit.add(preferencesItem);
+
         // Consolidate Programs menu button
         JMenuItem consolidationItem = new JMenuItem("Program Consolidation");
         consolidationItem.addActionListener(new ActionListener() {
@@ -257,6 +258,12 @@ public class Main {
         displayPanel.setLayout(new MigLayout("",
             "[310.00px,grow][450,grow][501.00,grow]", "[75][457.00px,grow]"));
 
+        // Control panel
+        JPanel controlPanel = new JPanel();
+        displayPanel.add(controlPanel, "cell 0 1,grow");
+        controlPanel.setLayout(new MigLayout("", "[132.00,grow]",
+            "[][][][][][][][][][][][][][][]"));
+
         // Controls label
         JLabel controlsLabel = new JLabel("Controls");
         displayPanel.add(controlsLabel, "cell 0 0,alignx center,aligny center");
@@ -275,42 +282,9 @@ public class Main {
         displayPanel.add(exclusionsLabel,
             "cell 2 0,alignx center,aligny center");
 
-        // Control panel
-        JPanel controlPanel = new JPanel();
-        displayPanel.add(controlPanel, "cell 0 1,grow");
-        controlPanel.setLayout(new MigLayout("", "[132.00,grow]",
-            "[][][][][][][][][][][][][][][]"));
-
         // Mode label
         JLabel modeLabel = new JLabel("Mode - What to Display");
         controlPanel.add(modeLabel, "cell 0 0,alignx center,aligny center");
-
-        // Radio buttons
-        trackAllRButton
-            .setToolTipText("All programs will be tracked if this is chosen.");
-        controlPanel.add(trackAllRButton, "cell 0 1");
-
-        trackInclusionsRButton.setToolTipText(
-            "Only the programs inside the Inclusions table will be tracked. This is useful if you only want to track a few programs.");
-        controlPanel.add(trackInclusionsRButton, "cell 0 2");
-
-        trackExclusionsRButton.setToolTipText(
-            "Everything will be tracked except the programs in the Exclusions table if this is selected. This is useful if you want to avoid tracking only a few programs.");
-        controlPanel.add(trackExclusionsRButton, "cell 0 3");
-
-        ButtonGroup rbuttons = new ButtonGroup();
-        rbuttons.add(trackExclusionsRButton);
-        rbuttons.add(trackAllRButton);
-        rbuttons.add(trackInclusionsRButton);
-
-        // This sets the appropriate buttons to be selected
-        if (getMode() == 1) {
-            trackAllRButton.setSelected(true);
-        } else if (getMode() == 2) {
-            trackInclusionsRButton.setSelected(true);
-        } else if (getMode() == 3) {
-            trackExclusionsRButton.setSelected(true);
-        }
 
         // Program entry text box
         progTextField = new JTextField();
@@ -344,52 +318,6 @@ public class Main {
                 }
             }
         });
-
-        // Track exclusion listener
-        trackExclusionsRButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                if (trackExclusionsRButton.isSelected()) {
-                    trackInclusionsRButton.setSelected(false);
-                    trackAllRButton.setSelected(false);
-                } else {
-                    trackExclusionsRButton.setSelected(true);
-                }
-                setMode();
-            }
-        });
-
-        // Track inclusion listener
-        trackInclusionsRButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (trackInclusionsRButton.isSelected()) {
-                    trackAllRButton.setSelected(false);
-                    trackExclusionsRButton.setSelected(false);
-                } else {
-                    trackInclusionsRButton.setSelected(true);
-                }
-                setMode();
-
-            }
-        });
-
-        // Track all listener
-        trackAllRButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (trackAllRButton.isSelected()) {
-                    trackInclusionsRButton.setSelected(false);
-                    trackExclusionsRButton.setSelected(false);
-                } else {
-                    trackAllRButton.setSelected(true);
-                }
-                setMode();
-
-            }
-        });
-
         // Add button tool tip
         btnAddProgram.setToolTipText(
             "Add a program from whichever table is selected above.");
@@ -445,11 +373,82 @@ public class Main {
         });
         controlPanel.add(btnClearList, "cell 0 8,grow");
 
+        // Radio buttons
+        trackAllRButton
+            .setToolTipText("All programs will be tracked if this is chosen.");
+        controlPanel.add(trackAllRButton, "cell 0 1");
+
+        trackInclusionsRButton.setToolTipText(
+            "Only the programs inside the Inclusions table will be tracked. This is useful if you only want to track a few programs.");
+        controlPanel.add(trackInclusionsRButton, "cell 0 2");
+
+        trackExclusionsRButton.setToolTipText(
+            "Everything will be tracked except the programs in the Exclusions table if this is selected. This is useful if you want to avoid tracking only a few programs.");
+        controlPanel.add(trackExclusionsRButton, "cell 0 3");
+
+        ButtonGroup rbuttons = new ButtonGroup();
+        rbuttons.add(trackExclusionsRButton);
+        rbuttons.add(trackAllRButton);
+        rbuttons.add(trackInclusionsRButton);
+
+        // This sets the appropriate buttons to be selected
+        if (getMode() == 1) {
+            trackAllRButton.setSelected(true);
+        } else if (getMode() == 2) {
+            trackInclusionsRButton.setSelected(true);
+        } else if (getMode() == 3) {
+            trackExclusionsRButton.setSelected(true);
+        }
+
+        // Track exclusion listener
+        trackExclusionsRButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (trackExclusionsRButton.isSelected()) {
+                    trackInclusionsRButton.setSelected(false);
+                    trackAllRButton.setSelected(false);
+                } else {
+                    trackExclusionsRButton.setSelected(true);
+                }
+                setMode();
+            }
+        });
+
+        // Track inclusion listener
+        trackInclusionsRButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (trackInclusionsRButton.isSelected()) {
+                    trackAllRButton.setSelected(false);
+                    trackExclusionsRButton.setSelected(false);
+                } else {
+                    trackInclusionsRButton.setSelected(true);
+                }
+                setMode();
+
+            }
+        });
+
+        // Track all listener
+        trackAllRButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (trackAllRButton.isSelected()) {
+                    trackInclusionsRButton.setSelected(false);
+                    trackExclusionsRButton.setSelected(false);
+                } else {
+                    trackAllRButton.setSelected(true);
+                }
+                setMode();
+
+            }
+        });
+
         // Refresh the display panel
         refreshDisplayTable(displayPanel);
 
         // Timer controls labels
-
         JLabel timerControlsLabel = new JLabel("     Timer Controls");
         timerControlsLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
         mainPanel.add(timerControlsLabel, "cell 0 0,alignx left");
@@ -457,7 +456,6 @@ public class Main {
         mainPanel.add(trackStatusLabel, "cell 1 0");
 
         // Button panel
-
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.WHITE);
         mainPanel.add(buttonPanel, "cell 0 1,grow");
@@ -465,7 +463,6 @@ public class Main {
             "[25][][][][][][][27.00,grow][14.00][][][][][]"));
 
         // Start button
-
         JButton btnStartTimer = new JButton("Start Timer");
         btnStartTimer.setToolTipText("Start tracking what you do.");
         buttonPanel.add(btnStartTimer, "cell 0 0,growx");
@@ -478,7 +475,6 @@ public class Main {
         });
 
         // Stop button
-
         btnStopTimer = new JButton("Stop Timer");
         btnStopTimer.setToolTipText("Stop tracking what you do.");
         buttonPanel.add(btnStopTimer, "cell 0 1,growx");
@@ -499,14 +495,12 @@ public class Main {
         });
 
         // Load data button
-
         JButton btnLoadData = new JButton("Load Data / Refresh");
         btnLoadData
             .setToolTipText("Refresh the table with data recorded previously");
         buttonPanel.add(btnLoadData, "cell 0 12,growx");
 
         // Graphical output button
-
         JButton btnGraphOutput = new JButton("Graphical Output");
         btnGraphOutput.setToolTipText("View what is in the table graphically.");
         btnGraphOutput.addMouseListener(new MouseAdapter() {
@@ -518,7 +512,6 @@ public class Main {
         buttonPanel.add(btnGraphOutput, "cell 0 2,growx");
 
         // Explore data button
-
         JButton btnExploreData = new JButton("Explore Data");
         btnExploreData.setToolTipText("Explore your saved data.");
         btnExploreData.addMouseListener(new MouseAdapter() {
@@ -693,6 +686,7 @@ public class Main {
             PreferencesGui.getUpdateStatus())) {
             // Check to see if there is a new version of the program
             // True if there is
+            // TODO: This must be changed on each update
             if (checkForUpdate(
                 "http://austinayers.com/ProductivityPlus_v1.html", 500)) {
                 JOptionPane.showMessageDialog(null,

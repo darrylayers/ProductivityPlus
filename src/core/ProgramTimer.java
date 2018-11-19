@@ -51,8 +51,8 @@ public class ProgramTimer implements Runnable {
 
             // Check to see if current in focus is the same as previous.
             if (!progLast.equals(prog) && !progLast.equals("")) {
-                leftApp = true;
-                endTime();
+                leftApp = true; // change the flag since user leg app
+                endTime(); // stop the timer
 
                 try {
                     // Save the time
@@ -60,9 +60,9 @@ public class ProgramTimer implements Runnable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                startTime();
+                startTime(); // start the timer again
             }
-            progLast = prog;
+            progLast = prog; // save the last prog
             // Pause before next check to eliminate wasted checks / resources
             try {
                 Thread.sleep(5);

@@ -90,8 +90,10 @@ public class TableHelper {
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         DataInputStream in = new DataInputStream(bais);
         try {
+            // For the entire input stream
             while (in.available() > 0) {
                 String element = in.readUTF();
+                // If not in list, add it
                 if (!inList(element, retList)) {
                     retList.add(element);
                 }

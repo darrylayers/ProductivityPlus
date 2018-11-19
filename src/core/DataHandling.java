@@ -48,6 +48,7 @@ public class DataHandling {
      * @throws NumberFormatException
      */
     public static void loadMap() throws NumberFormatException, IOException {
+
         File savedMap =
             new File("./saved_data/" + getDate() + ".map");
         // Read in the saved .map file
@@ -531,11 +532,10 @@ public class DataHandling {
      */
     @SuppressWarnings("unchecked")
     private static void readMap(File savedMap, Map<String, Long> location) {
-
+        // If the map does not exist, return
         if (!savedMap.exists()) {
             return;
         }
-
         try {
             ObjectInputStream ois =
                 new ObjectInputStream(new FileInputStream(savedMap));

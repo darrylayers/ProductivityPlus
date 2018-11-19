@@ -129,7 +129,6 @@ public class PreferencesGui extends JDialog {
      * Create the dialog.
      */
     private PreferencesGui() {
-        setAlwaysOnTop(true);
         setTitle("Preferences");
         setBounds(100, 100, 502, 332);
 

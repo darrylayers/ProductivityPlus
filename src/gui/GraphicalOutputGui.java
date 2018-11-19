@@ -64,7 +64,6 @@ public class GraphicalOutputGui extends JDialog {
      * Create the dialog.
      */
     private GraphicalOutputGui() {
-        setAlwaysOnTop(true);
         setTitle("Graphs");
         setBounds(100, 100, 1030, 634);
 
@@ -85,9 +84,31 @@ public class GraphicalOutputGui extends JDialog {
                 new MigLayout("", "[204.00,grow][-58.00][-84.00][71.00]",
                     "[18.00][][8.00][][]"));
 
+        // Label used to help refresh UI
+        JLabel secretLabel = new JLabel("");
+        controlPanel.add(secretLabel, "cell 0 4,alignx right");
+
         // Spinner panel
         JPanel spinnerPanel = new JPanel();
         controlPanel.add(spinnerPanel, "cell 0 0,alignx left,growy");
+
+        // Set the spinner model
+        spinner.setModel(
+            new SpinnerNumberModel(prefs.getInt(NUM_DISPLAY, 1), 1, null, 1));
+
+        spinnerPanel.add(spinner);
+
+        // Spinner listener
+        spinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                setProgCount();
+                tabbedPane.removeAll();
+                buildGraphs();
+                secretLabel.setText("  ");
+                secretLabel.setText("");
+            }
+        });
 
         // Number of items label
         JLabel lblNumberOfItmes = new JLabel("Number of items");
@@ -95,12 +116,6 @@ public class GraphicalOutputGui extends JDialog {
         lblNumberOfItmes.setToolTipText(
             "This is the number of items that will be plotted.");
         lblNumberOfItmes.setFont(new Font("Verdana", Font.PLAIN, 11));
-
-        // Set the spinner model
-        spinner.setModel(
-            new SpinnerNumberModel(prefs.getInt(NUM_DISPLAY, 1), 1, null, 1));
-
-        spinnerPanel.add(spinner);
 
         // Refresh graphs button
         JButton btnRefreshGraphs = new JButton("Refresh Graphs");
@@ -124,21 +139,6 @@ public class GraphicalOutputGui extends JDialog {
                 + "You can also right-click the graphs for more options, including the option to save them.");
         txtpnHelpfulTipYou.setEditable(false);
         controlPanel.add(txtpnHelpfulTipYou, "cell 0 3,grow");
-
-        JLabel secretLabel = new JLabel("");
-        controlPanel.add(secretLabel, "cell 0 4,alignx right");
-
-        // Spinner listener
-        spinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent arg0) {
-                setProgCount();
-                tabbedPane.removeAll();
-                buildGraphs();
-                secretLabel.setText("  ");
-                secretLabel.setText("");
-            }
-        });
 
         // Graph panel
         JPanel graphPanel = new JPanel();
@@ -190,6 +190,7 @@ public class GraphicalOutputGui extends JDialog {
         pie = PieChart.createDemoPanel();
         piechartPanel.add(pie);
         tabbedPane.addTab("Pie Chart", null, piechartPanel, null);
+
         // Built the bar graph
         JPanel bargraphPanel = new JPanel();
         tabbedPane.addTab("Bar Graph", null, bargraphPanel, null);

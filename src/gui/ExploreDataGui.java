@@ -149,6 +149,25 @@ public class ExploreDataGui extends JDialog {
         // Open output button
         JButton btnOpenOutput = new JButton("Open Output");
         btnOpenOutput.setToolTipText("Open the created Excel file.");
+
+        // Open output listener
+        btnOpenOutput.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                try {
+                    Desktop.getDesktop().open(new File(
+                        "./output/ProductivityPlusData" + ExcelWriter.getDate()
+                            + ".xlsx"));
+                    progressBar.setValue(0);
+                } catch (java.lang.IllegalArgumentException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        // Disable the open output button
+        btnOpenOutput.setEnabled(false);
+        exportPanel.add(btnOpenOutput, "cell 1 1,grow");
+
         // Create export file button
         JButton btnCreateExportFile = new JButton("Create export file");
         btnCreateExportFile.addMouseListener(new MouseAdapter() {
@@ -175,23 +194,6 @@ public class ExploreDataGui extends JDialog {
             "File is exported to Excel format (.xlsx).");
         exportPanel.add(btnCreateExportFile, "cell 0 1,grow");
 
-        // Open output listener
-        btnOpenOutput.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                try {
-                    Desktop.getDesktop().open(new File(
-                        "./output/ProductivityPlusData" + ExcelWriter.getDate()
-                            + ".xlsx"));
-                    progressBar.setValue(0);
-                } catch (java.lang.IllegalArgumentException | IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        // Disable the open output button
-        btnOpenOutput.setEnabled(false);
-        exportPanel.add(btnOpenOutput, "cell 1 1,grow");
         // Progress bar listener
         progressBar.addMouseListener(new MouseAdapter() {
             @Override
@@ -203,6 +205,7 @@ public class ExploreDataGui extends JDialog {
         exportPanel.add(progressBar, "cell 0 2");
         progressBar.setMinimum(barMin);
         progressBar.setMaximum(barMax);
+
         // Single Program Search
         tabbedPane.addTab("Single Program Search", null, singleProgPanel, null);
         singleProgPanel.setLayout(
@@ -210,6 +213,7 @@ public class ExploreDataGui extends JDialog {
 
         singleProgPanel.add(progInputPanel, "cell 0 0,grow");
         progInputPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
+
         // Labels and text fields
         progInputPanel.add(lblEnterProgramName, "cell 0 0");
         progInputPanel.add(textField, "cell 0 1,growx");
@@ -221,6 +225,7 @@ public class ExploreDataGui extends JDialog {
                 + "Tip: It is usually best to be on 'Display All Mode' when using this feature.");
 
         singleProgPanel.add(txtpnTheLeftDate, "cell 0 1,grow");
+
         // Calendars
         singleProgPanel.add(calendarPanel, "cell 0 3,grow");
         calendarPanel.setLayout(new MigLayout("", "[grow][grow]", "[grow][]"));
@@ -230,6 +235,7 @@ public class ExploreDataGui extends JDialog {
         datePicker_2.getComponentDateTextField()
             .setToolTipText("Ending look up date.");
         calendarPanel.add(datePicker_2, "cell 1 0");
+
         // Submit button
         btnSubmitSearch.setToolTipText("Submit program search.");
         btnSubmitSearch.addMouseListener(new MouseAdapter() {
@@ -249,6 +255,7 @@ public class ExploreDataGui extends JDialog {
             }
         });
         calendarPanel.add(btnSubmitSearch, "cell 1 1");
+
         // Single program search result panel
         singleProgPanel.add(displayPanel, "cell 0 4,grow");
         displayPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
@@ -258,6 +265,7 @@ public class ExploreDataGui extends JDialog {
             + "Hint: This info is copy/pastable!");
 
         displayPanel.add(txtrTest, "cell 0 0,grow");
+
         // Date settings
         datePickerSettings.setFormatForDatesBeforeCommonEra("MM/dd/yyyy");
         datePickerSettings.setFormatForDatesCommonEra("MM/dd/yyyy");

@@ -28,6 +28,7 @@ public class TimeConvert {
      */
     public static Map<String, Double> convertTime(
         Map<String, Long> toDisplayMap) {
+
         Map<String, Double> convertedMap = new HashMap<>();
 
         DecimalFormat df = new DecimalFormat("#.####");
@@ -71,6 +72,7 @@ public class TimeConvert {
      * @return returns a properly formatted Map<String, Double>.
      */
     public static Map<String, String> convertWritten(Map<String, Long> map) {
+
         Map<String, String> stringMap = new HashMap<>();
         for (String name : map.keySet()) {
             String output = "";
@@ -113,6 +115,7 @@ public class TimeConvert {
      * @return string of proper time unit.
      */
     public static String getUnit() {
+
         if (PreferencesGui.getDisplayIndex() == 0) {
             dataUnit = "Time (Hours)";
         } else if (PreferencesGui.getDisplayIndex() == 1) {
@@ -136,6 +139,7 @@ public class TimeConvert {
      */
     public static Map<String, Double> convertExportTime(
         Map<String, Long> toDisplayMap) {
+
         Map<String, Double> convertedMap = new HashMap<>();
 
         DecimalFormat df = new DecimalFormat("#.####");
