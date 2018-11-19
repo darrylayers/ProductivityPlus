@@ -29,27 +29,36 @@ import net.miginfocom.swing.MigLayout;
 public class PreferencesGui extends JDialog {
 
     private static final long serialVersionUID = 7170758428931373020L;
+
+    // Pref strings
     private static final String DISPLAY_INDEX = "displayIndex";
     private static final String OUTPUT_INDEX = "outputIndex";
     private static final String UPDATE_CHECK = "updateCheck";
 
+    // Export types array
     private static String[] exportTypes = {"Hours (ex: 1.3 hours)",
         "Minutes (ex: 95.2 minutes)", "Seconds (ex: 138 seconds)"};
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    // Load combo box with array
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static JComboBox exportOptions = new JComboBox(exportTypes);
+    // Display types array
     private static String[] displayTypes = {"Hours (ex: 1.3 hours)",
         "Minutes (ex: 95.2 minutes)", "Seconds (ex: 138 seconds)",
         "Written (ex: 33 minutes 2 seconds)"};
     @SuppressWarnings({"rawtypes", "unchecked"})
+    // Load combo box with array
     private static JComboBox displayOptions = new JComboBox(displayTypes);
+    // Update checkbox
     public static JCheckBox chckbxDisplayUpdateNotifications =
         new JCheckBox("Display update notifications");
+    // ints used to save modes on launch
     private static int export;
     private static int display;
     private static boolean update;
+    // Java prefs
     public static Preferences prefs =
         Preferences.userRoot().node("PreferencesGui");
-
+    // Main content panel
     private final JPanel contentPanel = new JPanel();
 
     /**
@@ -59,9 +68,11 @@ public class PreferencesGui extends JDialog {
         try {
             PreferencesGui dialog = new PreferencesGui();
             dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            // Launch the window to match the parent window
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
+            // Save all the settings present at launch
             bundle();
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,6 +144,7 @@ public class PreferencesGui extends JDialog {
         contentPanel.setLayout(
             new MigLayout("", "[217.00,grow][][]", "[][40.00][][40.00][]"));
 
+        // Update panel
         JPanel updatePanel = new JPanel();
         updatePanel
             .setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));

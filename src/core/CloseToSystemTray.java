@@ -27,14 +27,14 @@ public class CloseToSystemTray {
      * @throws IOException
      */
     public void startTray() throws IOException {
+        // Make sure tray is supported
         if (!SystemTray.isSupported()) {
             return;
         }
-
         SystemTray systemTray = SystemTray.getSystemTray();
-
         PopupMenu trayPopupMenu = new PopupMenu();
 
+        // Add tray option to maximize program
         MenuItem maximize = new MenuItem("Maximize");
         maximize.addActionListener(new ActionListener() {
             @Override
@@ -44,16 +44,19 @@ public class CloseToSystemTray {
         });
         trayPopupMenu.add(maximize);
 
+        // Add tray option to close program
         MenuItem close = new MenuItem("Close");
         close.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    // Save the map before closing
                     DataHandling.saveMap();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
                 try {
+                    // Allow time to save before closing.
                     Thread.sleep(1000);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
@@ -61,9 +64,9 @@ public class CloseToSystemTray {
                 System.exit(0);
             }
         });
-
         trayPopupMenu.add(close);
 
+        // Change the app icon
         Image image = Toolkit.getDefaultToolkit()
             .getImage(
                 this.getClass().getResource("/icon.png"));

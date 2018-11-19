@@ -43,17 +43,22 @@ public class TableHelper {
      *            List of strings.
      */
     public static JScrollPane loadTable(List<String> input) {
+        // Create empty table model
         model = new DefaultTableModel(0, 1);
         String[] colHeadings = {"Programs in list"};
         model.setColumnIdentifiers(colHeadings);
+        // Create the table from the model
         table = new JTable(model);
+        // Remove empty string if present
         input.remove("");
-        // Load the able
+        // Load the table
         for (String entry : input) {
             model.addRow(new Object[] {entry.substring(2, entry.length())});
         }
+        // Allow for sorting
         RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
         table.setRowSorter(sorter);
+        // Create and return the scroll pane
         sc = new JScrollPane(table);
         return sc;
     }
@@ -68,14 +73,18 @@ public class TableHelper {
      * 
      */
     public static List<String> loadList(String prefString) {
+        // Create empty array to display if no pref is saved
         byte[] temp = new byte[1024];
         byte[] bytes;
 
+        // Get the byte array we need
         if (prefString.equals("inclusions")) {
             bytes = prefs.getByteArray(INCLUSION_LIST, temp);
         } else if (prefString.equals("exclusions")) {
             bytes = prefs.getByteArray(EXCLUSION_LIST, temp);
         }
+
+        // Create a list to store the byte arrya into
         List<String> retList = new ArrayList<String>();
         bytes = prefs.getByteArray(prefString, temp);
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
@@ -103,6 +112,7 @@ public class TableHelper {
      *            string attached to the preference we are saving.
      */
     public static void saveList(List<String> input, String prefsString) {
+        // Save the input to prefs with the pref name as the prefsString param
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(baos);
         for (String element : input) {
@@ -126,13 +136,12 @@ public class TableHelper {
      * @return true if the item is in the list.
      */
     private static boolean inList(String item, List<String> retList) {
-        if (retList.contains("- " + item) || retList.contains(item)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (retList.contains("- " + item) || retList.contains(item));
     }
 
+    /**
+     * Clear the list, depending on what mode we are on.
+     */
     public static void clearList() {
         if (Main.getMode() == 2) {
             prefs.remove(INCLUSION_LIST);

@@ -82,13 +82,14 @@ public class ExploreDataGui extends JDialog {
         try {
             ExploreDataGui dialog = new ExploreDataGui();
             dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            // Launch the window to match the parent window
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
+            // Set progress bar to 0
             progressBar.setValue(0);
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 
@@ -96,7 +97,6 @@ public class ExploreDataGui extends JDialog {
      * Create the dialog.
      */
     private ExploreDataGui() {
-
         textField.setToolTipText("Enter program name to look up.");
         textField.setColumns(10);
         setTitle("Explore Data");
@@ -139,7 +139,7 @@ public class ExploreDataGui extends JDialog {
             "Enter end date. Can be left empty for single date search.");
         datePanel.add(datePicker2, "cell 1 0");
 
-        // Exports
+        // Exports panel
         JPanel exportPanel = new JPanel();
         contentPanel.add(exportPanel, "cell 0 2,grow");
         exportPanel
@@ -148,6 +148,7 @@ public class ExploreDataGui extends JDialog {
         // Open output button
         JButton btnOpenOutput = new JButton("Open Output");
         btnOpenOutput.setToolTipText("Open the created Excel file.");
+        // Create export file button
         JButton btnCreateExportFile = new JButton("Create export file");
         btnCreateExportFile.addMouseListener(new MouseAdapter() {
             @Override
@@ -158,18 +159,18 @@ public class ExploreDataGui extends JDialog {
                         "Please enter a start date.");
                 } else {
                     ExploreDataGui.updateBar(0);
-                    // reenable the open output button
+                    // Reenable the open output button
                     btnOpenOutput.setEnabled(true);
                     loadMapsFromMem();
                 }
             }
         });
 
-        // Create export file button
         btnCreateExportFile.setToolTipText(
             "File is exported to Excel format (.xlsx).");
         exportPanel.add(btnCreateExportFile, "cell 0 1,grow");
 
+        // Open output listener
         btnOpenOutput.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -296,7 +297,6 @@ public class ExploreDataGui extends JDialog {
                 List<Map> maps = DataHandling.loadMaps(dates);
 
                 // Write each map using DataHandling
-
                 try {
                     DataHandling.writeDates(maps, dates);
                 } catch (IOException e1) {
@@ -350,7 +350,6 @@ public class ExploreDataGui extends JDialog {
                         } else {
                             comboMap.put(key, entry.getValue() + current);
                         }
-
                     }
                 }
             } else {
@@ -362,22 +361,11 @@ public class ExploreDataGui extends JDialog {
                     e.printStackTrace();
                 }
             }
-
             // Modify the map using the user's preferences
             Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
 
-            if (Main.chckbxConsolidatePrograms.isSelected()) {
-                loadedCurrentMap = DataHandling.validateData(comboMap);
-            } else {
-                loadedCurrentMap = comboMap;
-            }
-            if (Main.getMode() == 3 || Main.getMode() == 2) {
-                if (!Main.getChecked()) {
-                    loadedCurrentMap = comboMap;
-                }
-                loadedCurrentMap =
-                    DataHandling.validateWhatToDisplay(loadedCurrentMap);
-            }
+            // Filter what needs to be displayed
+            loadedCurrentMap = DataHandling.validate(comboMap);
 
             Map<String, Double> displayMap =
                 TimeConvert.convertTime(loadedCurrentMap);

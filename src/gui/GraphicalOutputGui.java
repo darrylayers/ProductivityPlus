@@ -33,6 +33,8 @@ import net.miginfocom.swing.MigLayout;
 public class GraphicalOutputGui extends JDialog {
 
     private static final long serialVersionUID = 3774721756310500262L;
+
+    // Graph panels
     private JPanel pie = new JPanel();
     private JPanel bar = new JPanel();
 
@@ -49,6 +51,7 @@ public class GraphicalOutputGui extends JDialog {
         try {
             GraphicalOutputGui dialog = new GraphicalOutputGui();
             dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            // Launch the window to match the parent window
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);

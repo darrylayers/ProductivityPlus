@@ -47,23 +47,11 @@ public class DataHandling {
      * @throws IOException
      * @throws NumberFormatException
      */
-    @SuppressWarnings("unchecked")
     public static void loadMap() throws NumberFormatException, IOException {
         File savedMap =
             new File("./saved_data/" + getDate() + ".map");
-
-        try {
-            ObjectInputStream ois =
-                new ObjectInputStream(new FileInputStream(savedMap));
-            Object readMap = ois.readObject();
-            if (readMap != null && readMap instanceof HashMap) {
-                ProgramTimer.appMap
-                    .putAll((Map<? extends String, ? extends Long>) readMap);
-            }
-            ois.close();
-        } catch (Exception e) {
-            // Catch exceptions
-        }
+        // Read in the saved .map file
+        readMap(savedMap, ProgramTimer.appMap);
     }
 
     /**
@@ -72,16 +60,17 @@ public class DataHandling {
      * @throws IOException
      */
     public static void saveMap() throws IOException {
+
         File savedMap =
             new File("./saved_data/" + getDate() + ".map");
-
+        // Save the current map to a .map file
         try {
             ObjectOutputStream oos =
                 new ObjectOutputStream(new FileOutputStream(savedMap));
             oos.writeObject(ProgramTimer.appMap);
             oos.close();
         } catch (Exception e) {
-            // Catch exceptions
+            e.printStackTrace();
         }
     }
 
@@ -91,6 +80,7 @@ public class DataHandling {
      * @return Today's date in form Dyy, ex: 093018 for 09/30/18
      */
     private static String getDate() {
+
         Date now = new Date();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("Dyy");
         return dateFormatter.format(now);
@@ -106,22 +96,17 @@ public class DataHandling {
      * @return returns the map filled with correct data.
      * @throws IOException
      */
-    @SuppressWarnings("unchecked")
     public static Map<String, Long> acceptDate(String date,
         boolean returnState)
         throws IOException {
+
         Map<String, Long> loadedAppMap = new HashMap<>();
-        try {
-            ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream("./saved_data/" + date + ".map"));
-            Object readMap = ois.readObject();
-            if (readMap != null && readMap instanceof HashMap) {
-                loadedAppMap
-                    .putAll((Map<? extends String, ? extends Long>) readMap);
-            }
-            ois.close();
-        } catch (Exception e) {
-        }
+        // Load the saved .map file
+        File savedMap =
+            new File("./saved_data/" + getDate() + ".map");
+        readMap(savedMap, loadedAppMap);
+
+        // Alert user if the mpa is empty
         if (loadedAppMap.size() == 0) {
             JOptionPane.showMessageDialog(null,
                 "Warning: Loaded map was empty.");
@@ -129,6 +114,7 @@ public class DataHandling {
         if (returnState) {
             return loadedAppMap;
         } else {
+            // Write the values to Excel
             ExcelWriter.write(loadedAppMap, date);
         }
         return loadedAppMap;
@@ -142,21 +128,14 @@ public class DataHandling {
      * @return Combined map of data entries from a range.
      * @throws IOException
      */
-    @SuppressWarnings("unchecked")
     public static Map<String, Long> acceptDateTable(String date)
         throws IOException {
+
         Map<String, Long> loadedAppMap = new HashMap<>();
-        try {
-            ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream("./saved_data/" + date + ".map"));
-            Object readMap = ois.readObject();
-            if (readMap != null && readMap instanceof HashMap) {
-                loadedAppMap
-                    .putAll((Map<? extends String, ? extends Long>) readMap);
-            }
-            ois.close();
-        } catch (Exception e) {
-        }
+        // Load the saved .map file
+        File savedMap =
+            new File("./saved_data/" + getDate() + ".map");
+        readMap(savedMap, loadedAppMap);
         return loadedAppMap;
     }
 
@@ -171,15 +150,22 @@ public class DataHandling {
      * @return returns an arraylist of String dates
      */
     public static List<String> dateDiff(String date1, String date2) {
+
         List<String> dates = new ArrayList<String>();
+        // Grab both dates
         String days1 = date1.substring(0, 3);
         String days2 = date2.substring(0, 3);
+        // Get the int values
         int days1_int = Integer.valueOf(days1);
         int days2_int = Integer.valueOf(days2);
+        // Find differents
         int dateCalc = (days2_int - days1_int);
+        // Get the last two digits of the current year
         int year = Calendar.getInstance().get(Calendar.YEAR);
+        // Convert to string
         String strYear = Integer.toString(year);
 
+        // Fill the array list with a list of dates
         for (int i = 0; i <= dateCalc; i++) {
             dates.add(String.valueOf((days1_int + i))
                 + strYear.substring(2, strYear.length()));
@@ -195,23 +181,17 @@ public class DataHandling {
      *            list of dates
      * @return returns an arraylist of hashmaps used for program dates
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("rawtypes")
     public static List<Map> loadMaps(List<String> dates) {
+
         List<Map> maps = new ArrayList<Map>();
+        // Load the maps
         for (int j = 0; j < dates.size(); j++) {
             Map<String, Long> loadedAppMap = new HashMap<>();
-            try {
-                ObjectInputStream ois = new ObjectInputStream(
-                    new FileInputStream(
-                        "./saved_data/" + dates.get(j) + ".map"));
-                Object readMap = ois.readObject();
-                if (readMap != null && readMap instanceof HashMap) {
-                    loadedAppMap.putAll(
-                        (Map<? extends String, ? extends Long>) readMap);
-                }
-                ois.close();
-            } catch (Exception e) {
-            }
+            // Load the saved .map file
+            File savedMap =
+                new File("./saved_data/" + getDate() + ".map");
+            readMap(savedMap, loadedAppMap);
             maps.add(loadedAppMap);
         }
         return maps;
@@ -228,8 +208,11 @@ public class DataHandling {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static void writeDates(List<Map> maps, List<String> dates)
         throws IOException {
+
         Map<String, Long> combinedMaps = new HashMap<>();
+        // Get info for progress bar
         int i = 100 / maps.size();
+        // Combine the maps into one
         for (Map<String, Long> map : maps) {
             for (Map.Entry<String, Long> entry : map.entrySet()) {
                 String key = entry.getKey();
@@ -237,9 +220,11 @@ public class DataHandling {
                 combinedMaps.put(key, current == null ? entry.getValue()
                     : entry.getValue() + current);
             }
+            // Update progress bar
             ExploreDataGui.updateBar(i);
             i = 2 * i;
         }
+        // Write to Excel
         ExcelWriter.write(combinedMaps,
             "_date_range_" + dates.get(0) + "_" + dates.get(dates.size() - 1));
     }
@@ -252,14 +237,18 @@ public class DataHandling {
      * @return a sorted map by values.
      */
     private static Map<String, Double> sortHashMapByValues(
+
         Map<String, Double> finalMap) {
+        // Create two lists, one for keys one for values
         List<String> mapKeys = new ArrayList<>(finalMap.keySet());
         List<Double> mapValues = new ArrayList<>(finalMap.values());
+        // Sort both lists
         Collections.sort(mapValues);
         Collections.sort(mapKeys);
 
         Map<String, Double> sortedMap = new LinkedHashMap<>();
 
+        // Fill linked map with proper values
         Iterator<Double> valueIt = mapValues.iterator();
         while (valueIt.hasNext()) {
             Double val = valueIt.next();
@@ -286,26 +275,14 @@ public class DataHandling {
      * @return Ordered map of today's values.
      */
     public static Map<String, Double> orderedMap() {
+
         Map<String, Long> loadedCurrentMap = new HashMap<>();
-        if (Main.getChecked()) {
-            loadedCurrentMap =
-                DataHandling.validateData(convertMapToLong(Main.globalMap));
-        } else {
-            loadedCurrentMap = convertMapToLong(Main.globalMap);
-        }
-        if (Main.getMode() == 3 || Main.getMode() == 2) {
-            loadedCurrentMap =
-                DataHandling
-                    .validateWhatToDisplay(convertMapToLong(Main.globalMap));
-        }
-
-        else if (Main.getMode() == 1 && Main.getChecked()) {
-            loadedCurrentMap =
-                DataHandling.validateData(convertMapToLong(Main.globalMap));
-        }
-
+        // Filter the results
+        loadedCurrentMap = validate(convertMapToLong(Main.globalMap));
+        // Convert the time
         Map<String, Double> finalMap =
             TimeConvert.convertTime(loadedCurrentMap);
+        // Sort the map by values
         DataHandling.sortHashMapByValues(finalMap);
         return DataHandling.sortHashMapByValues(finalMap);
     }
@@ -319,11 +296,15 @@ public class DataHandling {
      * @return a map of consolidated entries.
      */
     public static Map<String, Long> validateData(Map<String, Long> inputMap) {
+
         Map<String, Long> editedMap = new HashMap<String, Long>();
         Map<String, Long> doNotAdd = new HashMap<String, Long>();
 
+        // Get size of list of items to consolidate
         int size = ConsolidationGui.getSavedList().size();
+        // Load the consolidation list
         ConsolidationGui.loadList();
+        // Move the consolidation list to a local array
         String[] itemstoHide =
             ConsolidationGui.list
                 .toArray(new String[ConsolidationGui.list.size()]);
@@ -360,6 +341,7 @@ public class DataHandling {
             } catch (StringIndexOutOfBoundsException e) {
                 System.out.println("Error with retrieving consolidation list.");
             }
+            // Check to only add the correct items
             if (!doNotAdd.containsKey(key)) {
                 editedMap.put(key, current);
             }
@@ -382,6 +364,7 @@ public class DataHandling {
         Map<String, Long> doNotAdd = new HashMap<String, Long>();
         List<String> list = new ArrayList<String>();
 
+        // Filter the display to display inclusions
         if (Main.getMode() == 2) {
             list = TableHelper.loadList("inclusion");
             list.remove("");
@@ -398,7 +381,9 @@ public class DataHandling {
                     }
                 }
             }
-        } else if (Main.getMode() == 3) {
+        }
+        // Filter the display to display exclusions
+        else if (Main.getMode() == 3) {
             list = TableHelper.loadList("exclusion");
             list.remove("");
             int size = list.size();
@@ -414,6 +399,7 @@ public class DataHandling {
                         doNotAdd.put(key, (long) 1);
                     }
                 }
+                // Check to make sure the list is correct
                 if (!doNotAdd.containsKey(key)) {
                     editedMap.put(key.substring(2, key.length()), current);
                 }
@@ -429,13 +415,18 @@ public class DataHandling {
      *            input string.
      * @return true if the input string is empty.
      */
+    @SuppressWarnings("null")
     public static boolean checkEmpty(String str) {
-        if (str != null && !str.isEmpty()) {
-            return false;
-        }
-        return true;
+        return (str == null && str.isEmpty());
     }
 
+    /**
+     * Convert the time to written format.
+     * 
+     * @param secs,the
+     *            input time
+     * @return String, the time in written format
+     */
     public static String convertToWritten(double secs) {
         String output = "";
         String pluralHour = " hour ";
@@ -468,6 +459,13 @@ public class DataHandling {
 
     }
 
+    /**
+     * Convert a Map<String, Long> to Map<String, Double>
+     * 
+     * @param Map<String,
+     *            Long>
+     * @return Map<String, Double>
+     */
     public static Map<String, Double> convertMap(Map<String, Long> input) {
         Map<String, Double> map = new HashMap<String, Double>();
 
@@ -479,6 +477,14 @@ public class DataHandling {
         return map;
     }
 
+    /**
+     * Convert a Map<String, Double> to Map<String, Long> Convert a Map<String,
+     * Double> to Map<String, Long>
+     * 
+     * @param Map<String,
+     *            Double>
+     * @return Map<String, Long>
+     */
     public static Map<String, Long> convertMapToLong(
         Map<String, Double> input) {
         Map<String, Long> map = new HashMap<String, Long>();
@@ -489,5 +495,54 @@ public class DataHandling {
             map.put(pair.getKey(), pair.getValue().longValue());
         }
         return map;
+    }
+
+    /**
+     * Validate an input map to filter out the correct entries according to the
+     * user's settings.
+     * 
+     * @param comboMap,
+     *            the input map.
+     * @return a correct map with filtered values.
+     */
+    public static Map<String, Long> validate(Map<String, Long> comboMap) {
+        // Modify the map using the user's preferences
+        Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
+
+        // See if the consolidate programs checkbox is selected
+        if (Main.chckbxConsolidatePrograms.isSelected()) {
+            loadedCurrentMap = validateData(comboMap);
+        } else {
+            loadedCurrentMap = comboMap;
+        }
+        // Check the display mode
+        if (Main.getMode() == 3 || Main.getMode() == 2) {
+            loadedCurrentMap = validateWhatToDisplay(loadedCurrentMap);
+        }
+        return loadedCurrentMap;
+    }
+
+    /**
+     * Read a .map file from memory.
+     * 
+     * @param savedMap,
+     *            the location of the file
+     * @param location,
+     *            the hashmap to save the data to
+     */
+    @SuppressWarnings("unchecked")
+    private static void readMap(File savedMap, Map<String, Long> location) {
+        try {
+            ObjectInputStream ois =
+                new ObjectInputStream(new FileInputStream(savedMap));
+            Object readMap = ois.readObject();
+            if (readMap != null && readMap instanceof HashMap) {
+                location
+                    .putAll((Map<? extends String, ? extends Long>) readMap);
+            }
+            ois.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

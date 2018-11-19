@@ -33,6 +33,7 @@ public class TimeConvert {
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.FLOOR);
 
+        // Convert depending on the setting the user has
         if (PreferencesGui.getDisplayIndex() == 0) {
 
             for (String name : toDisplayMap.keySet()) {

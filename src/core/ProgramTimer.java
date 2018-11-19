@@ -55,6 +55,7 @@ public class ProgramTimer implements Runnable {
                 endTime();
 
                 try {
+                    // Save the time
                     mapTime();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -69,6 +70,7 @@ public class ProgramTimer implements Runnable {
                 e.printStackTrace();
             }
         }
+        // If the user has not left the app
         if (!leftApp) {
             endTime();
             try {

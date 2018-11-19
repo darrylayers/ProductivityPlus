@@ -30,6 +30,7 @@ public class AboutGui extends JDialog {
         try {
             AboutGui dialog = new AboutGui();
             dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            // Launch the window to match the parent window
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
@@ -54,6 +55,7 @@ public class AboutGui extends JDialog {
         contentPanel
             .setLayout(new MigLayout("", "[513px,grow]", "[360.00px,grow]"));
 
+        // About panel
         JPanel aboutPanel = new JPanel();
         aboutPanel.setBorder(
             new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -61,6 +63,7 @@ public class AboutGui extends JDialog {
         aboutPanel.setLayout(
             new MigLayout("", "[grow][][]", "[][grow]"));
 
+        // How to use label
         JLabel lblHowToUse = new JLabel(
             "How to use ProductivityPlus - What does each button do?");
         aboutPanel.add(lblHowToUse, "cell 0 0");

@@ -87,6 +87,8 @@ public class Main {
     private static DefaultTableModel model;
     private static JTable table;
     private static JScrollPane sc;
+    private static JPanel displayPanel;
+
     public static JLabel secretLabel;
     public static JCheckBox chckbxConsolidatePrograms;
 
@@ -141,22 +143,25 @@ public class Main {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
+        // Set the frame icon
         frame.setIconImage(Toolkit.getDefaultToolkit()
             .getImage(getClass().getResource("/icon.png")));
 
-        // ************** Menu Bar ************** //
+        // Menu Bar
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
 
+        // File button
         JMenu mnFile = new JMenu("File");
         menuBar.add(mnFile);
 
+        // Output folder button
         JMenuItem outputFolderItem = new JMenuItem("Open output folder");
         outputFolderItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
+                    // Open the output folder, or make one.
                     Desktop.getDesktop().open(new File("./output"));
 
                 } catch (IOException e) {
@@ -164,14 +169,15 @@ public class Main {
                 }
             }
         });
-
         mnFile.add(outputFolderItem);
 
+        // Saved data button
         JMenuItem savedDataItem = new JMenuItem("Open saved data folder");
         savedDataItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
+                    // Open saved data folder or make one
                     Desktop.getDesktop().open(new File("./saved_data"));
 
                 } catch (IOException e) {
@@ -182,20 +188,24 @@ public class Main {
         });
         mnFile.add(savedDataItem);
 
+        // Edit menu button
         JMenu mnEdit = new JMenu("Edit");
         menuBar.add(mnEdit);
-
+        // Preferences menu button
         JMenuItem preferencesItem = new JMenuItem("Preferences");
         mnEdit.add(preferencesItem);
-
+        // Consolidate Programs menu button
         JMenuItem consolidationItem = new JMenuItem("Program Consolidation");
         consolidationItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
+                // Create new Program Consolidation window
                 ConsolidationGui.newWindow();
             }
         });
         mnEdit.add(consolidationItem);
+
+        // Preferences menu listener
         preferencesItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -206,66 +216,76 @@ public class Main {
                     JOptionPane.showMessageDialog(null,
                         "Cannot edit preferences while program tracker is running.");
                 } else {
+                    // Launch new preferences window
                     PreferencesGui.newWindow();
                 }
             }
         });
 
+        // Help menu button
         JMenu mnHelp = new JMenu("Help");
         menuBar.add(mnHelp);
 
+        // About menu button
         JMenuItem aboutItem = new JMenuItem("About");
+        // About menu listener
         aboutItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
+                // Create new about window
                 AboutGui.newWindow();
             }
         });
         mnHelp.add(aboutItem);
 
-        // ************** Panel creations ************** //
-
+        // Panel creations
         frame.getContentPane()
             .setLayout(new MigLayout("", "[1061.00px]", "[482.00px]"));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setLayout(
             new MigLayout("", "[110.00][224.00,grow]", "[35.00][414.00,grow]"));
 
-        // ************** Tab pane ************** //
-
+        // Tab pane
         JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
         frame.getContentPane().add(tabbedPane, "cell 0 0,growx,aligny top");
         tabbedPane.addTab("Program Timer", null, mainPanel, null);
 
-        JPanel displayPanel = new JPanel();
+        // What to display panel
+        displayPanel = new JPanel();
         displayPanel.setToolTipText("");
         tabbedPane.addTab("What to Display", null, displayPanel, null);
         displayPanel.setLayout(new MigLayout("",
             "[310.00px,grow][450,grow][501.00,grow]", "[75][457.00px,grow]"));
 
+        // Controls label
         JLabel controlsLabel = new JLabel("Controls");
         displayPanel.add(controlsLabel, "cell 0 0,alignx center,aligny center");
 
+        // Inclusions label
         JLabel inclusionsLabel = new JLabel("Inclusions");
         inclusionsLabel.setToolTipText(
             "These are the ONLY programs that will be tracked if the \"Track Inclusions\" button is selected. This is useful if you only want to track a few programs.");
         displayPanel.add(inclusionsLabel,
             "cell 1 0,alignx center,aligny center");
 
+        // Exclusions label
         JLabel exclusionsLabel = new JLabel("Exclusions");
         exclusionsLabel.setToolTipText(
             "These are the programs that will be excluded from tracking if the \"Track Exclusions\" button is selected. This is useful if you want to avoid tracking only a few programs.");
         displayPanel.add(exclusionsLabel,
             "cell 2 0,alignx center,aligny center");
 
+        // Control panel
         JPanel controlPanel = new JPanel();
         displayPanel.add(controlPanel, "cell 0 1,grow");
         controlPanel.setLayout(new MigLayout("", "[132.00,grow]",
             "[][][][][][][][][][][][][][][]"));
 
+        // Mode label
         JLabel modeLabel = new JLabel("Mode - What to Display");
         controlPanel.add(modeLabel, "cell 0 0,alignx center,aligny center");
 
+        // Radio buttons
         trackAllRButton
             .setToolTipText("All programs will be tracked if this is chosen.");
         controlPanel.add(trackAllRButton, "cell 0 1");
@@ -283,6 +303,7 @@ public class Main {
         rbuttons.add(trackAllRButton);
         rbuttons.add(trackInclusionsRButton);
 
+        // This sets the appropriate buttons to be selected
         if (getMode() == 1) {
             trackAllRButton.setSelected(true);
         } else if (getMode() == 2) {
@@ -291,49 +312,40 @@ public class Main {
             trackExclusionsRButton.setSelected(true);
         }
 
+        // Program entry text box
         progTextField = new JTextField();
         progTextField.setToolTipText("Put the program name here");
         controlPanel.add(progTextField, "cell 0 5,growx");
         progTextField.setColumns(10);
 
+        // Add porogram button
         JButton btnAddProgram = new JButton("Add Program");
         btnAddProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
 
+                // If the input is empty, alert user
                 if (DataHandling.checkEmpty(progTextField.getText())) {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
                 } else {
+                    // If display all is selected, alert user
                     if (getMode() == 1) {
                         JOptionPane.showMessageDialog(null,
-                            "Cannot add program. Track All is selected.");
-                    } else if (getMode() == 2 || getMode() == 3) {
-                        List<String> inclusions = new ArrayList<>();
-                        List<String> exclusions = new ArrayList<>();
-                        displayPanel.remove(inclusionScrollPane);
-                        displayPanel.remove(exclusionScrollPane);
-                        inclusions = TableHelper.loadList("inclusion");
-                        exclusions = TableHelper.loadList("exclusion");
-                        if (getMode() == 2) {
-                            inclusions.add("- " + progTextField.getText());
-                        } else {
-                            exclusions.add("- " + progTextField.getText());
-                        }
-                        TableHelper.saveList(inclusions, "inclusion");
-                        TableHelper.saveList(exclusions, "exclusion");
-                        inclusionScrollPane = TableHelper.loadTable(inclusions);
-                        displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
-                        exclusionScrollPane = TableHelper.loadTable(exclusions);
-                        displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
-                        progTextField.setText("");
+                            "Cannot add program. Display All is selected.");
                     }
+                    // Filter results
+                    else if (getMode() == 2 || getMode() == 3) {
+                        updateLists();
+                    }
+                    // Used to update the UI
                     secretLabel.setText("  ");
                     secretLabel.setText("");
                 }
             }
         });
 
+        // Track exclusion listener
         trackExclusionsRButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -348,6 +360,7 @@ public class Main {
             }
         });
 
+        // Track inclusion listener
         trackInclusionsRButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -362,6 +375,7 @@ public class Main {
             }
         });
 
+        // Track all listener
         trackAllRButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -376,51 +390,38 @@ public class Main {
             }
         });
 
+        // Add button tool tip
         btnAddProgram.setToolTipText(
             "Add a program from whichever table is selected above.");
         controlPanel.add(btnAddProgram, "cell 0 6,grow");
 
+        // Remove program button
         JButton btnRemoveProgram = new JButton("Remove Program");
         btnRemoveProgram.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                // If the input is empty, alert user
                 if (DataHandling.checkEmpty(progTextField.getText())) {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
                 } else {
-
+                    // Alert user if on Display All mode
                     if (getMode() == 1) {
                         JOptionPane.showMessageDialog(null,
                             "Cannot remove program. Track All is selected.");
                     }
-
+                    // Filter results
                     else if (getMode() == 2 || getMode() == 3) {
-                        List<String> inclusions = new ArrayList<>();
-                        List<String> exclusions = new ArrayList<>();
-                        displayPanel.remove(inclusionScrollPane);
-                        displayPanel.remove(exclusionScrollPane);
-                        inclusions = TableHelper.loadList("inclusion");
-                        exclusions = TableHelper.loadList("exclusion");
-                        if (getMode() == 2) {
-                            inclusions.remove("- " + progTextField.getText());
-                        } else {
-                            exclusions.remove("- " + progTextField.getText());
-                        }
-                        TableHelper.saveList(inclusions, "inclusion");
-                        TableHelper.saveList(exclusions, "exclusion");
-                        inclusionScrollPane = TableHelper.loadTable(inclusions);
-                        displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
-                        exclusionScrollPane = TableHelper.loadTable(exclusions);
-                        displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
-                        progTextField.setText("");
+                        updateLists();
                     }
+                    // Refresh UI
                     secretLabel.setText("  ");
                     secretLabel.setText("");
                 }
-
             }
         });
+
+        // Remove button tool tip
         btnRemoveProgram.setToolTipText(
             "Remove a program from whichever table is selected above.");
         controlPanel.add(btnRemoveProgram, "cell 0 7,grow");
@@ -428,6 +429,7 @@ public class Main {
         JLabel secret_label = new JLabel("");
         controlPanel.add(secret_label, "cell 0 14");
 
+        // Clear button
         JButton btnClearList = new JButton("Clear List");
         btnClearList.setToolTipText("Clear the selected list of all entries.");
         btnClearList.addMouseListener(new MouseAdapter() {
@@ -443,9 +445,10 @@ public class Main {
         });
         controlPanel.add(btnClearList, "cell 0 8,grow");
 
+        // Refresh the display panel
         refreshDisplayTable(displayPanel);
 
-        // ************** Timer controls labels ************** //
+        // Timer controls labels
 
         JLabel timerControlsLabel = new JLabel("     Timer Controls");
         timerControlsLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -453,7 +456,7 @@ public class Main {
         trackStatusLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
         mainPanel.add(trackStatusLabel, "cell 1 0");
 
-        // ************** Button panel ************** //
+        // Button panel
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.WHITE);
@@ -461,7 +464,7 @@ public class Main {
         buttonPanel.setLayout(new MigLayout("", "[100,grow]",
             "[25][][][][][][][27.00,grow][14.00][][][][][]"));
 
-        // ************** Start button ************** //
+        // Start button
 
         JButton btnStartTimer = new JButton("Start Timer");
         btnStartTimer.setToolTipText("Start tracking what you do.");
@@ -474,7 +477,7 @@ public class Main {
             }
         });
 
-        // ************** Stop button ************** //
+        // Stop button
 
         btnStopTimer = new JButton("Stop Timer");
         btnStopTimer.setToolTipText("Stop tracking what you do.");
@@ -495,14 +498,14 @@ public class Main {
             }
         });
 
-        // ************** Load data button ************** //
+        // Load data button
 
         JButton btnLoadData = new JButton("Load Data / Refresh");
         btnLoadData
             .setToolTipText("Refresh the table with data recorded previously");
         buttonPanel.add(btnLoadData, "cell 0 12,growx");
 
-        // ************** Graphical output button ************** //
+        // Graphical output button
 
         JButton btnGraphOutput = new JButton("Graphical Output");
         btnGraphOutput.setToolTipText("View what is in the table graphically.");
@@ -514,7 +517,7 @@ public class Main {
         });
         buttonPanel.add(btnGraphOutput, "cell 0 2,growx");
 
-        // ************** Explore data button ************** //
+        // Explore data button
 
         JButton btnExploreData = new JButton("Explore Data");
         btnExploreData.setToolTipText("Explore your saved data.");
@@ -526,6 +529,7 @@ public class Main {
         });
         buttonPanel.add(btnExploreData, "cell 0 3,growx");
 
+        // Consolidate Programs checkbox
         chckbxConsolidatePrograms = new JCheckBox("Consolidate Programs");
         chckbxConsolidatePrograms.setSelected(getChecked());
         chckbxConsolidatePrograms.addMouseListener(new MouseAdapter() {
@@ -544,13 +548,14 @@ public class Main {
                             + "Edit->Program Consolidation tab!");
                     prefs.putBoolean(FIRST_CONSOLIDATE, false);
                 }
-
+                // Store the current state
                 prefs.putBoolean(VALIDATE_STRINGS,
                     chckbxConsolidatePrograms.isSelected());
             }
         });
         buttonPanel.add(chckbxConsolidatePrograms, "cell 0 5,growx");
 
+        // Load table label
         JLabel lblLoadTable = new JLabel("Load Table");
         lblLoadTable.setFont(new Font("Tahoma", Font.BOLD, 12));
         buttonPanel.add(lblLoadTable,
@@ -559,6 +564,7 @@ public class Main {
         secretLabel = new JLabel("");
         buttonPanel.add(secretLabel, "cell 0 7,alignx center");
 
+        // Refresh table button
         JButton btnRefreshTable = new JButton("Refresh Today's Data");
         btnRefreshTable
             .setToolTipText("Refresh the table with data recorded today.");
@@ -572,9 +578,11 @@ public class Main {
         });
         buttonPanel.add(btnRefreshTable, "cell 0 4,growx");
 
+        // Start date label
         JLabel lblStartDate = new JLabel("Start Date");
         buttonPanel.add(lblStartDate, "cell 0 8");
 
+        // Date pickers
         DatePicker datePicker2 = new DatePicker((DatePickerSettings) null);
         datePicker2.getComponentDateTextField().setToolTipText("Ending date.");
         buttonPanel.add(datePicker2, "cell 0 11,grow");
@@ -590,18 +598,19 @@ public class Main {
             .setToolTipText("Beginning date.");
         buttonPanel.add(datePicker, "cell 0 9,grow");
 
+        // End date label
         JLabel lblEndDate = new JLabel("End Date");
         lblEndDate
             .setToolTipText("Leave end date blank if only viewing one day");
         buttonPanel.add(lblEndDate, "cell 0 10");
 
-        // ************** Table ************** //
-
+        // Table
         updateTable(true);
         updateTable(false);
         secretLabel.setText("  ");
         secretLabel.setText("");
 
+        // Load data listener
         btnLoadData.addMouseListener(new MouseAdapter() {
             @SuppressWarnings("unchecked")
             @Override
@@ -609,18 +618,22 @@ public class Main {
                 LocalDate date = datePicker.getDate();
                 LocalDate date2 = datePicker2.getDate();
 
+                // If date 1 is empty
                 if (date == null) {
                     JOptionPane.showMessageDialog(null,
                         "Please enter a start date.");
                 } else {
+                    // Format date 1
                     String formattedString;
                     String formattedString2;
                     new SimpleDateFormat("Dyy");
                     DateTimeFormatter formatter =
                         DateTimeFormatter.ofPattern("Dyy");
                     formattedString = date.format(formatter);
+                    // If date 2 is empty
                     if (date2 == null) {
                         try {
+                            // Load the table with the single date's data
                             loadTable(
                                 DataHandling.acceptDateTable(formattedString));
                             globalMap = DataHandling.convertMap(
@@ -629,15 +642,20 @@ public class Main {
                             e.printStackTrace();
                         }
                     }
+                    // If date 2 was sued
                     if (date2 != null) {
+                        // Format date 2
                         formattedString2 = date2.format(formatter);
+                        // Load list of dates we need
                         List<String> dates =
                             DataHandling.dateDiff(formattedString,
                                 formattedString2);
+                        // Load each map we need
                         @SuppressWarnings("rawtypes")
                         List<Map> maps = DataHandling.loadMaps(dates);
                         Map<String, Long> combinedMaps = new HashMap<>();
                         int i = 100 / maps.size();
+                        // Combine the maps
                         for (Map<String, Long> map : maps) {
                             for (Map.Entry<String, Long> entry : map
                                 .entrySet()) {
@@ -650,25 +668,12 @@ public class Main {
                             ExploreDataGui.updateBar(i);
                             i = 2 * i;
                         }
+                        // Filter the programs
                         Map<String, Long> loadedCurrentMap = new HashMap<>();
-                        if (chckbxConsolidatePrograms.isSelected()) {
-                            loadedCurrentMap =
-                                DataHandling.validateData(combinedMaps);
-                        } else {
-                            loadedCurrentMap = combinedMaps;
-                        }
-                        if (Main.getMode() == 3 || Main.getMode() == 2) {
-                            loadedCurrentMap =
-                                DataHandling
-                                    .validateWhatToDisplay(loadedCurrentMap);
-                        } else if (Main.getMode() == 1
-                            && chckbxConsolidatePrograms.isSelected()) {
-                            loadedCurrentMap =
-                                DataHandling.validateData(combinedMaps);
-                        } else {
-                            loadedCurrentMap = combinedMaps;
-                        }
+                        loadedCurrentMap = DataHandling.validate(combinedMaps);
+                        // Save the map
                         globalMap = DataHandling.convertMap(loadedCurrentMap);
+                        // Refresh the table
                         loadTable(DataHandling.convertMapToLong(globalMap));
                     }
                 }
@@ -676,7 +681,7 @@ public class Main {
 
         });
 
-        // ************** Close to Tray ************** //
+        // Close to tray
         CloseToSystemTray tray = new CloseToSystemTray();
         try {
             tray.startTray();
@@ -690,7 +695,6 @@ public class Main {
             // True if there is
             if (checkForUpdate(
                 "http://austinayers.com/ProductivityPlus_v1.html", 500)) {
-
                 JOptionPane.showMessageDialog(null,
                     "There is a new version of this program at "
                         + "austinayers.com/ProductivityPlus.exe or /ProductivityPlus.jar");
@@ -754,24 +758,12 @@ public class Main {
             mainPanel.remove(table);
         }
         Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
-        if (chckbxConsolidatePrograms.isSelected()) {
-            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
-        }
-        if (Main.getMode() == 3 || Main.getMode() == 2) {
-            if (!chckbxConsolidatePrograms.isSelected()) {
-                loadedCurrentMap = ProgramTimer.appMap;
-            }
-            loadedCurrentMap =
-                DataHandling.validateWhatToDisplay(loadedCurrentMap);
-        } else if (Main.getMode() == 1
-            && chckbxConsolidatePrograms.isSelected()) {
-            loadedCurrentMap = DataHandling.validateData(ProgramTimer.appMap);
-        } else {
-            loadedCurrentMap = ProgramTimer.appMap;
-        }
-
+        // Filter the date
+        loadedCurrentMap = DataHandling.validate(ProgramTimer.appMap);
+        // Conver the type of map
         globalMap = DataHandling.convertMap(loadedCurrentMap);
 
+        // Load the table
         String columns[] = {"Program", TimeConvert.getUnit()};
         if (loadedCurrentMap.size() == 0) {
             model = new DefaultTableModel(1, 2);
@@ -795,15 +787,18 @@ public class Main {
                 }
             };
         }
+        // Create the table from the model
         table = new JTable(model);
         if (PreferencesGui.getDisplayIndex() == 3) {
             model = new DefaultTableModel();
             table = new JTable(model);
             model.addColumn("Program");
+            // Add the keys
             for (String name : loadedCurrentMap.keySet()) {
                 String key = name.toString();
                 model.addRow(new Object[] {key});
             }
+            // Convert the map to written
             Map<String, String> finalMap2 =
                 TimeConvert.convertWritten(loadedCurrentMap);
 
@@ -811,15 +806,18 @@ public class Main {
             model.addColumn(TimeConvert.getUnit(),
                 finalMap2.values().toArray());
         } else {
+            // Allow for sorting
             RowSorter<TableModel> sorter =
                 new TableRowSorter<TableModel>(model);
             table.setRowSorter(sorter);
 
         }
+        // Move contents left justified
         DefaultTableCellRenderer renderer =
             (DefaultTableCellRenderer) table.getDefaultRenderer(Double.class);
         renderer.setHorizontalAlignment(SwingConstants.LEFT);
 
+        // Add the scroll pane
         sc = new JScrollPane(table);
         mainPanel.add(sc, "growx");
         secretLabel.setText("  ");
@@ -834,6 +832,7 @@ public class Main {
      * @return Object[][] of the rows.
      */
     private static Object[][] getRows(Map<String, Double> finalMap) {
+        // Iterate through the map param to get the key col
         Object[][] rows = new Object[finalMap.size()][2];
         Set<Entry<String, Double>> entries = finalMap.entrySet();
         Iterator<Entry<String, Double>> entriesIterator = entries.iterator();
@@ -906,15 +905,18 @@ public class Main {
                 }
             };
         }
+        // Create the table from the model
         table = new JTable(model);
         if (PreferencesGui.getDisplayIndex() == 3) {
             model = new DefaultTableModel();
             table = new JTable(model);
             model.addColumn("Program");
+            // Add the keys
             for (String name : loadedMap.keySet()) {
                 String key = name.toString();
                 model.addRow(new Object[] {key});
             }
+            // Convert the map to written
             Map<String, String> finalMap2 =
                 TimeConvert.convertWritten(loadedMap);
 
@@ -922,16 +924,18 @@ public class Main {
             model.addColumn(TimeConvert.getUnit(),
                 finalMap2.values().toArray());
         } else {
-
+            // Allow for sorting
             RowSorter<TableModel> sorter =
                 new TableRowSorter<TableModel>(model);
             table.setRowSorter(sorter);
 
         }
+        // Move contents left justified
         DefaultTableCellRenderer renderer =
             (DefaultTableCellRenderer) table.getDefaultRenderer(Double.class);
         renderer.setHorizontalAlignment(SwingConstants.LEFT);
 
+        // Add the scroll pane
         sc = new JScrollPane(table);
         mainPanel.add(sc);
         mainPanel.add(sc, "growx");
@@ -991,5 +995,36 @@ public class Main {
         } catch (IOException exception) {
             return true;
         }
+    }
+
+    /**
+     * 
+     */
+    private void updateLists() {
+        // Create lists of the inclusions/exclusions
+        List<String> inclusions = new ArrayList<>();
+        List<String> exclusions = new ArrayList<>();
+        // Remove old scroll panes
+        displayPanel.remove(inclusionScrollPane);
+        displayPanel.remove(exclusionScrollPane);
+        // Load the respective lists
+        inclusions = TableHelper.loadList("inclusion");
+        exclusions = TableHelper.loadList("exclusion");
+        // Perforn the required action
+        if (getMode() == 2) {
+            inclusions.add("- " + progTextField.getText());
+        } else {
+            exclusions.add("- " + progTextField.getText());
+        }
+        // Save the lists
+        TableHelper.saveList(inclusions, "inclusion");
+        TableHelper.saveList(exclusions, "exclusion");
+        inclusionScrollPane = TableHelper.loadTable(inclusions);
+        // Add the lists back to the panel
+        displayPanel.add(inclusionScrollPane, "cell 1 1,grow");
+        exclusionScrollPane = TableHelper.loadTable(exclusions);
+        displayPanel.add(exclusionScrollPane, "cell 2 1,grow");
+        // Clear the text box
+        progTextField.setText("");
     }
 }

@@ -14,7 +14,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import gui.ExploreDataGui;
-import gui.Main;
 import gui.PreferencesGui;
 
 /**
@@ -30,22 +29,19 @@ public class ExcelWriter {
      */
     public static void write(Map<String, Long> combinedMaps, String date)
         throws IOException {
+
+        // Set progress bar to 0
         ExploreDataGui.updateBar(0);
+
         Map<String, Long> loadedCurrentMap = new HashMap<String, Long>();
+        // Filter data into empty map
+        loadedCurrentMap = DataHandling.validate(combinedMaps);
 
-        if (Main.chckbxConsolidatePrograms.isSelected()) {
-            loadedCurrentMap = DataHandling.validateData(combinedMaps);
-        } else {
-            loadedCurrentMap = combinedMaps;
-        }
-        if (Main.getMode() == 3 || Main.getMode() == 2) {
-            loadedCurrentMap =
-                DataHandling.validateWhatToDisplay(loadedCurrentMap);
-        }
-        Map<String, Long> toDisplayMap = new HashMap<>(loadedCurrentMap);
+        // Convert the export time
         Map<String, Double> finalMap =
-            TimeConvert.convertExportTime(toDisplayMap);
+            TimeConvert.convertExportTime(loadedCurrentMap);
 
+        // Assign the date/range
         printedDate = date;
 
         // Create the Workbook
@@ -63,7 +59,7 @@ public class ExcelWriter {
         CellStyle headerCellStyle = workbook.createCellStyle();
         headerCellStyle.setFont(headerFont);
 
-        // Create a Row
+        // Create a row
         Row headerRow = sheet.createRow(0);
 
         // Create cells
@@ -83,6 +79,7 @@ public class ExcelWriter {
         cell1.setCellStyle(headerCellStyle);
 
         int rowNum = 1;
+        // Fill out the sheet
         if (combinedMaps.size() > 0) {
 
             int j = 100 / combinedMaps.size();
@@ -99,7 +96,7 @@ public class ExcelWriter {
             for (int i = 0; i < finalMap.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
-
+            // Fill progress bar
             ExploreDataGui.updateBar(100);
 
         }

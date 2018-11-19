@@ -67,6 +67,7 @@ public class ConsolidationGui extends JDialog {
         try {
             ConsolidationGui dialog = new ConsolidationGui();
             dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            // Launch the window to match the parent window
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
@@ -115,6 +116,7 @@ public class ConsolidationGui extends JDialog {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
                 } else {
+                    // Append and remove the entry
                     removeRow("- " + txtInput.getText());
                 }
             }
@@ -133,6 +135,7 @@ public class ConsolidationGui extends JDialog {
                     JOptionPane.showMessageDialog(null,
                         "Input string empty.");
                 } else {
+                    // Append and add the entry
                     addRow("- " + txtInput.getText());
                 }
             }
@@ -151,6 +154,7 @@ public class ConsolidationGui extends JDialog {
         btnClearList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
+                // Create an empty list to save
                 list = new ArrayList<String>();
                 saveList(); // Save the list
                 loadTable(); // Load the table with the saved list
@@ -163,7 +167,7 @@ public class ConsolidationGui extends JDialog {
         txtpnWhatDoI.setEditable(false);
         txtpnWhatDoI.setBackground(new Color(240, 240, 240));
         txtpnWhatDoI.setText("Q: What do I enter? \n"
-            + "A: At the end of each program entry, there is a separator, '|', followed by the program's name. \n"
+            + "A: At the end of each program entry, there is a separator, '-', followed by the program's name. \n"
             + "You must enter the program's name that follows the separator into the text box above to "
             + "be able to combine all of the separate entries of that program into a single item with a combined time. \n"
             + "Ex. input: 'Google Chrome'");
@@ -231,8 +235,11 @@ public class ConsolidationGui extends JDialog {
             JOptionPane.showMessageDialog(null,
                 "Item already in list, not added.");
         } else {
+            // Add the item
             list.add(item);
+            // Reset text box
             txtInput.setText("");
+            // Load and save the table
             loadTable();
             saveList();
         }
@@ -252,8 +259,11 @@ public class ConsolidationGui extends JDialog {
             JOptionPane.showMessageDialog(null,
                 "Item not in list to remove.");
         } else {
+            // Remove the item
             list.remove(item);
+            // Reset text box
             txtInput.setText("");
+            // Load and save the table
             loadTable();
             saveList();
         }
@@ -287,6 +297,7 @@ public class ConsolidationGui extends JDialog {
         try {
             while (in.available() > 0) {
                 String element = in.readUTF();
+                // If not in list already, add
                 if (!inList(element)) {
                     list.add(element);
                 }
