@@ -80,7 +80,7 @@ public class ConsolidationGui extends JDialog {
      * Create the dialog.
      */
     private ConsolidationGui() {
-        setTitle("What to Track");
+        setTitle("Program Consolidation");
         setBounds(100, 100, 592, 419);
 
         // Frame panels and panes
