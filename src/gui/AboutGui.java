@@ -30,6 +30,7 @@ public class AboutGui extends JDialog {
         try {
             AboutGui dialog = new AboutGui();
             dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            // Launch the window to match the parent window
             Main.setWindowLoc();
             dialog.setLocation(Main.getWindowLoc().x, Main.getWindowLoc().y);
             dialog.setVisible(true);
@@ -46,7 +47,7 @@ public class AboutGui extends JDialog {
         setTitle("About");
         setBounds(100, 100, 625, 559);
 
-        // ************** Frame panels and panes ************** //
+        // Frame panels and panes
         getContentPane()
             .setLayout(new MigLayout("", "[434px,grow]", "[228px,grow]"));
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -54,6 +55,7 @@ public class AboutGui extends JDialog {
         contentPanel
             .setLayout(new MigLayout("", "[513px,grow]", "[360.00px,grow]"));
 
+        // About panel
         JPanel aboutPanel = new JPanel();
         aboutPanel.setBorder(
             new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -61,11 +63,12 @@ public class AboutGui extends JDialog {
         aboutPanel.setLayout(
             new MigLayout("", "[grow][][]", "[][grow]"));
 
+        // How to use label
         JLabel lblHowToUse = new JLabel(
             "How to use ProductivityPlus - What does each button do?");
         aboutPanel.add(lblHowToUse, "cell 0 0");
 
-        // ************** Text Areas ************** //
+        // Text Areas
         JTextPane txtpnPressstartTimer = new JTextPane();
         txtpnPressstartTimer.setBackground(new Color(240, 240, 240));
         txtpnPressstartTimer.setEditable(false);
@@ -82,8 +85,6 @@ public class AboutGui extends JDialog {
                 + "Load Table - Load data from a single date or date range into the displayed table, "
                 + "this button is also used to refresh the table for displayed dates. \n \n"
                 + "What to Display - Choose to display all data, or a select few to include or exlude. \n \n"
-                + "Preferences->Idle Timer - This feature stops the program tracker if your "
-                + "mouse is idle for the given interval. \n \n"
                 + "Preferences->Program Output / Display Preferences - These options change how the "
                 + "time is displayed or exported, keep in mind there is an option for each displaying and exporting. \n \n"
                 + "NOTE: All features of this app use your settings from 'What to display'.");
