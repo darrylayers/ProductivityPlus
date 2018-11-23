@@ -65,7 +65,7 @@ public class ProgramTimer implements Runnable {
             progLast = prog; // save the last prog
             // Pause before next check to eliminate wasted checks / resources
             try {
-                Thread.sleep(5);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
