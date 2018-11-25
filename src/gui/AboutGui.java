@@ -54,7 +54,7 @@ public class AboutGui extends JDialog {
      */
     private AboutGui() {
         setTitle("About");
-        setBounds(100, 100, 625, 750);
+        setBounds(100, 100, 625, 679);
 
         // Frame panels and panes
         getContentPane()
@@ -108,11 +108,11 @@ public class AboutGui extends JDialog {
         JTextPane textPane = new JTextPane();
         textPane.setEditable(false);
         textPane.setText(
-            "Improved program consolidation to allow grouping of child programs. \n \n "
-                + "More graphs to view data. \n \n"
-                + "I would also like to work the main GUI window. \n \n"
-                + "Idle timer to stop the program when the user is idle. \n \n"
-                + "An alert system for when a specific program hits x amount of time. \n \n");
+            "Improved program consolidation to allow grouping of child programs.\n"
+                + "More graphs to view data.\n"
+                + "I would also like to redesign the main GUI window.\n"
+                + "Idle timer to stop the program when the user is idle.\n"
+                + "An alert system for when a specific program hits x amount of time.\n");
         textPane.setBackground(SystemColor.menu);
         aboutPanel.add(textPane, "cell 0 3,grow");
 
