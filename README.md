@@ -43,3 +43,5 @@ JCommon | Used to help JFreeChart graph data
 All resources can be found here: http://austinayers.com/ProductivityPlus_lib.zip
 
 [Timeline of this project using Gource](http://austinayers.com/ProductivityPlusImages/gource.gif)
+
+ProductivityPlus icon is from https://openclipart.org/detail/152293/computer-chart, Free for commercial and non-commercial use. 
