@@ -54,7 +54,7 @@ public class AboutGui extends JDialog {
      */
     private AboutGui() {
         setTitle("About");
-        setBounds(100, 100, 625, 667);
+        setBounds(100, 100, 625, 750);
 
         // Frame panels and panes
         getContentPane()
@@ -63,7 +63,7 @@ public class AboutGui extends JDialog {
         getContentPane().add(contentPanel, "cell 0 0,grow");
         contentPanel
             .setLayout(
-                new MigLayout("", "[513px,grow]", "[360.00px,grow][grow]"));
+                new MigLayout("", "[513px,grow]", "[360.00px][]"));
 
         // About panel
         JPanel aboutPanel = new JPanel();
@@ -71,7 +71,7 @@ public class AboutGui extends JDialog {
             new EtchedBorder(EtchedBorder.LOWERED, null, null));
         contentPanel.add(aboutPanel, "cell 0 0,grow");
         aboutPanel.setLayout(
-            new MigLayout("", "[grow][][]", "[][353.00][grow,fill][grow]"));
+            new MigLayout("", "[grow][][]", "[][353.00][grow,fill][135.00]"));
 
         // How to use label
         JLabel lblHowToUse = new JLabel(
@@ -111,23 +111,23 @@ public class AboutGui extends JDialog {
             "Improved program consolidation to allow grouping of child programs. \n \n "
                 + "More graphs to view data. \n \n"
                 + "I would also like to work the main GUI window. \n \n"
-                + "Idle timer to stop the program when the user is idle.");
+                + "Idle timer to stop the program when the user is idle. \n \n"
+                + "An alert system for when a specific program hits x amount of time. \n \n");
         textPane.setBackground(SystemColor.menu);
         aboutPanel.add(textPane, "cell 0 3,grow");
 
         JEditorPane dtrpnOpenHowTo = new JEditorPane();
+        dtrpnOpenHowTo.setFont(new Font("Tahoma", Font.BOLD, 11));
         dtrpnOpenHowTo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 URL url = null;
                 try {
-                    // TODO: Change the url to the how to video url
-                    url = new URL("http://austinayers.com/");
+                    url = new URL("https://youtu.be/FjxNHRp6bOw");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
                 openWebpage(url);
-
             }
         });
         dtrpnOpenHowTo.setEditable(false);

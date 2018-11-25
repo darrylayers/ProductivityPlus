@@ -155,6 +155,7 @@ public class PreferencesGui extends JDialog {
         updatePanel.add(chckbxDisplayUpdateNotifications);
         chckbxDisplayUpdateNotifications.setForeground(new Color(0, 0, 0));
 
+        // Checkbox listener
         chckbxDisplayUpdateNotifications.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {

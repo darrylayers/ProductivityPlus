@@ -253,7 +253,6 @@ public class Main {
 
         // What to display panel
         displayPanel = new JPanel();
-        displayPanel.setToolTipText("");
         tabbedPane.addTab("What to Display", null, displayPanel, null);
         displayPanel.setLayout(new MigLayout("",
             "[310.00px,grow][450,grow][501.00,grow]", "[75][457.00px,grow]"));
