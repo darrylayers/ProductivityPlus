@@ -1,11 +1,10 @@
 *.class
 .classpath
 *.xlsx
-.classpath
-Program_Log.txt
+.project
 *.jar
 *.zip
-*.list
 *.map
 *.properties
 /bin/
+/.settings/
