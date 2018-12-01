@@ -297,6 +297,7 @@ public class Main {
             @Override
             public void mouseClicked(MouseEvent arg0) {
 
+                boolean noUpdate = true;
                 // If the input is empty, alert user
                 if (DataHandling.checkEmpty(progTextField.getText())) {
                     JOptionPane.showMessageDialog(null,
@@ -307,14 +308,46 @@ public class Main {
                         JOptionPane.showMessageDialog(null,
                             "Cannot add program. Display All is selected.");
                     }
+                    // check to see if it is in the list already
+                    else if (contains("- " + progTextField.getText())) {
+                        JOptionPane.showMessageDialog(null,
+                            "Program is already in the list!");
+                        noUpdate = false;
+                    }
                     // Filter results
-                    else if (getMode() == 2 || getMode() == 3) {
-                        updateLists();
+                    else if ((getMode() == 2 || getMode() == 3) && noUpdate) {
+                        updateLists(true);
                     }
                     // Used to update the UI
                     secretLabel.setText("  ");
                     secretLabel.setText("");
+
                 }
+            }
+
+            /**
+             * This method returns true if the entered item is already in the
+             * desired list.
+             * 
+             * @param text
+             *            input text
+             * @return This method returns true if the entered item is already
+             *         in the desired list. false if on display all mode.
+             */
+            private boolean contains(String text) {
+                // Create lists of the inclusions/exclusions
+                List<String> inclusions = new ArrayList<>();
+                List<String> exclusions = new ArrayList<>();
+                // Load the respective lists
+                inclusions = TableHelper.loadList("inclusion");
+                exclusions = TableHelper.loadList("exclusion");
+
+                if (getMode() == 2) {
+                    return inclusions.contains(text);
+                } else if (getMode() == 3) {
+                    return exclusions.contains(text);
+                }
+                return false;
             }
         });
         // Add button tool tip
@@ -339,7 +372,7 @@ public class Main {
                     }
                     // Filter results
                     else if (getMode() == 2 || getMode() == 3) {
-                        updateLists();
+                        updateLists(false);
                     }
                     // Refresh UI
                     secretLabel.setText("  ");
@@ -687,7 +720,7 @@ public class Main {
             // True if there is
             // TODO: This must be changed on each update
             if (checkForUpdate(
-                "http://austinayers.com/ProductivityPlus_v1.html", 500)) {
+                "http://austinayers.com/ProductivityPlus_v2.html", 500)) {
                 JOptionPane.showMessageDialog(null,
                     "There is a new version of this program at "
                         + "austinayers.com/ProductivityPlus.exe or /ProductivityPlus.jar");
@@ -991,9 +1024,12 @@ public class Main {
     }
 
     /**
+     * This method updates the what to display lists.
      * 
+     * @param add
+     *            true if we are adding to the list
      */
-    private void updateLists() {
+    private void updateLists(boolean add) {
         // Create lists of the inclusions/exclusions
         List<String> inclusions = new ArrayList<>();
         List<String> exclusions = new ArrayList<>();
@@ -1004,10 +1040,14 @@ public class Main {
         inclusions = TableHelper.loadList("inclusion");
         exclusions = TableHelper.loadList("exclusion");
         // Perforn the required action
-        if (getMode() == 2) {
+        if (getMode() == 2 && add) {
             inclusions.add("- " + progTextField.getText());
-        } else {
+        } else if (getMode() == 2 && !add) {
+            inclusions.remove("- " + progTextField.getText());
+        } else if (getMode() == 3 && add) {
             exclusions.add("- " + progTextField.getText());
+        } else if (getMode() == 3 && !add) {
+            exclusions.remove("- " + progTextField.getText());
         }
         // Save the lists
         TableHelper.saveList(inclusions, "inclusion");
