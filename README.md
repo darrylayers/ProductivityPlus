@@ -45,8 +45,8 @@ Library | What it is used for
 [MigLayout15-swing](https://sourceforge.net/projects/photoviewer/files/bot/1.0/miglayout15-swing.jar/download) | This is the Swing layout that most of ProductivityPlus is built on
 [LGoodDatePicker](https://github.com/LGoodDatePicker/LGoodDatePicker) | Used to create calendar elements to the GUI and allow dates to be selected
 [jUnit](https://junit.org/junit5/) | Used for unit tests
-[JNA](hhttps://github.com/java-native-access/jna) | Used to access the WinAPI
-[JNA-Platform](hhttps://github.com/java-native-access/jna) | More tools and interfaces for JNA lib
+[JNA](https://github.com/java-native-access/jna) | Used to access the WinAPI
+[JNA-Platform](https://github.com/java-native-access/jna) | More tools and interfaces for JNA lib
 [jGoodies](http://www.jgoodies.com/) | Form layout used for GUI building
 [JFreeChart](http://www.jfree.org/jfreechart/) | Used for graphing data
 [JCommon](http://www.jfree.org/jcommon/) | Used to help JFreeChart graph data
