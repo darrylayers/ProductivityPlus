@@ -1,5 +1,5 @@
 # ProductivityPlus
-Fall 2018 Capstone Project - ProductivityPlus is a simplistic Windows GUI application designed to record and analyze how much time the user spends in the applications they use. Monitor how much time you spend in your applications and choose to view the data with in-app graphs or export to a .xlms file to be viewed in Excel. 
+Fall 2018 Capstone Project - ProductivityPlus is a simplistic Windows GUI application designed to record and analyze how much time the user spends in the applications they use. Monitor how much time you spend in your applications and choose to view the data with in-application graphs or export to a .xlms file to be viewed in Excel. 
 
 **Main window:**
 
@@ -13,6 +13,13 @@ Fall 2018 Capstone Project - ProductivityPlus is a simplistic Windows GUI applic
 
 ![Image of the explore data](http://austinayers.com/ProductivityPlusImages/explore_data_combo.png)
 
+**What to Display window**
+
+![Image of the what to display](http://austinayers.com/ProductivityPlusImages/what_to_display.png)
+
+**Program Consolidation, Excel Output, and Preferences**
+
+![Image of the prefs, consolidation, and excel output](http://austinayers.com/ProductivityPlusImages/3_combo.png)
 
 
 **Instructions**
@@ -57,5 +64,8 @@ Library | What it is used for
 
 [Timeline of this project using Gource](http://austinayers.com/ProductivityPlusImages/gource.gif)
 
-ProductivityPlus icon is from https://openclipart.org/detail/152293/computer-chart, free for commercial and non-commercial use.
+[ProductivityPlus icon source](https://openclipart.org/detail/152293/computer-chart)
+
+[ProductivityPlus instructional video](https://www.youtube.com/watch?reload=9&v=FjxNHRp6bOw)
+
 
